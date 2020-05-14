@@ -8,8 +8,8 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
-	"github.com/stefantds/goepijudge/tree"
+	. "github.com/stefantds/go-epi-judge/epi"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
@@ -22,7 +22,7 @@ func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
 
 	type TestCase struct {
 		A              []int
-		ExpectedResult tree.BstNodeDecoder
+		ExpectedResult tree.BSTNodeDecoder
 		Details        string
 	}
 

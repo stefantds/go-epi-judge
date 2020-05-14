@@ -1,7 +1,7 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/tree"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func FindKthNodeBinaryTree(tree *tree.BinaryTreeNode, k int)*tree.BinaryTreeNode {

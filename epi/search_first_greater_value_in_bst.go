@@ -1,10 +1,10 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/tree"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func FindFirstGreaterThanK(tree *tree.BstNode, k int)*tree.BstNode {
+func FindFirstGreaterThanK(tree *tree.BSTNode, k int)*tree.BSTNode {
 	// TODO - Add your code here
 	return nil
 }

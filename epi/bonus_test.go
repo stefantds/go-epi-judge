@@ -8,7 +8,7 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
+	. "github.com/stefantds/go-epi-judge/epi"
 )
 
 func TestCalculateBonus(t *testing.T) {

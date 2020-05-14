@@ -8,7 +8,7 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
+	. "github.com/stefantds/go-epi-judge/epi"
 )
 
 func TestSearchFrequentItems(t *testing.T) {
@@ -20,10 +20,10 @@ func TestSearchFrequentItems(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		K int
-		Stream Iterable<String>
+		K              int
+		Stream         []string
 		ExpectedResult []string
-		Details string
+		Details        string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -38,7 +38,7 @@ func TestSearchFrequentItems(t *testing.T) {
 			&tc.Stream,
 			&tc.ExpectedResult,
 			&tc.Details,
-			); err != nil {
+		); err != nil {
 			t.Fatal(err)
 		}
 

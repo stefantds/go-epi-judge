@@ -1,6 +1,6 @@
 package epi
 
-func SearchFrequentItems(k int, stream Iterable<String>)[]string {
+func SearchFrequentItems(k int, stream []string) []string {
 	// TODO - Add your code here
 	return nil
 }

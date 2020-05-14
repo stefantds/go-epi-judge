@@ -8,8 +8,8 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
-	"github.com/stefantds/goepijudge/tree"
+	. "github.com/stefantds/go-epi-judge/epi"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestFindKLargestInBst(t *testing.T) {
@@ -21,7 +21,7 @@ func TestFindKLargestInBst(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Tree           tree.BstNodeDecoder
+		Tree           tree.BSTNodeDecoder
 		K              int
 		ExpectedResult []int
 		Details        string

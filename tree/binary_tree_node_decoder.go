@@ -15,15 +15,15 @@ func (d *BinaryTreeNodeDecoder) DecodeRecord(record string) error {
 	record = strings.TrimSuffix(record, "]")
 	allData := strings.Split(record, ",")
 
-	nodes := make([]*BinaryTreeNode, 0, len(allData))
+	nodes := make([]*BinaryTreeNode, len(allData))
 
-	for _, data := range allData {
+	for i, data := range allData {
 		n, err := makeNode(strings.TrimSpace(data))
 		if err != nil {
 			return err
 		}
 
-		nodes = append(nodes, n)
+		nodes[i] = n
 	}
 
 	root := nodes[0]

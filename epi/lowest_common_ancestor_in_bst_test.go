@@ -8,8 +8,8 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
-	"github.com/stefantds/goepijudge/tree"
+	. "github.com/stefantds/go-epi-judge/epi"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestFindLca(t *testing.T) {
@@ -21,10 +21,10 @@ func TestFindLca(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Tree           tree.BstNodeDecoder
-		S              tree.BstNodeDecoder
-		B              tree.BstNodeDecoder
-		ExpectedResult tree.BstNodeDecoder
+		Tree           tree.BSTNodeDecoder
+		S              tree.BSTNodeDecoder
+		B              tree.BSTNodeDecoder
+		ExpectedResult tree.BSTNodeDecoder
 		Details        string
 	}
 

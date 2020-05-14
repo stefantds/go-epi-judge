@@ -1,7 +1,7 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/tree"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
 type Interval struct {
@@ -9,7 +9,7 @@ type Interval struct {
 	Right int
 }
 
-func RangeLookupInBst(tree *tree.BstNode, interval Interval)[]int {
+func RangeLookupInBst(tree *tree.BSTNode, interval Interval)[]int {
 	// TODO - Add your code here
 	return nil
 }

@@ -1,10 +1,10 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/tree"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func FindLca(tree *tree.BstNode, s *tree.BstNode, b *tree.BstNode)*tree.BstNode {
+func FindLca(tree *tree.BSTNode, s *tree.BSTNode, b *tree.BSTNode)*tree.BSTNode {
 	// TODO - Add your code here
 	return nil
 }

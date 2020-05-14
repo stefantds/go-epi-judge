@@ -1,10 +1,10 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/iterator"
+	"github.com/stefantds/go-epi-judge/iterator"
 )
 
-func OnlineMedian(sequence *iterator.Iterator)[]float64 {
+func OnlineMedian(sequence *iterator.Iterator) []float64 {
 	// TODO - Add your code here
 	return nil
 }

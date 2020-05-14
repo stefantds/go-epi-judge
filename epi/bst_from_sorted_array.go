@@ -1,10 +1,10 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/tree"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func BuildMinHeightBSTFromSortedArray(a []int)*tree.BstNode {
+func BuildMinHeightBSTFromSortedArray(a []int) *tree.BSTNode {
 	// TODO - Add your code here
 	return nil
 }

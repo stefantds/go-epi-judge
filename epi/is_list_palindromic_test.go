@@ -8,8 +8,8 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
-	"github.com/stefantds/goepijudge/list"
+	. "github.com/stefantds/go-epi-judge/epi"
+	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestIsLinkedListAPalindrome(t *testing.T) {

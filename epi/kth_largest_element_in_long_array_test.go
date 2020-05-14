@@ -8,8 +8,7 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
-	"github.com/stefantds/goepijudge/iterator"
+	. "github.com/stefantds/go-epi-judge/epi"
 )
 
 func TestFindKthLargestUnknownLength(t *testing.T) {
@@ -21,7 +20,7 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Stream         *iterator.Iterator
+		Stream         []int
 		K              int
 		ExpectedResult int
 		Details        string

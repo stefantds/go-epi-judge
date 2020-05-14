@@ -1,10 +1,10 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/tree"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func FindKLargestInBst(tree *tree.BstNode, k int)[]int {
+func FindKLargestInBst(tree *tree.BSTNode, k int)[]int {
 	// TODO - Add your code here
 	return nil
 }

@@ -1,7 +1,7 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/iterator"
+	"github.com/stefantds/go-epi-judge/iterator"
 )
 
 func SortApproximatelySortedData(sequence *iterator.Iterator, k int)[]int {

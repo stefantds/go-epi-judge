@@ -1,7 +1,7 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/list"
+	"github.com/stefantds/go-epi-judge/list"
 )
 
 func BuildBSTFromSortedList(l *list.DoublyListNode, length int)*list.DoublyListNode {

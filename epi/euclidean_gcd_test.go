@@ -8,7 +8,7 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
+	. "github.com/stefantds/go-epi-judge/epi"
 )
 
 func TestGCD(t *testing.T) {
@@ -43,7 +43,7 @@ func TestGCD(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := GCD(tc.X, tc.Y)
+			result := EuclideanGCD(tc.X, tc.Y)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

@@ -1,7 +1,7 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/list"
+	"github.com/stefantds/go-epi-judge/list"
 )
 
 func AddTwoNumbers(l1 *list.ListNode, l2 *list.ListNode)*list.ListNode {

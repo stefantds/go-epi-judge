@@ -1,6 +1,6 @@
 package epi
 
-func FindMissingElement(stream Iterable<Integer>)int {
+func FindMissingElement(stream []int) int {
 	// TODO - Add your code here
 	return 0
 }

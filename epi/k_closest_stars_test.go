@@ -8,7 +8,7 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/goepijudge/epi"
+	. "github.com/stefantds/go-epi-judge/epi"
 )
 
 func TestFindClosestKStars(t *testing.T) {
@@ -20,10 +20,10 @@ func TestFindClosestKStars(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Stars Iterator<Star>
-		K int
-		ExpectedResult []Star
-		Details string
+		Stars          []Star
+		K              int
+		ExpectedResult []float64
+		Details        string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -38,7 +38,7 @@ func TestFindClosestKStars(t *testing.T) {
 			&tc.K,
 			&tc.ExpectedResult,
 			&tc.Details,
-			); err != nil {
+		); err != nil {
 			t.Fatal(err)
 		}
 

@@ -1,7 +1,7 @@
 package epi
 
 import (
-	"github.com/stefantds/goepijudge/tree"
+	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func FindSuccessor(node *tree.BinaryTree)*tree.BinaryTree {

@@ -11,7 +11,7 @@ import (
 	. "github.com/stefantds/go-epi-judge/epi"
 )
 
-func TestGCD(t *testing.T) {
+func TestEuclideanGCD(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "gcd.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {

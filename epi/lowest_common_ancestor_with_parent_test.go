@@ -12,7 +12,7 @@ import (
 	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func TestLca(t *testing.T) {
+func TestLCAWithParent(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "lowest_common_ancestor.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {

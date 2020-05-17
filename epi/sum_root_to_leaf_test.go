@@ -42,7 +42,7 @@ func TestSumRootToLeaf(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SumRootToLeaf(tc.Tree.Tree)
+			result := SumRootToLeaf(tc.Tree.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

@@ -44,7 +44,7 @@ func TestSearchBST(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SearchBST(tc.Tree.Tree, tc.Key)
+			result := SearchBST(tc.Tree.Value, tc.Key)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

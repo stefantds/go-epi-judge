@@ -44,7 +44,7 @@ func TestMergeTwoBsts(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := MergeTwoBsts(tc.A.Tree, tc.B.Tree)
+			result := MergeTwoBsts(tc.A.Value, tc.B.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

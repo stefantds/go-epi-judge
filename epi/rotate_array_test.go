@@ -3,7 +3,6 @@ package epi_test
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"

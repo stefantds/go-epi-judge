@@ -42,7 +42,7 @@ func TestPreorderTraversal(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := PreorderTraversal(tc.Tree.Tree)
+			result := PreorderTraversal(tc.Tree.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

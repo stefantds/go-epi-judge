@@ -44,7 +44,7 @@ func TestRangeLookupInBst(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := RangeLookupInBst(tc.Tree.Tree, tc.Interval)
+			result := RangeLookupInBst(tc.Tree.Value, tc.Interval)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

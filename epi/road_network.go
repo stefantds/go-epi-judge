@@ -6,7 +6,7 @@ type HighwaySection struct {
 	Distance int
 }
 
-func FindBestProposals(h []*HighwaySection, p []*HighwaySection, n int) *HighwaySection {
+func FindBestProposals(h []HighwaySection, p []HighwaySection, n int) *HighwaySection {
 	// TODO - Add your code here
 	return nil
 }

@@ -46,9 +46,9 @@ func TestFindLca(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindLca(tc.Tree.Tree, tc.S.Tree, tc.B.Tree)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			result := FindLca(tc.Tree.Value, tc.S.Value, tc.B.Value)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}

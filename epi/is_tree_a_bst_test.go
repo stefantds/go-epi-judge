@@ -42,7 +42,7 @@ func TestIsBinaryTreeBST(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := IsBinaryTreeBST(tc.Tree.Tree)
+			result := IsBinaryTreeBST(tc.Tree.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

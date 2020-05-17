@@ -5,7 +5,7 @@ type GraphVertexWithLabel struct {
 	Edges []GraphVertex
 }
 
-func CloneGraph(graph *GraphVertexWithLabel) *GraphVertexWithLabel {
+func CloneGraph(graph GraphVertexWithLabel) *GraphVertexWithLabel {
 	// TODO - Add your code here
 	return nil
 }

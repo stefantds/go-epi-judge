@@ -44,7 +44,7 @@ func TestFindKthNodeBinaryTree(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindKthNodeBinaryTree(tc.Tree.Tree, tc.K)
+			result := FindKthNodeBinaryTree(tc.Tree.Value, tc.K)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

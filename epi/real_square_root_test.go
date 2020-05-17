@@ -11,7 +11,7 @@ import (
 	. "github.com/stefantds/go-epi-judge/epi"
 )
 
-func TestSquareRoot(t *testing.T) {
+func TestSquareRootReal(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "real_square_root.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {

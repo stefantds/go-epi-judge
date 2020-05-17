@@ -42,7 +42,7 @@ func TestIsSymmetric(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := IsSymmetric(tc.Tree.Tree)
+			result := IsSymmetric(tc.Tree.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

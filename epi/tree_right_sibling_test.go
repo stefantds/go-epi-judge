@@ -3,7 +3,6 @@ package epi_test
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -45,7 +44,7 @@ func TestConstructRightSibling(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			ConstructRightSibling(tc.Tree.Tree)
+			ConstructRightSibling(tc.Tree.Value)
 			err := checkConstructRightSibling()
 			if err != nil {
 				t.Error(err)

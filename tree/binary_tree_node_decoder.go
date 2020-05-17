@@ -6,7 +6,7 @@ import (
 )
 
 type BinaryTreeNodeDecoder struct {
-	Tree *BinaryTreeNode
+	Value *BinaryTreeNode
 }
 
 // DecodeRecord builds a BinaryTreeNode from a JSON array of ints
@@ -18,7 +18,7 @@ func (d *BinaryTreeNodeDecoder) DecodeRecord(record string) error {
 	nodes := make([]*BinaryTreeNode, len(allData))
 
 	for i, data := range allData {
-		n, err := makeNode(strings.TrimSpace(data))
+		n, err := makeBinaryTreeNode(strings.TrimSpace(data))
 		if err != nil {
 			return err
 		}
@@ -43,11 +43,11 @@ func (d *BinaryTreeNodeDecoder) DecodeRecord(record string) error {
 		}
 	}
 
-	d.Tree = root
+	d.Value = root
 	return nil
 }
 
-func makeNode(value string) (*BinaryTreeNode, error) {
+func makeBinaryTreeNode(value string) (*BinaryTreeNode, error) {
 	const nullValue = "null"
 	if value == nullValue {
 		return nil, nil

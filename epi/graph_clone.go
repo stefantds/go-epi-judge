@@ -1,16 +1,11 @@
 package epi
 
-type GraphVertex struct {
+type GraphVertexWithLabel struct {
 	Label int
 	Edges []GraphVertex
 }
 
-type Edge struct {
-	From int
-	To int
-}
-
-func CloneGraph(graph GraphVertex)GraphVertex {
+func CloneGraph(graph *GraphVertexWithLabel) *GraphVertexWithLabel {
 	// TODO - Add your code here
 	return nil
 }

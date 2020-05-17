@@ -12,7 +12,7 @@ import (
 	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func TestInorderTraversal(t *testing.T) {
+func TestInorderTraversalWithParent(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "tree_with_parent_inorder.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
@@ -42,7 +42,7 @@ func TestInorderTraversal(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := InorderTraversal(tc.Tree)
+			result := InorderTraversalWithParent(tc.Tree)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

@@ -11,7 +11,7 @@ import (
 	. "github.com/stefantds/go-epi-judge/epi"
 )
 
-func TestMultiply(t *testing.T) {
+func TestPrimitiveMultiply(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "primitive_multiply.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
@@ -43,7 +43,7 @@ func TestMultiply(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := Multiply(tc.X, tc.Y)
+			result := PrimitiveMultiply(tc.X, tc.Y)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

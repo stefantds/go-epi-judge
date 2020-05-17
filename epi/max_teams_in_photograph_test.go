@@ -20,7 +20,7 @@ func TestFindLargestNumberTeams(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Graph          []GraphVertex
+		Graph          []GraphVertexMaxDist
 		ExpectedResult int
 		Details        string
 	}

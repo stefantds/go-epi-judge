@@ -20,8 +20,8 @@ func TestCloneGraph(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Graph          GraphVertex
-		ExpectedResult GraphVertex
+		Graph          GraphVertexWithLabel
+		ExpectedResult GraphVertexWithLabel
 		Details        string
 	}
 

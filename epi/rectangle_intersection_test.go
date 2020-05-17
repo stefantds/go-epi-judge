@@ -20,9 +20,9 @@ func TestIntersectRectangle(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		R1             Rect
-		R2             Rect
-		ExpectedResult Rect
+		R1             XYRect
+		R2             XYRect
+		ExpectedResult XYRect
 		Details        string
 	}
 

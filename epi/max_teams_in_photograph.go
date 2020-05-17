@@ -1,15 +1,11 @@
 package epi
 
-type GraphVertex struct {
-	Edges []GraphVertex
+type GraphVertexMaxDist struct {
+	Edges       []GraphVertex
+	MaxDistance int
 }
 
-type Edge struct {
-	From int
-	To int
-}
-
-func FindLargestNumberTeams(graph []GraphVertex)int {
+func FindLargestNumberTeams(graph []GraphVertexMaxDist) int {
 	// TODO - Add your code here
 	return 0
 }

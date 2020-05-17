@@ -10,7 +10,6 @@ import (
 
 	. "github.com/stefantds/go-epi-judge/epi"
 	"github.com/stefantds/go-epi-judge/tree"
-	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestExteriorBinaryTree(t *testing.T) {
@@ -22,9 +21,9 @@ func TestExteriorBinaryTree(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Tree tree.BinaryTreeNodeDecoder
+		Tree           tree.BinaryTreeNodeDecoder
 		ExpectedResult []*tree.BinaryTreeNode
-		Details string
+		Details        string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -38,7 +37,7 @@ func TestExteriorBinaryTree(t *testing.T) {
 			&tc.Tree,
 			&tc.ExpectedResult,
 			&tc.Details,
-			); err != nil {
+		); err != nil {
 			t.Fatal(err)
 		}
 

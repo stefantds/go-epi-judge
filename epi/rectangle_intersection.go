@@ -1,13 +1,13 @@
 package epi
 
-type Rect struct {
-	X int
-	Y int
-	Width int
+type XYRect struct {
+	X      int
+	Y      int
+	Width  int
 	Height int
 }
 
-func IntersectRectangle(r1 Rect, r2 Rect)Rect {
+func IntersectRectangle(r1 XYRect, r2 XYRect) *XYRect {
 	// TODO - Add your code here
 	return nil
 }

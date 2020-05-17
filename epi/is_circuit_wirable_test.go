@@ -20,7 +20,7 @@ func TestIsAnyPlacementFeasible(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Graph          []GraphVertex
+		Graph          []GraphVertexD
 		ExpectedResult bool
 		Details        string
 	}

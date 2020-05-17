@@ -20,8 +20,8 @@ func TestUnionOfIntervals(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Intervals      []Interval
-		ExpectedResult []Interval
+		Intervals      []IntervalWithEnds
+		ExpectedResult []IntervalWithEnds
 		Details        string
 	}
 

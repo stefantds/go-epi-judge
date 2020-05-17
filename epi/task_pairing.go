@@ -5,7 +5,7 @@ type PairedTasks struct {
 	Task2 int
 }
 
-func OptimumTaskAssignment(taskDurations []int)[]PairedTasks {
+func OptimumTaskAssignment(taskDurations []int) []PairedTasks {
 	// TODO - Add your code here
 	return nil
 }

@@ -21,9 +21,9 @@ func TestLca(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Node0          *tree.BinaryTree
-		Node1          *tree.BinaryTree
-		ExpectedResult *tree.BinaryTree
+		Node0          tree.BinaryTreeDecoder
+		Node1          tree.BinaryTreeDecoder
+		ExpectedResult tree.BinaryTreeDecoder
 		Details        string
 	}
 
@@ -44,7 +44,7 @@ func TestLca(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := Lca(tc.Node0, tc.Node1)
+			result := LCAWithParent(tc.Node0.Value, tc.Node1.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

@@ -44,7 +44,7 @@ func TestLca(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := Lca(tc.Node0, tc.Node1)
+			result := LCA(tc.Node0, tc.Node1)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

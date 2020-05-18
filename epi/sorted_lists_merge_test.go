@@ -44,9 +44,9 @@ func TestMergeTwoSortedLists(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := MergeTwoSortedLists(tc.L1.List, tc.L2.List)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			result := MergeTwoSortedLists(tc.L1.Value, tc.L2.Value)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}

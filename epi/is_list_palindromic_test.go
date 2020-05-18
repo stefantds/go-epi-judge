@@ -42,7 +42,7 @@ func TestIsLinkedListAPalindrome(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := IsLinkedListAPalindrome(tc.L.List)
+			result := IsLinkedListAPalindrome(tc.L.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

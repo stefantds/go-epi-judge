@@ -44,7 +44,7 @@ func TestAddTwoNumbers(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := AddTwoNumbers(tc.L1.List, tc.L2.List)
+			result := AddTwoNumbers(tc.L1.Value, tc.L2.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

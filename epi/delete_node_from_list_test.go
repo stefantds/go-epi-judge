@@ -44,7 +44,7 @@ func TestDeletionFromList(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			DeletionFromList(tc.NodeToDelete.List)
+			DeletionFromList(tc.NodeToDelete.Value)
 			err := checkDeletionFromList()
 			if err != nil {
 				t.Error(err)

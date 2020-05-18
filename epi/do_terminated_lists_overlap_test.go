@@ -44,9 +44,9 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := OverlappingNoCycleLists(tc.L0.List, tc.L1.List)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			result := OverlappingNoCycleLists(tc.L0.Value, tc.L1.Value)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}

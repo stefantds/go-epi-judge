@@ -46,7 +46,7 @@ func TestInsertAfter(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			InsertAfter(tc.Node.List, tc.NewNode.List)
+			InsertAfter(tc.Node.Value, tc.NewNode.Value)
 			err := checkInsertAfter()
 			if err != nil {
 				t.Error(err)

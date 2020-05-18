@@ -44,7 +44,7 @@ func TestDeleteList(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			DeleteList(tc.ANode.List)
+			DeleteList(tc.ANode.Value)
 			err := checkDeleteList()
 			if err != nil {
 				t.Error(err)

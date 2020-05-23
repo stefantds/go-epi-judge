@@ -27,7 +27,7 @@ func TestConstructRightSibling(t *testing.T) {
 		Details        string
 	}
 
-	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
+	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
 	if err != nil {
 		t.Fatalf("could not parse file %s: %s", testFileName, err)
 	}

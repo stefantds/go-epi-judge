@@ -3,17 +3,13 @@ package epi_test
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
 )
-
-func checkRotateMatrix() error {
-	//TODO
-	return nil
-}
 
 func TestRotateMatrix(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "matrix_rotation.tsv"
@@ -24,8 +20,9 @@ func TestRotateMatrix(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		SquareMatrix [][]int
-		Details      string
+		SquareMatrix   [][]int
+		ExpectedResult [][]int
+		Details        string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -37,6 +34,7 @@ func TestRotateMatrix(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.SquareMatrix,
+			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
@@ -44,9 +42,8 @@ func TestRotateMatrix(t *testing.T) {
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			RotateMatrix(tc.SquareMatrix)
-			err := checkRotateMatrix()
-			if err != nil {
-				t.Error(err)
+			if !reflect.DeepEqual(tc.SquareMatrix, tc.ExpectedResult) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, tc.SquareMatrix)
 			}
 		})
 	}

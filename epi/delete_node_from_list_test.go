@@ -3,6 +3,7 @@ package epi_test
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -10,11 +11,6 @@ import (
 	. "github.com/stefantds/go-epi-judge/epi"
 	"github.com/stefantds/go-epi-judge/list"
 )
-
-func checkDeletionFromList() error {
-	//TODO
-	return nil
-}
 
 func TestDeletionFromList(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "delete_node_from_list.tsv"
@@ -25,8 +21,10 @@ func TestDeletionFromList(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		NodeToDelete list.ListNodeDecoder
-		Details      string
+		List           list.ListNodeDecoder
+		NodeIdx        int
+		ExpectedResult list.ListNodeDecoder
+		Details        string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -37,21 +35,40 @@ func TestDeletionFromList(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.NodeToDelete,
+			&tc.List,
+			&tc.NodeIdx,
+			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			DeletionFromList(tc.NodeToDelete.Value)
-			err := checkDeletionFromList()
-			if err != nil {
-				t.Error(err)
+			result := deletionFromListWrapper(tc.List.Value, tc.NodeIdx)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func deletionFromListWrapper(head *list.ListNode, nodeIdx int) *list.ListNode {
+	nodeToDelete := head
+
+	if nodeToDelete == nil {
+		panic("list is empty")
+	}
+	for i := nodeIdx; i > 0; i-- {
+		if nodeToDelete.Next == nil {
+			panic("can't delete last node")
+		}
+
+		nodeToDelete = nodeToDelete.Next
+	}
+
+	DeletionFromList(nodeToDelete)
+	return head
 }

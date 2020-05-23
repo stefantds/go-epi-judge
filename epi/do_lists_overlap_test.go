@@ -3,12 +3,11 @@ package epi_test
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
+	// . "github.com/stefantds/go-epi-judge/epi"
 	"github.com/stefantds/go-epi-judge/list"
 )
 
@@ -21,10 +20,12 @@ func TestOverlappingLists(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L0             list.ListNodeDecoder
-		L1             list.ListNodeDecoder
-		ExpectedResult list.ListNodeDecoder
-		Details        string
+		L0      list.ListNodeDecoder
+		L1      list.ListNodeDecoder
+		Common  list.ListNodeDecoder
+		Cycle0  int
+		Cycle1  int
+		Details string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -37,20 +38,26 @@ func TestOverlappingLists(t *testing.T) {
 		if err := parser.Scan(
 			&tc.L0,
 			&tc.L1,
-			&tc.ExpectedResult,
+			&tc.Common,
+			&tc.Cycle0,
+			&tc.Cycle1,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := OverlappingLists(tc.L0.Value, tc.L1.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+			if err := checkOverlappingLists(tc.L0.Value, tc.L1.Value, tc.Common.Value, tc.Cycle0, tc.Cycle1); err != nil {
+				t.Error(err)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func checkOverlappingLists(l0 *list.ListNode, l1 *list.ListNode, common *list.ListNode, cycle0 int, cycle1 int) error {
+	// TODO
+	return nil
 }

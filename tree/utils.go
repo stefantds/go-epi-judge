@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+
+	"github.com/stefantds/go-epi-judge/stack"
 )
 
 type TreeLike interface {
@@ -55,4 +57,37 @@ func binaryTreeToString(tree TreeLike) (string, error) {
 
 	fmt.Fprint(&buf, "]")
 	return buf.String(), nil
+}
+
+func FindNode(startNode TreeLike, val int) TreeLike {
+	s := make(stack.Stack, 0)
+	s = s.Push(startNode)
+
+	var node interface{}
+	for len(s) > 0 {
+		s, node = s.Pop()
+
+		treeNode := node.(TreeLike)
+		if treeNode == nil || reflect.ValueOf(treeNode).IsNil() {
+			continue
+		}
+
+		if treeNode.GetData() == val {
+			return treeNode
+		}
+
+		s = s.Push(treeNode.GetLeft())
+		s = s.Push(treeNode.GetRight())
+	}
+
+	return nil
+}
+
+func MustFindNode(startNode TreeLike, val int) TreeLike {
+	n := FindNode(startNode, val)
+
+	if n == nil {
+		panic(fmt.Errorf("didn't find the node with value %d in the tree", val))
+	}
+	return n
 }

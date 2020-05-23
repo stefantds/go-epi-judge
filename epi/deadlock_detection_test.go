@@ -20,7 +20,8 @@ func TestIsDeadlocked(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Graph          []GraphVertex
+		NumVertices    int
+		Edges          [][]int
 		ExpectedResult bool
 		Details        string
 	}
@@ -33,7 +34,8 @@ func TestIsDeadlocked(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Graph,
+			&tc.NumVertices,
+			&tc.Edges,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -41,7 +43,7 @@ func TestIsDeadlocked(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := IsDeadlocked(tc.Graph)
+			result := IsDeadlocked(newGraph(tc.NumVertices, tc.Edges))
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -50,4 +52,20 @@ func TestIsDeadlocked(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func newGraph(numVertices int, edges [][]int) []GraphVertex {
+	result := make([]GraphVertex, numVertices)
+
+	for _, edge := range edges {
+		from := edge[0]
+		to := edge[1]
+
+		if from < 0 || from > numVertices-1 || to < 0 || to > numVertices-1 {
+			panic(fmt.Errorf("vertex out of bound: %v", edge))
+		}
+		result[from].Edges = append(result[from].Edges, &result[to])
+	}
+
+	return result
 }

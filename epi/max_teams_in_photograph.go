@@ -1,7 +1,7 @@
 package epi
 
 type GraphVertexMaxDist struct {
-	Edges       []GraphVertex
+	Edges       []GraphVertexMaxDist
 	MaxDistance int
 }
 

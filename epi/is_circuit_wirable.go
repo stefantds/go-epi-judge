@@ -2,7 +2,7 @@ package epi
 
 type GraphVertexD struct {
 	D     int
-	Edges []GraphVertex
+	Edges []GraphVertexD
 }
 
 func IsAnyPlacementFeasible(graph []GraphVertexD) bool {

@@ -1,9 +1,11 @@
 package epi
 
-import (
-	"github.com/stefantds/go-epi-judge/tree"
-)
+type BinaryTreeNodeWithNext struct {
+	Data        interface{}
+	Left, Right *BinaryTreeNodeWithNext
+	Next        *BinaryTreeNodeWithNext
+}
 
-func ConstructRightSibling(tree *tree.BinaryTreeNode) {
+func ConstructRightSibling(tree *BinaryTreeNodeWithNext) {
 	// TODO - Add your code here
 }

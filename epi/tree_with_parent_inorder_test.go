@@ -21,7 +21,7 @@ func TestInorderTraversalWithParent(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Tree           *tree.BinaryTree
+		Tree           tree.BinaryTreeDecoder
 		ExpectedResult []int
 		Details        string
 	}
@@ -42,7 +42,7 @@ func TestInorderTraversalWithParent(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := InorderTraversalWithParent(tc.Tree)
+			result := InorderTraversalWithParent(tc.Tree.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}

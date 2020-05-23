@@ -1,6 +1,7 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"reflect"
@@ -21,9 +22,10 @@ func TestLCAWithParent(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Node0          tree.BinaryTreeDecoder
-		Node1          tree.BinaryTreeDecoder
-		ExpectedResult tree.BinaryTreeDecoder
+		Tree           tree.BinaryTreeDecoder
+		Key0           int
+		Key1           int
+		ExpectedResult int
 		Details        string
 	}
 
@@ -35,8 +37,9 @@ func TestLCAWithParent(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Node0,
-			&tc.Node1,
+			&tc.Tree,
+			&tc.Key0,
+			&tc.Key1,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -44,7 +47,10 @@ func TestLCAWithParent(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := LCAWithParent(tc.Node0.Value, tc.Node1.Value)
+			result, err := lcaWithParentWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -53,4 +59,17 @@ func TestLCAWithParent(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func lcaWithParentWrapper(inputTree *tree.BinaryTree, key0 int, key1 int) (int, error) {
+	node0 := tree.MustFindNode(inputTree, key0)
+	node1 := tree.MustFindNode(inputTree, key1)
+
+	result := LCAWithParent(node0.(*tree.BinaryTree), node1.(*tree.BinaryTree))
+
+	if result == nil {
+		return 0, errors.New("result can not be null")
+	}
+
+	return result.Data.(int), nil
 }

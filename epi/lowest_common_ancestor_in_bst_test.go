@@ -1,6 +1,7 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"reflect"
@@ -22,9 +23,9 @@ func TestFindLca(t *testing.T) {
 
 	type TestCase struct {
 		Tree           tree.BSTNodeDecoder
-		S              tree.BSTNodeDecoder
-		B              tree.BSTNodeDecoder
-		ExpectedResult tree.BSTNodeDecoder
+		Key0           int
+		Key1           int
+		ExpectedResult int
 		Details        string
 	}
 
@@ -37,8 +38,8 @@ func TestFindLca(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.Tree,
-			&tc.S,
-			&tc.B,
+			&tc.Key0,
+			&tc.Key1,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -46,13 +47,29 @@ func TestFindLca(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindLca(tc.Tree.Value, tc.S.Value, tc.B.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+			result, err := findLCAWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func findLCAWrapper(inputTree *tree.BSTNode, key0 int, key1 int) (int, error) {
+	node0 := tree.MustFindNode(inputTree, key0).(*tree.BSTNode)
+	node1 := tree.MustFindNode(inputTree, key1).(*tree.BSTNode)
+
+	result := FindLCA(inputTree, node0, node1)
+
+	if result == nil {
+		return 0, errors.New("result can not be null")
+	}
+
+	return result.Data.(int), nil
 }

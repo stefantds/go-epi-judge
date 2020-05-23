@@ -3,17 +3,13 @@ package epi_test
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
 )
-
-func checkMergeTwoSortedArrays() error {
-	//TODO
-	return nil
-}
 
 func TestMergeTwoSortedArrays(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "two_sorted_arrays_merge.tsv"
@@ -24,11 +20,12 @@ func TestMergeTwoSortedArrays(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		A       []int
-		M       int
-		B       []int
-		N       int
-		Details string
+		A              []int
+		M              int
+		B              []int
+		N              int
+		ExpectedResult []int
+		Details        string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -43,20 +40,25 @@ func TestMergeTwoSortedArrays(t *testing.T) {
 			&tc.M,
 			&tc.B,
 			&tc.N,
+			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			MergeTwoSortedArrays(tc.A, tc.M, tc.B, tc.N)
-			err := checkMergeTwoSortedArrays()
-			if err != nil {
-				t.Error(err)
+			result := mergeTwoSortedArraysWrapper(tc.A, tc.M, tc.B, tc.N)
+			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func mergeTwoSortedArraysWrapper(a []int, m int, b []int, n int) []int {
+	MergeTwoSortedArrays(a, m, b, n)
+	return a
 }

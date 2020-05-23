@@ -24,9 +24,10 @@ func TestApplyPermutation(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Perm    []int
-		A       []int
-		Details string
+		Perm           []int
+		A              []int
+		ExpectedResult []int
+		Details        string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -39,6 +40,7 @@ func TestApplyPermutation(t *testing.T) {
 		if err := parser.Scan(
 			&tc.Perm,
 			&tc.A,
+			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)

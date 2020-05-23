@@ -3,17 +3,13 @@ package epi_test
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
 )
-
-func checkRookAttack() error {
-	//TODO
-	return nil
-}
 
 func TestRookAttack(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "rook_attack.tsv"
@@ -24,8 +20,9 @@ func TestRookAttack(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		A       [][]int
-		Details string
+		A              [][]int
+		ExpectedResult [][]int
+		Details        string
 	}
 
 	parser, err := csv.NewParser(file, &csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -37,6 +34,7 @@ func TestRookAttack(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.A,
+			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
@@ -44,9 +42,8 @@ func TestRookAttack(t *testing.T) {
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			RookAttack(tc.A)
-			err := checkRookAttack()
-			if err != nil {
-				t.Error(err)
+			if !reflect.DeepEqual(tc.A, tc.ExpectedResult) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, tc.A)
 			}
 		})
 	}

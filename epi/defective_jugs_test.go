@@ -20,7 +20,7 @@ func TestCheckFeasible(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Jugs           []Jug
+		Jugs           [][]int
 		L              int
 		H              int
 		ExpectedResult bool
@@ -45,7 +45,7 @@ func TestCheckFeasible(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := CheckFeasible(tc.Jugs, tc.L, tc.H)
+			result := CheckFeasible(buildJugs(tc.Jugs), tc.L, tc.H)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -54,4 +54,17 @@ func TestCheckFeasible(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func buildJugs(rawJugs [][]int) []Jug {
+	result := make([]Jug, len(rawJugs))
+
+	for i, jug := range rawJugs {
+		result[i] = Jug{
+			Low:  jug[0],
+			High: jug[1],
+		}
+	}
+
+	return result
 }

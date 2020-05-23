@@ -1,6 +1,7 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"reflect"
@@ -12,7 +13,7 @@ import (
 	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func TestLca(t *testing.T) {
+func TestLCAClose(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "lowest_common_ancestor.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
@@ -21,9 +22,10 @@ func TestLca(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Node0          *tree.BinaryTree
-		Node1          *tree.BinaryTree
-		ExpectedResult *tree.BinaryTree
+		Tree           tree.BinaryTreeDecoder
+		Key0           int
+		Key1           int
+		ExpectedResult int
 		Details        string
 	}
 
@@ -35,8 +37,9 @@ func TestLca(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Node0,
-			&tc.Node1,
+			&tc.Tree,
+			&tc.Key0,
+			&tc.Key1,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -44,7 +47,10 @@ func TestLca(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := LCA(tc.Node0, tc.Node1)
+			result, err := lcaCloseWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -53,4 +59,17 @@ func TestLca(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func lcaCloseWrapper(inputTree *tree.BinaryTree, key0 int, key1 int) (int, error) {
+	node0 := tree.MustFindNode(inputTree, key0).(*tree.BinaryTree)
+	node1 := tree.MustFindNode(inputTree, key1).(*tree.BinaryTree)
+
+	result := LCAClose(node0, node1)
+
+	if result == nil {
+		return 0, errors.New("result can not be null")
+	}
+
+	return result.Data.(int), nil
 }

@@ -1,7 +1,7 @@
 package epi
 
 type GraphVertex struct {
-	Edges []GraphVertex
+	Edges []*GraphVertex
 }
 
 func IsDeadlocked(graph []GraphVertex) bool {

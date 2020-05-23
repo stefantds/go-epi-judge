@@ -21,8 +21,9 @@ func TestFindSuccessor(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Node           *tree.BinaryTree
-		ExpectedResult *tree.BinaryTree
+		Tree           tree.BinaryTreeDecoder
+		NodeIdx        int
+		ExpectedResult int
 		Details        string
 	}
 
@@ -34,7 +35,8 @@ func TestFindSuccessor(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Node,
+			&tc.Tree,
+			&tc.NodeIdx,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -42,7 +44,7 @@ func TestFindSuccessor(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindSuccessor(tc.Node)
+			result := findSuccessorWrapper(tc.Tree.Value, tc.NodeIdx)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -51,4 +53,16 @@ func TestFindSuccessor(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
+}
+
+func findSuccessorWrapper(inputTree *tree.BinaryTree, nodeIdx int) int {
+	n := tree.MustFindNode(inputTree, nodeIdx).(*tree.BinaryTree)
+
+	result := FindSuccessor(n)
+
+	if result == nil {
+		return -1
+	}
+
+	return result.Data.(int)
 }

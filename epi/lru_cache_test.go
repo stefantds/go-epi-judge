@@ -40,8 +40,7 @@ func TestLRUCache(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := lruCacheWrapper(tc.Operations.Value)
-			if err != nil {
+			if err := lruCacheTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}
 		})
@@ -51,7 +50,7 @@ func TestLRUCache(t *testing.T) {
 	}
 }
 
-func lruCacheWrapper(operations []*LRUCacheOp) error {
+func lruCacheTester(operations []*LRUCacheOp) error {
 	var cache LRUCache
 	for opIdx, o := range operations {
 		switch o.Code {

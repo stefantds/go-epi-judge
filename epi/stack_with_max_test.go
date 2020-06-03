@@ -40,8 +40,7 @@ func TestStackWithMax(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := stackWithMaxWrapper(tc.Operations.Value)
-			if err != nil {
+			if err := stackWithMaxTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}
 		})
@@ -51,7 +50,7 @@ func TestStackWithMax(t *testing.T) {
 	}
 }
 
-func stackWithMaxWrapper(operations []*StackWithMaxOp) error {
+func stackWithMaxTester(operations []*StackWithMaxOp) error {
 	var q StackWithMax
 	for opIdx, o := range operations {
 		switch o.Op {

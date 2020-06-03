@@ -40,8 +40,7 @@ func TestQueueFromStacks(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := queueFromStacksWrapper(tc.Operations.Value)
-			if err != nil {
+			if err := queueFromStacksTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}
 		})
@@ -51,7 +50,7 @@ func TestQueueFromStacks(t *testing.T) {
 	}
 }
 
-func queueFromStacksWrapper(operations []*queueFromStacksOp) error {
+func queueFromStacksTester(operations []*queueFromStacksOp) error {
 	var q QueueFromStacks
 	for opIdx, o := range operations {
 		switch o.Op {

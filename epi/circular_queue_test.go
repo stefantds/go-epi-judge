@@ -40,8 +40,7 @@ func TestCircularQueue(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := circularQueueWrapper(tc.Operations.Value)
-			if err != nil {
+			if err := circularQueueTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}
 		})
@@ -51,7 +50,7 @@ func TestCircularQueue(t *testing.T) {
 	}
 }
 
-func circularQueueWrapper(operations []*QueueOp) error {
+func circularQueueTester(operations []*QueueOp) error {
 	q := NewQueue(1)
 
 	for opIdx, o := range operations {

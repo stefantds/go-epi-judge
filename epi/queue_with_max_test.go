@@ -40,8 +40,7 @@ func TestQueueWithMax(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := queueWithMaxWrapper(tc.Operations.Value)
-			if err != nil {
+			if err := queueWithMaxTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}
 		})
@@ -51,7 +50,7 @@ func TestQueueWithMax(t *testing.T) {
 	}
 }
 
-func queueWithMaxWrapper(operations []*QueueWithMaxOp) error {
+func queueWithMaxTester(operations []*QueueWithMaxOp) error {
 	var q QueueWithMax
 	for opIdx, o := range operations {
 		switch o.Op {

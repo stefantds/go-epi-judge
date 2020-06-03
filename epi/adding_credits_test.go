@@ -40,8 +40,7 @@ func TestClientsCreditsInfo(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := clientsCreditsInfoWrapper(tc.Operations.Value)
-			if err != nil {
+			if err := clientsCreditsInfoTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}
 		})
@@ -51,7 +50,7 @@ func TestClientsCreditsInfo(t *testing.T) {
 	}
 }
 
-func clientsCreditsInfoWrapper(operations []*Operation) error {
+func clientsCreditsInfoTester(operations []*Operation) error {
 	cr := new(ClientsCreditsInfo)
 
 	for opIdx, o := range operations {

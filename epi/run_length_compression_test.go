@@ -40,7 +40,7 @@ func TestRunLengthEncoding(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if err := runLengthEncodingWrapper(tc.Encoded, tc.Decoded); err != nil {
+			if err := runLengthEncodingTester(tc.Encoded, tc.Decoded); err != nil {
 				t.Error(err)
 			}
 		})
@@ -50,7 +50,7 @@ func TestRunLengthEncoding(t *testing.T) {
 	}
 }
 
-func runLengthEncodingWrapper(encoded, decoded string) error {
+func runLengthEncodingTester(encoded, decoded string) error {
 	decodedResult := Decoding(encoded)
 	if decodedResult != decoded {
 		return fmt.Errorf("decoding failed: want %s, have %s", decoded, decodedResult)

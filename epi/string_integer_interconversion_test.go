@@ -3,6 +3,7 @@ package epi_test
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -10,8 +11,8 @@ import (
 	. "github.com/stefantds/go-epi-judge/epi"
 )
 
-func TestFindMissingElement(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "absent_value_array.tsv"
+func TestStringIntegerInterconversion(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "string_integer_interconversion.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -19,8 +20,9 @@ func TestFindMissingElement(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Stream  []int
-		Details string
+		IntValue    int
+		StringValue string
+		Details     string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -31,15 +33,15 @@ func TestFindMissingElement(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Stream,
+			&tc.IntValue,
+			&tc.StringValue,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := findMissingElementWrapper(tc.Stream)
-			if err != nil {
+			if err := stringIntegerInterconversionWrapper(tc.IntValue, tc.StringValue); err != nil {
 				t.Error(err)
 			}
 		})
@@ -49,13 +51,14 @@ func TestFindMissingElement(t *testing.T) {
 	}
 }
 
-func findMissingElementWrapper(stream []int) error {
-	res := FindMissingElement(stream)
+func stringIntegerInterconversionWrapper(x int, s string) error {
+	stringResult := IntToString(x)
+	if y, err := strconv.Atoi(stringResult); err != nil || y != x {
+		return fmt.Errorf("int to string conversion failed: want '%s', have '%s'", s, stringResult)
+	}
 
-	for _, i := range stream {
-		if i == res {
-			return fmt.Errorf("%d appears in stream", res)
-		}
+	if intResult := StringToInt(s); intResult != x {
+		return fmt.Errorf("string to int conversion failed: want %d, have %d", x, intResult)
 	}
 
 	return nil

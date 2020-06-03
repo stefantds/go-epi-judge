@@ -10,8 +10,8 @@ import (
 	. "github.com/stefantds/go-epi-judge/epi"
 )
 
-func TestFindMissingElement(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "absent_value_array.tsv"
+func TestNumCombinationsForFinalScore(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "number_of_score_combinations.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -19,8 +19,10 @@ func TestFindMissingElement(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Stream  []int
-		Details string
+		FinalScore           int
+		IndividualPlayScores []int
+		ExpectedResult       int
+		Details              string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -31,32 +33,22 @@ func TestFindMissingElement(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Stream,
+			&tc.FinalScore,
+			&tc.IndividualPlayScores,
+			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := findMissingElementWrapper(tc.Stream)
-			if err != nil {
-				t.Error(err)
+			result := NumCombinationsForFinalScore(tc.FinalScore, tc.IndividualPlayScores)
+			if result != tc.ExpectedResult {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Errorf("parsing error: %w", err)
 	}
-}
-
-func findMissingElementWrapper(stream []int) error {
-	res := FindMissingElement(stream)
-
-	for _, i := range stream {
-		if i == res {
-			return fmt.Errorf("%d appears in stream", res)
-		}
-	}
-
-	return nil
 }

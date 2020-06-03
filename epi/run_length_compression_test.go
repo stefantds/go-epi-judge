@@ -10,8 +10,8 @@ import (
 	. "github.com/stefantds/go-epi-judge/epi"
 )
 
-func TestFindMissingElement(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "absent_value_array.tsv"
+func TestRunLengthEncoding(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "run_length_compression.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -19,7 +19,8 @@ func TestFindMissingElement(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Stream  []int
+		Encoded string
+		Decoded string
 		Details string
 	}
 
@@ -31,15 +32,15 @@ func TestFindMissingElement(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Stream,
+			&tc.Encoded,
+			&tc.Decoded,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			err := findMissingElementWrapper(tc.Stream)
-			if err != nil {
+			if err := runLengthEncodingWrapper(tc.Encoded, tc.Decoded); err != nil {
 				t.Error(err)
 			}
 		})
@@ -49,13 +50,15 @@ func TestFindMissingElement(t *testing.T) {
 	}
 }
 
-func findMissingElementWrapper(stream []int) error {
-	res := FindMissingElement(stream)
+func runLengthEncodingWrapper(encoded, decoded string) error {
+	decodedResult := Decoding(encoded)
+	if decodedResult != decoded {
+		return fmt.Errorf("decoding failed: want %s, have %s", decoded, decodedResult)
+	}
 
-	for _, i := range stream {
-		if i == res {
-			return fmt.Errorf("%d appears in stream", res)
-		}
+	encodedResult := Encoding(decoded)
+	if encodedResult != encoded {
+		return fmt.Errorf("encoding failed: want %s, have %s", decoded, encodedResult)
 	}
 
 	return nil

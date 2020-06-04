@@ -50,6 +50,6 @@ func TestDivide(t *testing.T) {
 		})
 	}
 	if err = parser.Err(); err != nil {
-		t.Errorf("parsing error: %w", err)
+		t.Fatalf("parsing error: %s", err)
 	}
 }

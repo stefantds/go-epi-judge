@@ -51,3 +51,8 @@ func TestSolveSudoku(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func solveSudokuWrapper(partialAssignment [][]int) error {
+	// TODO
+	return nil
+}

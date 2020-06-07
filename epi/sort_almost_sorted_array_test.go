@@ -54,3 +54,8 @@ func TestSortApproximatelySortedData(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func sortApproximatelySortedDataWrapper(sequence []int, k int) ([]int, error) {
+	// TODO
+	return nil, nil
+}

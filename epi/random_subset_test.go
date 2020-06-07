@@ -53,3 +53,8 @@ func TestRandomSubset(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func randomSubsetWrapper(n int, k int) error {
+	// TODO
+	return nil
+}

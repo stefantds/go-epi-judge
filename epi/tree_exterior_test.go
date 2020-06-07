@@ -52,3 +52,8 @@ func TestExteriorBinaryTree(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func exteriorBinaryTreeWrapper(tree *tree.BinaryTreeNode) ([]int, error) {
+	// TODO
+	return nil, nil
+}

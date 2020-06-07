@@ -53,3 +53,8 @@ func TestReplaceAndRemove(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func replaceAndRemoveWrapper(size int, s []string) ([]string, error) {
+	// TODO
+	return nil, nil
+}

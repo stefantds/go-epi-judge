@@ -53,3 +53,8 @@ func TestSearchFrequentItems(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func searchFrequentItemsWrapper(k int, stream []string) ([]string, error) {
+	// TODO
+	return nil, nil
+}

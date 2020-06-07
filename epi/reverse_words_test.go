@@ -3,17 +3,13 @@ package epi_test
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
 )
-
-func checkReverseWords() error {
-	//TODO
-	return nil
-}
 
 func TestReverseWords(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "reverse_words.tsv"
@@ -24,8 +20,9 @@ func TestReverseWords(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Input   []rune
-		Details string
+		Input          string
+		ExpectedResult string
+		Details        string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -43,14 +40,21 @@ func TestReverseWords(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			ReverseWords(tc.Input)
-			err := checkReverseWords()
-			if err != nil {
-				t.Error(err)
+			result := reverseWordsWrapper(tc.Input)
+			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func reverseWordsWrapper(s string) string {
+	sCopy := []rune(s)
+
+	ReverseWords(sCopy)
+
+	return string(sCopy)
 }

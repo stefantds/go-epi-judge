@@ -54,3 +54,8 @@ func TestFindFirstGreaterThanK(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func findFirstGreaterThanKWrapper(tree *tree.BSTNode, k int) (int, error) {
+	// TODO
+	return 0, nil
+}

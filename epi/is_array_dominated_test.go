@@ -53,3 +53,8 @@ func TestValidPlacementExists(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func validPlacementExistsWrapper(team0 []int, team1 []int, expected01 bool, expected10 bool) error {
+	// TODO
+	return nil
+}

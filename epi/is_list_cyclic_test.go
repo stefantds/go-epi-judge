@@ -52,3 +52,8 @@ func TestHasCycle(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func hasCycleWrapper(head *list.ListNode, cycleIdx int) error {
+	// TODO
+	return nil
+}

@@ -51,3 +51,8 @@ func TestMajoritySearch(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func majoritySearchWrapper(stream []string) (string, error) {
+	// TODO
+	return "", nil
+}

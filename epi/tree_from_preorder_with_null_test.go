@@ -52,3 +52,8 @@ func TestReconstructPreorder(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func reconstructPreorderWrapper(strings []string) (*tree.BinaryTreeNode, error) {
+	// TODO
+	return nil, nil
+}

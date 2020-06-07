@@ -1,13 +1,14 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
-	// . "github.com/stefantds/go-epi-judge/epi"
+	. "github.com/stefantds/go-epi-judge/epi"
 	"github.com/stefantds/go-epi-judge/list"
 )
 
@@ -47,7 +48,7 @@ func TestOverlappingLists(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if err := checkOverlappingLists(tc.L0.Value, tc.L1.Value, tc.Common.Value, tc.Cycle0, tc.Cycle1); err != nil {
+			if err := overlappingListsWrapper(tc.L0.Value, tc.L1.Value, tc.Common.Value, tc.Cycle0, tc.Cycle1); err != nil {
 				t.Error(err)
 			}
 		})
@@ -57,7 +58,86 @@ func TestOverlappingLists(t *testing.T) {
 	}
 }
 
-func checkOverlappingLists(l0 *list.ListNode, l1 *list.ListNode, common *list.ListNode, cycle0 int, cycle1 int) error {
-	// TODO
+func overlappingListsWrapper(l0 *list.ListNode, l1 *list.ListNode, common *list.ListNode, cycle0 int, cycle1 int) error {
+	if common != nil {
+		if l0 == nil {
+			l0 = common
+		} else {
+			it := l0
+			for it.Next != nil {
+				it = it.Next
+			}
+			it.Next = common
+		}
+
+		if l1 == nil {
+			l1 = common
+		} else {
+			it := l1
+			for it.Next != nil {
+				it = it.Next
+			}
+			it.Next = common
+		}
+	}
+
+	if cycle0 != -1 && l0 != nil {
+		last := l0
+		for last.Next != nil {
+			last = last.Next
+		}
+
+		it := l0
+		for ; cycle0 > 0; cycle0-- {
+			if it == nil {
+				panic("invalid input data")
+			}
+			it = it.Next
+		}
+		last.Next = it
+	}
+
+	if cycle1 != -1 && l1 != nil {
+		last := l1
+		for last.Next != nil {
+			last = last.Next
+		}
+
+		it := l1
+		for ; cycle1 > 0; cycle1-- {
+			if it == nil {
+				panic("invalid input data")
+			}
+			it = it.Next
+		}
+		last.Next = it
+	}
+
+	commonNodes := make(map[int]bool)
+	for it := common; it != nil; it = it.Next {
+		if _, ok := commonNodes[it.Data.(int)]; ok {
+			break
+		}
+
+		commonNodes[it.Data.(int)] = true
+	}
+
+	result := OverlappingLists(l0, l1)
+
+	if len(commonNodes) == 0 {
+		if result != nil {
+			return errors.New("invalid result")
+		}
+	} else {
+		if result == nil {
+			return errors.New("invalid result")
+		}
+
+		_, ok := commonNodes[result.Data.(int)]
+		if !ok {
+			return errors.New("invalid result")
+		}
+	}
+
 	return nil
 }

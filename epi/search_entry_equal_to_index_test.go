@@ -51,3 +51,8 @@ func TestSearchEntryEqualToItsIndex(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func searchEntryEqualToItsIndexWrapper(a []int) error {
+	// TODO
+	return nil
+}

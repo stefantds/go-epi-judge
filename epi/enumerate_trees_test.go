@@ -52,3 +52,8 @@ func TestGenerateAllBinaryTrees(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func generateAllBinaryTreesWrapper(numNodes int) ([][]int, error) {
+	// TODO
+	return nil, nil
+}

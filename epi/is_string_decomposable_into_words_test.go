@@ -53,3 +53,8 @@ func TestDecomposeIntoDictionaryWords(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func decomposeIntoDictionaryWordsWrapper(domain string, dictionary map[string]struct{}, decomposable bool) error {
+	// TODO
+	return nil
+}

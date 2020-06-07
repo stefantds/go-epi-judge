@@ -52,3 +52,8 @@ func TestCreateListOfLeaves(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func createListOfLeavesWrapper(tree *tree.BinaryTreeNode) ([]int, error) {
+	// TODO
+	return nil, nil
+}

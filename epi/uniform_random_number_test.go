@@ -53,3 +53,8 @@ func TestUniformRandom(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func uniformRandomWrapper(lowerBound int, upperBound int) error {
+	// TODO
+	return nil
+}

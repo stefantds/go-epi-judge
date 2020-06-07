@@ -21,7 +21,7 @@ func TestIsDeadlocked(t *testing.T) {
 
 	type TestCase struct {
 		NumVertices    int
-		Edges          [][]int
+		Edges          [][2]int
 		ExpectedResult bool
 		Details        string
 	}
@@ -54,7 +54,7 @@ func TestIsDeadlocked(t *testing.T) {
 	}
 }
 
-func newGraph(numVertices int, edges [][]int) []GraphVertex {
+func newGraph(numVertices int, edges [][2]int) []GraphVertex {
 	result := make([]GraphVertex, numVertices)
 
 	for _, edge := range edges {
@@ -68,4 +68,9 @@ func newGraph(numVertices int, edges [][]int) []GraphVertex {
 	}
 
 	return result
+}
+
+func isDeadlockedWrapper(numNodes int, edges [][2]int) (bool, error) {
+	// TODO
+	return false, nil
 }

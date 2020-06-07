@@ -54,3 +54,8 @@ func TestFindKthNodeBinaryTree(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func findKthNodeBinaryTreeWrapper(tree *tree.BinaryTree, k int) (int, error) {
+	// TODO
+	return 0, nil
+}

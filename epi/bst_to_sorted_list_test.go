@@ -52,3 +52,8 @@ func TestBstToDoublyLinkedList(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func bstToDoublyLinkedListWrapper(tree *tree.BSTNode) ([]int, error) {
+	// TODO
+	return nil, nil
+}

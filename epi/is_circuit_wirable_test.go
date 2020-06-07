@@ -51,3 +51,8 @@ func TestIsAnyPlacementFeasible(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func isAnyPlacementFeasibleWrapper(k int, edges [][2]int) (bool, error) {
+	// TODO
+	return false, nil
+}

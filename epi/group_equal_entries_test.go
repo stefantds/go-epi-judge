@@ -1,19 +1,16 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
 )
-
-func checkGroupByAge() error {
-	//TODO
-	return nil
-}
 
 func TestGroupByAge(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "group_equal_entries.tsv"
@@ -43,9 +40,7 @@ func TestGroupByAge(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			GroupByAge(tc.People)
-			err := checkGroupByAge()
-			if err != nil {
+			if err := groupByAgeWrapper(tc.People); err != nil {
 				t.Error(err)
 			}
 		})
@@ -53,4 +48,43 @@ func TestGroupByAge(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func groupByAgeWrapper(people []Person) error {
+	if len(people) == 0 {
+		return nil
+	}
+
+	values := make(map[Person]int)
+	for _, p := range people {
+		values[p] += 1
+	}
+
+	GroupByAge(people)
+
+	newValues := make(map[Person]int)
+	for _, p := range people {
+		newValues[p] += 1
+	}
+
+	if !reflect.DeepEqual(values, newValues) {
+		return errors.New("entries have changed")
+	}
+
+	ages := make(map[int]bool)
+
+	lastAge := people[0].Age
+
+	for _, p := range people {
+		if ok, _ := ages[p.Age]; ok {
+			return errors.New("entries are not grouped by age")
+		}
+
+		if p.Age != lastAge {
+			ages[lastAge] = true
+			lastAge = p.Age
+		}
+	}
+
+	return nil
 }

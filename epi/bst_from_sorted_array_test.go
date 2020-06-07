@@ -52,3 +52,8 @@ func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func buildMinHeightBSTFromSortedArrayWrapper(a []int) (int, error) {
+	// TODO
+	return 0, nil
+}

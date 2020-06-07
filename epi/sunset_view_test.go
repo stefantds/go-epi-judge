@@ -52,3 +52,8 @@ func TestExamineBuildingsWithSunset(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func examineBuildingsWithSunsetWrapper(sequence []int) ([]int, error) {
+	// TODO
+	return nil, nil
+}

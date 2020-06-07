@@ -51,3 +51,8 @@ func TestFindLongestIncreasingSubarray(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func findLongestIncreasingSubarrayWrapper(a []int) (int, error) {
+	// TODO
+	return 0, nil
+}

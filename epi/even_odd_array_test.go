@@ -5,15 +5,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/stefantds/go-epi-judge/utils"
+
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
 )
-
-func checkEvenOdd() error {
-	//TODO
-	return nil
-}
 
 func TestEvenOdd(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "even_odd_array.tsv"
@@ -43,9 +40,7 @@ func TestEvenOdd(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			EvenOdd(tc.A)
-			err := checkEvenOdd()
-			if err != nil {
+			if err := evenOddWrapper(tc.A); err != nil {
 				t.Error(err)
 			}
 		})
@@ -53,4 +48,29 @@ func TestEvenOdd(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func evenOddWrapper(a []int) error {
+	result := make([]int, len(a))
+	copy(result, a)
+
+	EvenOdd(a)
+
+	if err := utils.AssertAllValuesPresent(a, result); err != nil {
+		return err
+	}
+
+	inOdd := false
+
+	for i := 0; i < len(a); i++ {
+		if a[i]%2 == 0 {
+			if inOdd {
+				return fmt.Errorf("even elements appear in odd part")
+			}
+		} else {
+			inOdd = true
+		}
+	}
+
+	return nil
 }

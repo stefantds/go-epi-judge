@@ -54,3 +54,8 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func buildBSTFromSortedListWrapper(l []int) error {
+	// TODO
+	return nil
+}

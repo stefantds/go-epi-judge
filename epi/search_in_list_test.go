@@ -54,3 +54,8 @@ func TestSearchList(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func searchListWrapper(l *list.ListNode, key int) (int, error) {
+	// TODO
+	return 0, nil
+}

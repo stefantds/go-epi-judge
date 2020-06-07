@@ -1,19 +1,20 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"reflect"
+	"sort"
 	"testing"
+
+	"github.com/stefantds/go-epi-judge/utils"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
+	"github.com/stefantds/go-epi-judge/random"
 )
-
-func checkRandomSampling() error {
-	//TODO
-	return nil
-}
 
 func TestRandomSampling(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "offline_sampling.tsv"
@@ -45,9 +46,7 @@ func TestRandomSampling(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			RandomSampling(tc.K, tc.A)
-			err := checkRandomSampling()
-			if err != nil {
+			if err := randomSamplingWrapper(tc.K, tc.A); err != nil {
 				t.Error(err)
 			}
 		})
@@ -55,4 +54,52 @@ func TestRandomSampling(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func randomSamplingWrapper(k int, a []int) error {
+	return random.RunFuncWithRetries(
+		func() bool {
+			return randomSamplingRunner(k, a)
+		},
+		errors.New("the results don't match the expected distribution"),
+	)
+}
+
+func randomSamplingRunner(k int, a []int) bool {
+	const N = 1000000
+
+	results := make([][]int, N)
+
+	for i := 0; i < N; i++ {
+		copyA := make([]int, len(a))
+		copy(copyA, a)
+
+		RandomSampling(k, copyA)
+
+		result := make([]int, k)
+		copy(result, a[0:k])
+		results[i] = result
+	}
+
+	totalPossibleOutcomes := random.BinomialCoefficient(len(a), k)
+
+	sort.Ints(a)
+
+	combinations := make([][]int, totalPossibleOutcomes)
+
+	for i := 0; i < totalPossibleOutcomes; i++ {
+		combinations[i] = random.ComputeCombinationIdx(a, k, i)
+	}
+
+	sequence := make([]int, len(results))
+
+	for i, r := range results {
+		sort.Ints(r)
+		sequence[i] = utils.SliceIndex(
+			len(combinations),
+			func(i int) bool { return reflect.DeepEqual(combinations[i], r) },
+		)
+	}
+
+	return random.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)
 }

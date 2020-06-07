@@ -54,3 +54,8 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func overlappingNoCycleListsWrapper(l0 *list.ListNode, l1 *list.ListNode, common *list.ListNode) error {
+	// TODO
+	return nil
+}

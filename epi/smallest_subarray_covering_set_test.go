@@ -53,3 +53,8 @@ func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func findSmallestSubarrayCoveringSetWrapper(paragraph []string, keywords map[string]struct{}) (int, error) {
+	// TODO
+	return 0, nil
+}

@@ -51,3 +51,8 @@ func TestRotateMatrix(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func rotateMatrixWrapper(squareMatrix [][]int) ([][]int, error) {
+	// TODO
+	return nil, nil
+}

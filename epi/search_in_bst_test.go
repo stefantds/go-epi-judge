@@ -54,3 +54,8 @@ func TestSearchBST(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func searchBSTWrapper(tree *tree.BSTNode, key int) (int, error) {
+	// TODO
+	return 0, nil
+}

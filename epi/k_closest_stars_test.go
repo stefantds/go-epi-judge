@@ -53,3 +53,8 @@ func TestFindClosestKStars(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func findClosestKStarsWrapper(stars []Star, k int) ([]Star, error) {
+	// TODO
+	return nil, nil
+}

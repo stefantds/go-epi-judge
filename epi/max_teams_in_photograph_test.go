@@ -20,7 +20,8 @@ func TestFindLargestNumberTeams(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Graph          []GraphVertexMaxDist
+		K              int
+		Edges          [][2]int
 		ExpectedResult int
 		Details        string
 	}
@@ -33,7 +34,8 @@ func TestFindLargestNumberTeams(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Graph,
+			&tc.K,
+			&tc.Edges,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -41,7 +43,10 @@ func TestFindLargestNumberTeams(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindLargestNumberTeams(tc.Graph)
+			result, err := findLargestNumberTeamsWrapper(tc.K, tc.Edges)
+			if err != nil {
+				t.Error(err)
+			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -50,4 +55,9 @@ func TestFindLargestNumberTeams(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func findLargestNumberTeamsWrapper(k int, edges [][2]int) (int, error) {
+	// TODO
+	return FindLargestNumberTeams(nil), nil
 }

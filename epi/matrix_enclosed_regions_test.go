@@ -75,3 +75,8 @@ func (d *boardDecoder) DecodeRecord(record string) error {
 	d.Value = result
 	return nil
 }
+
+func fillSurroundedRegionsWrapper(board [][]rune) ([][]rune, error) {
+	// TODO
+	return nil, nil
+}

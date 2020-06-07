@@ -51,3 +51,8 @@ func TestDeleteDuplicates(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func deleteDuplicatesWrapper(a []int) ([]int, error) {
+	// TODO
+	return nil, nil
+}

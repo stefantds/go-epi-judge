@@ -52,3 +52,8 @@ func TestOnlineMedian(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func onlineMedianWrapper(sequence []int) ([]float64, error) {
+	// TODO
+	return nil, nil
+}

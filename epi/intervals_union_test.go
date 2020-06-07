@@ -51,3 +51,8 @@ func TestUnionOfIntervals(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func unionIntervalWrapper(intervals []FlatInterval) ([]FlatInterval, error) {
+	// TODO
+	return nil, nil
+}

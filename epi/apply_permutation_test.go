@@ -3,17 +3,13 @@ package epi_test
 import (
 	"fmt"
 	"os"
+	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
 )
-
-func checkApplyPermutation() error {
-	//TODO
-	return nil
-}
 
 func TestApplyPermutation(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "apply_permutation.tsv"
@@ -47,14 +43,18 @@ func TestApplyPermutation(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			ApplyPermutation(tc.Perm, tc.A)
-			err := checkApplyPermutation()
-			if err != nil {
-				t.Error(err)
+			result := applyPermutationWrapper(tc.Perm, tc.A)
+			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func applyPermutationWrapper(perm []int, a []int) []int {
+	ApplyPermutation(perm, a)
+	return a
 }

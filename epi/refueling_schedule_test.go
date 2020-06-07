@@ -53,3 +53,8 @@ func TestFindAmpleCity(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func findAmpleCityWrapper(gallons []int, distances []int) error {
+	// TODO
+	return nil
+}

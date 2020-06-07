@@ -54,3 +54,8 @@ func TestOnlineRandomSample(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func onlineRandomSampleWrapper(stream []int, k int) error {
+	// TODO
+	return nil
+}

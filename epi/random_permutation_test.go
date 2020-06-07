@@ -51,3 +51,8 @@ func TestComputeRandomPermutation(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func computeRandomPermutationWrapper(n int) error {
+	// TODO
+	return nil
+}

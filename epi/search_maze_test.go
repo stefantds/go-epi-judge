@@ -55,3 +55,8 @@ func TestSearchMaze(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func searchMazeWrapper(maze [][]int, s Coordinate, e Coordinate) (bool, error) {
+	// TODO
+	return false, nil
+}

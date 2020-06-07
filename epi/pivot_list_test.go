@@ -54,3 +54,8 @@ func TestListPivoting(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func listPivotingWrapper(l *list.ListNode, x int) error {
+	// TODO
+	return nil
+}

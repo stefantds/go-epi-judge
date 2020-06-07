@@ -84,3 +84,8 @@ func (d *imageDecoder) DecodeRecord(record string) error {
 	d.Value = result
 	return nil
 }
+
+func flipColorWrapper(x int, y int, image [][]int) ([][]int, error) {
+	// TODO
+	return nil, nil
+}

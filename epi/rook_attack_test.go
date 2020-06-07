@@ -51,3 +51,8 @@ func TestRookAttack(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func rookAttackWrapper(a [][]int) ([][]int, error) {
+	// TODO
+	return nil, nil
+}

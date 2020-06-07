@@ -53,3 +53,8 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
+
+func findKthLargestUnknownLengthWrapper(stream []int, k int) (int, error) {
+	// TODO
+	return 0, nil
+}

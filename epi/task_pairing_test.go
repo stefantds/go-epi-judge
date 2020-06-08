@@ -21,7 +21,7 @@ func TestOptimumTaskAssignment(t *testing.T) {
 
 	type TestCase struct {
 		TaskDurations  []int
-		ExpectedResult []PairedTasks
+		ExpectedResult [][2]int
 		Details        string
 	}
 
@@ -42,12 +42,24 @@ func TestOptimumTaskAssignment(t *testing.T) {
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := OptimumTaskAssignment(tc.TaskDurations)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			expectedResult := decodePairedTasks(tc.ExpectedResult)
+			if !reflect.DeepEqual(result, expectedResult) {
+				t.Errorf("expected %v, got %v", expectedResult, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func decodePairedTasks(pairs [][2]int) []PairedTasks {
+	result := make([]PairedTasks, len(pairs))
+
+	for i, n := range pairs {
+		result[i].Task1 = n[0]
+		result[i].Task2 = n[1]
+	}
+
+	return result
 }

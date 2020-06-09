@@ -4,15 +4,21 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"math"
 	"reflect"
 
 	"github.com/stefantds/go-epi-judge/stack"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 type TreeLike interface {
 	GetData() interface{}
 	GetLeft() TreeLike
 	GetRight() TreeLike
+}
+
+func isNil(tree TreeLike) bool {
+	return tree == nil || reflect.ValueOf(tree).IsNil()
 }
 
 func binaryTreeToString(tree TreeLike) (string, error) {
@@ -68,7 +74,7 @@ func FindNode(startNode TreeLike, val int) TreeLike {
 		s, node = s.Pop()
 
 		treeNode := node.(TreeLike)
-		if treeNode == nil || reflect.ValueOf(treeNode).IsNil() {
+		if isNil(treeNode) {
 			continue
 		}
 
@@ -90,4 +96,169 @@ func MustFindNode(startNode TreeLike, val int) TreeLike {
 		panic(fmt.Errorf("didn't find the node with value %d in the tree", val))
 	}
 	return n
+}
+
+func GenerateInorder(tree TreeLike) []int {
+	result := make([]int, 0)
+
+	if tree == nil {
+		return result
+	}
+
+	s := make(stack.Stack, 0)
+	s = s.Push(tree)
+
+	initial := true
+	var node interface{}
+
+	for !s.IsEmpty() {
+		s, node = s.Pop()
+		treeNode := node.(TreeLike)
+
+		if initial {
+			initial = false
+		} else {
+			result = append(result, treeNode.GetData().(int))
+			treeNode = treeNode.GetRight()
+		}
+
+		for !isNil(treeNode) {
+			s = s.Push(treeNode)
+			treeNode = treeNode.GetLeft()
+		}
+	}
+
+	return result
+}
+
+type TreePath struct {
+	prev   *TreePath
+	toLeft bool
+}
+
+func (t *TreePath) WithLeft() *TreePath {
+	return &TreePath{
+		prev:   t,
+		toLeft: true,
+	}
+}
+
+func (t *TreePath) WithRight() *TreePath {
+	return &TreePath{
+		prev:   t,
+		toLeft: false,
+	}
+}
+
+type IntRange struct {
+	Low  int
+	High int
+}
+
+func (r *IntRange) contains(value int) bool {
+	return r.Low <= value && value <= r.High
+}
+
+func (r *IntRange) limitFromBottom(newLow int) *IntRange {
+	if newLow > r.Low {
+		return &IntRange{newLow, r.High}
+	} else {
+		return r
+	}
+}
+
+func (r *IntRange) limitFromTop(newHigh int) *IntRange {
+	if newHigh < r.High {
+		return &IntRange{r.Low, newHigh}
+	} else {
+		return r
+	}
+}
+
+func (r IntRange) String() string {
+	return fmt.Sprintf("range between %d and %d", r.Low, r.High)
+}
+
+func AssertTreeIsBST(tree TreeLike) error {
+	type treePathIntRange struct {
+		Tree  TreeLike
+		Path  *TreePath
+		Range *IntRange
+	}
+
+	s := make(stack.Stack, 0)
+	s = s.Push(treePathIntRange{
+		Tree: tree,
+		Path: &TreePath{},
+		Range: &IntRange{
+			math.MinInt64,
+			math.MaxInt64,
+		},
+	})
+
+	var n interface{}
+
+	for !s.IsEmpty() {
+		s, n = s.Pop()
+		node := n.(treePathIntRange)
+		if isNil(node.Tree) {
+			continue
+		}
+
+		value := node.Tree.GetData().(int)
+
+		if !node.Range.contains(value) {
+			return fmt.Errorf(
+				"binary search tree constraints violation: expected value in %s; got %d",
+				node.Range,
+				value,
+			)
+		}
+		s = s.Push(treePathIntRange{
+			Tree:  node.Tree.GetLeft(),
+			Path:  node.Path.WithLeft(),
+			Range: node.Range.limitFromTop(value),
+		})
+		s = s.Push(treePathIntRange{
+			Tree:  node.Tree.GetRight(),
+			Path:  node.Path.WithRight(),
+			Range: node.Range.limitFromBottom(value),
+		})
+	}
+
+	return nil
+}
+
+func BinaryTreeHeight(tree TreeLike) int {
+	type treeWithHeight struct {
+		Tree   TreeLike
+		Height int
+	}
+
+	s := make(stack.Stack, 0)
+	s = s.Push(treeWithHeight{tree, 1})
+
+	height := 0
+	var n interface{}
+
+	for !s.IsEmpty() {
+		s, n = s.Pop()
+		node := n.(treeWithHeight)
+
+		if isNil(node.Tree) {
+			continue
+		}
+
+		height = utils.Max(height, node.Height)
+		s = s.Push(treeWithHeight{
+			Tree:   node.Tree.GetLeft(),
+			Height: node.Height + 1,
+		})
+		s = s.Push(treeWithHeight{
+			Tree:   node.Tree.GetRight(),
+			Height: node.Height + 1,
+		})
+	}
+
+	return height
 }

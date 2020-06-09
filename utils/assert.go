@@ -4,11 +4,11 @@ import "fmt"
 
 func AssertAllValuesPresent(reference []int, result []int) error {
 	referenceSet := make(map[int]int)
-	for x := range reference {
+	for _, x := range reference {
 		referenceSet[x] = referenceSet[x] + 1
 	}
 
-	for x := range result {
+	for _, x := range result {
 		referenceSet[x] = referenceSet[x] - 1
 	}
 
@@ -19,21 +19,22 @@ func AssertAllValuesPresent(reference []int, result []int) error {
 		if count < 0 {
 			for count < 0 {
 				excessItems = append(excessItems, x)
-				count -= 1
+				count++
 			}
 		} else if count > 0 {
 			for count > 0 {
 				missingItems = append(missingItems, x)
+				count--
 			}
 		}
 	}
 
 	if len(excessItems) > 0 {
-		return fmt.Errorf("value set changed: found excess items %v", excessItems)
+		return fmt.Errorf("found excess items %v", excessItems)
 	}
 
 	if len(missingItems) > 0 {
-		return fmt.Errorf("value set changed: found missing items %v", missingItems)
+		return fmt.Errorf("found missing items %v", missingItems)
 	}
 
 	return nil

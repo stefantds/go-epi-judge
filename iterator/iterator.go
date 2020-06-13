@@ -11,7 +11,7 @@ type Iterator struct {
 }
 
 // HasNext returns true if there are more elements to be returned.
-func HasNext(i *Iterator) bool {
+func (i *Iterator) HasNext() bool {
 	return i.currentIdx < i.Data.Len()
 }
 

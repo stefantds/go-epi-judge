@@ -1,4 +1,4 @@
-package epi_test
+package lowest_common_ancestor_in_bst_test
 
 import (
 	"errors"
@@ -9,12 +9,12 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
+	. "github.com/stefantds/go-epi-judge/epi/lowest_common_ancestor_in_bst"
 	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func TestLCA(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "lowest_common_ancestor.tsv"
+func TestFindLca(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "lowest_common_ancestor_in_bst.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -22,7 +22,7 @@ func TestLCA(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Tree           tree.BinaryTreeDecoder
+		Tree           tree.BSTNodeDecoder
 		Key0           int
 		Key1           int
 		ExpectedResult int
@@ -47,7 +47,7 @@ func TestLCA(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result, err := lcaWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
+			result, err := findLCAWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -61,14 +61,14 @@ func TestLCA(t *testing.T) {
 	}
 }
 
-func lcaWrapper(inputTree *tree.BinaryTree, key0 int, key1 int) (int, error) {
-	node0 := tree.MustFindNode(inputTree, key0).(*tree.BinaryTree)
-	node1 := tree.MustFindNode(inputTree, key1).(*tree.BinaryTree)
+func findLCAWrapper(inputTree *tree.BSTNode, key0 int, key1 int) (int, error) {
+	node0 := tree.MustFindNode(inputTree, key0).(*tree.BSTNode)
+	node1 := tree.MustFindNode(inputTree, key1).(*tree.BSTNode)
 
-	result := LCA(inputTree, node0, node1)
+	result := FindLCA(inputTree, node0, node1)
 
 	if result == nil {
-		return 0, errors.New("result can not be null")
+		return 0, errors.New("result can not be nil")
 	}
 
 	return result.Data.(int), nil

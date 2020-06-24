@@ -1,4 +1,4 @@
-package epi
+package lowest_common_ancestor_in_bst
 
 import (
 	"github.com/stefantds/go-epi-judge/tree"

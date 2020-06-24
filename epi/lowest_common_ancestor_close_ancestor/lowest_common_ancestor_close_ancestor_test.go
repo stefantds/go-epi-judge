@@ -1,4 +1,4 @@
-package epi_test
+package lowest_common_ancestor_close_ancestor_test
 
 import (
 	"errors"
@@ -9,11 +9,11 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
+	. "github.com/stefantds/go-epi-judge/epi/lowest_common_ancestor_close_ancestor"
 	"github.com/stefantds/go-epi-judge/tree"
 )
 
-func TestLCAWithParent(t *testing.T) {
+func TestLCAClose(t *testing.T) {
 	testFileName := testConfig.TestDataFolder + "/" + "lowest_common_ancestor.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
@@ -47,7 +47,7 @@ func TestLCAWithParent(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result, err := lcaWithParentWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
+			result, err := lcaCloseWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -61,14 +61,14 @@ func TestLCAWithParent(t *testing.T) {
 	}
 }
 
-func lcaWithParentWrapper(inputTree *tree.BinaryTree, key0 int, key1 int) (int, error) {
-	node0 := tree.MustFindNode(inputTree, key0)
-	node1 := tree.MustFindNode(inputTree, key1)
+func lcaCloseWrapper(inputTree *tree.BinaryTree, key0 int, key1 int) (int, error) {
+	node0 := tree.MustFindNode(inputTree, key0).(*tree.BinaryTree)
+	node1 := tree.MustFindNode(inputTree, key1).(*tree.BinaryTree)
 
-	result := LCAWithParent(node0.(*tree.BinaryTree), node1.(*tree.BinaryTree))
+	result := LCA(node0, node1)
 
 	if result == nil {
-		return 0, errors.New("result can not be null")
+		return 0, errors.New("result can not be nil")
 	}
 
 	return result.Data.(int), nil

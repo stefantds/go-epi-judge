@@ -1,4 +1,4 @@
-package epi_test
+package sort_almost_sorted_array_test
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
+	. "github.com/stefantds/go-epi-judge/epi/sort_almost_sorted_array"
 	"github.com/stefantds/go-epi-judge/iterator"
 )
 

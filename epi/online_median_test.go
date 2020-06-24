@@ -21,7 +21,7 @@ func TestOnlineMedian(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Sequence       *iterator.Iterator
+		Sequence       []int
 		ExpectedResult []float64
 		Details        string
 	}
@@ -42,7 +42,7 @@ func TestOnlineMedian(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := OnlineMedian(tc.Sequence)
+			result := onlineMedianWrapper(tc.Sequence)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -53,7 +53,7 @@ func TestOnlineMedian(t *testing.T) {
 	}
 }
 
-func onlineMedianWrapper(sequence []int) ([]float64, error) {
-	// TODO
-	return nil, nil
+func onlineMedianWrapper(sequence []int) []float64 {
+	stream := iterator.New(iterator.Ints(sequence))
+	return OnlineMedian(stream)
 }

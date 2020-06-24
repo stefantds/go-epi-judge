@@ -1,14 +1,15 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
+	"github.com/stefantds/go-epi-judge/random"
 )
 
 func TestUniformRandom(t *testing.T) {
@@ -20,10 +21,9 @@ func TestUniformRandom(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		LowerBound     int
-		UpperBound     int
-		ExpectedResult int
-		Details        string
+		LowerBound int
+		UpperBound int
+		Details    string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -36,16 +36,14 @@ func TestUniformRandom(t *testing.T) {
 		if err := parser.Scan(
 			&tc.LowerBound,
 			&tc.UpperBound,
-			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := UniformRandom(tc.LowerBound, tc.UpperBound)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			if err := uniformRandomWrapper(tc.LowerBound, tc.UpperBound); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -55,6 +53,25 @@ func TestUniformRandom(t *testing.T) {
 }
 
 func uniformRandomWrapper(lowerBound int, upperBound int) error {
-	// TODO
-	return nil
+	return random.RunFuncWithRetries(
+		func() bool {
+			return uniformRandomRunner(lowerBound, upperBound)
+		},
+		errors.New("the results don't match the expected distribution"),
+	)
+}
+
+func uniformRandomRunner(lowerBound, upperBound int) bool {
+	const nbRuns = 100000
+	results := make([]int, nbRuns)
+
+	for i := 0; i < nbRuns; i++ {
+		results[i] = UniformRandom(lowerBound, upperBound)
+	}
+
+	sequence := make([]int, nbRuns)
+	for i, result := range results {
+		sequence[i] = result - lowerBound
+	}
+	return random.CheckSequenceIsUniformlyRandom(sequence, upperBound-lowerBound+1, 0.01)
 }

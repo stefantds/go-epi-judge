@@ -1,4 +1,4 @@
-package epi_test
+package matrix_enclosed_regions_test
 
 import (
 	"fmt"
@@ -8,11 +8,11 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
+	. "github.com/stefantds/go-epi-judge/epi/matrix_enclosed_regions"
 )
 
-func TestIsAnyPlacementFeasible(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_circuit_wirable.tsv"
+func TestFillSurroundedRegions(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "matrix_enclosed_regions.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -20,8 +20,8 @@ func TestIsAnyPlacementFeasible(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Graph          []GraphVertexD
-		ExpectedResult bool
+		Board          [][]Color
+		ExpectedResult [][]Color
 		Details        string
 	}
 
@@ -33,7 +33,7 @@ func TestIsAnyPlacementFeasible(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Graph,
+			&tc.Board,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -41,7 +41,7 @@ func TestIsAnyPlacementFeasible(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := IsAnyPlacementFeasible(tc.Graph)
+			result := fillSurroundedRegionsWrapper(tc.Board)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -52,7 +52,7 @@ func TestIsAnyPlacementFeasible(t *testing.T) {
 	}
 }
 
-func isAnyPlacementFeasibleWrapper(k int, edges [][2]int) (bool, error) {
-	// TODO
-	return false, nil
+func fillSurroundedRegionsWrapper(board [][]Color) [][]Color {
+	FillSurroundedRegions(board)
+	return board
 }

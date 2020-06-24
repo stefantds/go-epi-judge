@@ -1,9 +1,11 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -21,8 +23,8 @@ func TestReplaceAndRemove(t *testing.T) {
 
 	type TestCase struct {
 		Size           int
-		S              []rune
-		ExpectedResult int
+		S              []string
+		ExpectedResult []string
 		Details        string
 	}
 
@@ -43,7 +45,10 @@ func TestReplaceAndRemove(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := ReplaceAndRemove(tc.Size, tc.S)
+			result, err := replaceAndRemoveWrapper(tc.Size, tc.S)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -55,6 +60,19 @@ func TestReplaceAndRemove(t *testing.T) {
 }
 
 func replaceAndRemoveWrapper(size int, s []string) ([]string, error) {
-	// TODO
-	return nil, nil
+	allChars := make([]rune, len(s))
+	for i, c := range []rune(strings.Join(s, "")) {
+		allChars[i] = c
+	}
+	resSize := ReplaceAndRemove(size, allChars)
+
+	if resSize >= size {
+		return nil, errors.New("result can't be greater than the original size")
+	}
+	result := make([]string, resSize)
+	for i := 0; i < resSize; i++ {
+		result[i] = string(allChars[i])
+	}
+
+	return result, nil
 }

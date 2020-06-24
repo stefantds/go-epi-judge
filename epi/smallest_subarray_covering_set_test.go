@@ -1,9 +1,9 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -21,8 +21,8 @@ func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
 
 	type TestCase struct {
 		Paragraph      []string
-		Keywords       map[string]interface{}
-		ExpectedResult Subarray
+		Keywords       []string
+		ExpectedLength int
 		Details        string
 	}
 
@@ -36,16 +36,15 @@ func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
 		if err := parser.Scan(
 			&tc.Paragraph,
 			&tc.Keywords,
-			&tc.ExpectedResult,
+			&tc.ExpectedLength,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindSmallestSubarrayCoveringSet(tc.Paragraph, tc.Keywords)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			if err := findSmallestSubarrayCoveringSetWrapper(tc.Paragraph, tc.Keywords, tc.ExpectedLength); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -54,7 +53,34 @@ func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
 	}
 }
 
-func findSmallestSubarrayCoveringSetWrapper(paragraph []string, keywords map[string]struct{}) (int, error) {
-	// TODO
-	return 0, nil
+func findSmallestSubarrayCoveringSetWrapper(paragraph []string, keywords []string, expectedLength int) error {
+	set := make(map[string]struct{}, len(keywords))
+	copySet := make(map[string]struct{}, len(keywords))
+	for _, s := range keywords {
+		set[s] = struct{}{}
+		copySet[s] = struct{}{}
+	}
+
+	result := FindSmallestSubarrayCoveringSet(paragraph, set)
+
+	switch {
+	case result.Start < 0 || result.Start >= len(paragraph):
+		return fmt.Errorf("invalid start index %d", result.Start)
+	case result.End < 0 || result.End >= len(paragraph):
+		return fmt.Errorf("invalid end index %d", result.End)
+	case result.End < result.Start:
+		return fmt.Errorf("invalid result: start %d, end %d", result.Start, result.End)
+	case result.End-result.Start+1 != expectedLength:
+		return fmt.Errorf("expected length %d, got %d", expectedLength, result.End-result.Start+1)
+	}
+
+	for i := result.Start; i <= result.End; i++ {
+		delete(copySet, paragraph[i])
+	}
+
+	if len(copySet) > 0 {
+		return errors.New("not all keywords are in the range")
+	}
+
+	return nil
 }

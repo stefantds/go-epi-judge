@@ -1,9 +1,11 @@
 package epi_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
-	"reflect"
+	"sort"
+	"strings"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -20,7 +22,7 @@ func TestFindClosestKStars(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Stars          []Star
+		Stars          starsDecoder
 		K              int
 		ExpectedResult []float64
 		Details        string
@@ -43,8 +45,8 @@ func TestFindClosestKStars(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindClosestKStars(tc.Stars, tc.K)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			result := FindClosestKStars(tc.Stars.Value, tc.K)
+			if !resultEqualExpected(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
@@ -54,7 +56,40 @@ func TestFindClosestKStars(t *testing.T) {
 	}
 }
 
-func findClosestKStarsWrapper(stars []Star, k int) ([]Star, error) {
-	// TODO
-	return nil, nil
+func resultEqualExpected(result []Star, expected []float64) bool {
+	if len(expected) != len(result) {
+		return false
+	}
+
+	sort.Slice(result, func(i, j int) bool { return result[i].Distance() < result[j].Distance() })
+
+	for i := 0; i < len(result); i++ {
+		if result[i].Distance() != expected[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+type starsDecoder struct {
+	Value []Star
+}
+
+func (d *starsDecoder) DecodeRecord(record string) error {
+	allData := make([][3]float64, 0)
+	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
+		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
+	}
+
+	d.Value = make([]Star, len(allData))
+	for i := 0; i < len(allData); i++ {
+		d.Value[i] = Star{
+			X: allData[i][0],
+			Y: allData[i][1],
+			Z: allData[i][2],
+		}
+	}
+
+	return nil
 }

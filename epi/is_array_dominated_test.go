@@ -1,9 +1,10 @@
 package epi_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
-	"reflect"
+	"strings"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -20,10 +21,11 @@ func TestValidPlacementExists(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Team0          Team
-		Team1          Team
-		ExpectedResult bool
-		Details        string
+		Team0            teamDecoder
+		Team1            teamDecoder
+		ExpectedResult01 bool
+		ExpectedResult10 bool
+		Details          string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -36,16 +38,21 @@ func TestValidPlacementExists(t *testing.T) {
 		if err := parser.Scan(
 			&tc.Team0,
 			&tc.Team1,
-			&tc.ExpectedResult,
+			&tc.ExpectedResult01,
+			&tc.ExpectedResult10,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := ValidPlacementExists(tc.Team0, tc.Team1)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			if err := validPlacementExistsWrapper(
+				tc.Team0.Value,
+				tc.Team1.Value,
+				tc.ExpectedResult01,
+				tc.ExpectedResult10,
+			); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -54,7 +61,35 @@ func TestValidPlacementExists(t *testing.T) {
 	}
 }
 
-func validPlacementExistsWrapper(team0 []int, team1 []int, expected01 bool, expected10 bool) error {
-	// TODO
+func validPlacementExistsWrapper(team0 Team, team1 Team, expected01 bool, expected10 bool) error {
+	result01 := ValidPlacementExists(team0, team1)
+	if result01 != expected01 {
+		return fmt.Errorf("expected %t, got %t", expected01, result01)
+	}
+
+	result10 := ValidPlacementExists(team1, team0)
+	if result10 != expected10 {
+		return fmt.Errorf("expected %t, got %t", expected10, result10)
+	}
+
+	return nil
+}
+
+type teamDecoder struct {
+	Value Team
+}
+
+func (t *teamDecoder) DecodeRecord(record string) error {
+	allData := make([]int, 0)
+	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
+		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
+	}
+
+	players := make([]Player, len(allData))
+	for i, h := range allData {
+		players[i] = Player{h}
+	}
+
+	t.Value = Team{players}
 	return nil
 }

@@ -23,7 +23,7 @@ func TestSearchBST(t *testing.T) {
 	type TestCase struct {
 		Tree           tree.BSTNodeDecoder
 		Key            int
-		ExpectedResult tree.BSTNodeDecoder
+		ExpectedResult int
 		Details        string
 	}
 
@@ -44,7 +44,7 @@ func TestSearchBST(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SearchBST(tc.Tree.Value, tc.Key)
+			result := searchBSTWrapper(tc.Tree.Value, tc.Key)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -55,7 +55,9 @@ func TestSearchBST(t *testing.T) {
 	}
 }
 
-func searchBSTWrapper(tree *tree.BSTNode, key int) (int, error) {
-	// TODO
-	return 0, nil
+func searchBSTWrapper(tree *tree.BSTNode, key int) int {
+	if result := SearchBST(tree, key); result != nil {
+		return result.Data.(int)
+	}
+	return -1
 }

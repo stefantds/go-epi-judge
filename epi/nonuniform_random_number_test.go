@@ -43,12 +43,7 @@ func TestNonuniformRandomNumberGeneration(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if err := random.RunFuncWithRetries(
-				func() bool {
-					return nonuniformRandomNumberGenerationWrapper(tc.Values, tc.Probabilities)
-				},
-				errors.New("the generation doesn't match the expected distribution"),
-			); err != nil {
+			if err := nonuniformRandomNumberGenerationWrapper(tc.Values, tc.Probabilities); err != nil {
 				t.Error(err)
 			}
 		})
@@ -58,7 +53,16 @@ func TestNonuniformRandomNumberGeneration(t *testing.T) {
 	}
 }
 
-func nonuniformRandomNumberGenerationWrapper(values []int, probabilities []float64) bool {
+func nonuniformRandomNumberGenerationWrapper(values []int, probabilities []float64) error {
+	return random.RunFuncWithRetries(
+		func() bool {
+			return nonuniformRandomNumberGenerationRunner(values, probabilities)
+		},
+		errors.New("the generation doesn't match the expected distribution"),
+	)
+}
+
+func nonuniformRandomNumberGenerationRunner(values []int, probabilities []float64) bool {
 	const N = 1000000
 
 	results := make([]int, N)

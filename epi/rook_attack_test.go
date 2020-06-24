@@ -41,9 +41,9 @@ func TestRookAttack(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			RookAttack(tc.A)
-			if !reflect.DeepEqual(tc.A, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, tc.A)
+			result := rookAttackWrapper(tc.A)
+			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
 	}
@@ -52,7 +52,11 @@ func TestRookAttack(t *testing.T) {
 	}
 }
 
-func rookAttackWrapper(a [][]int) ([][]int, error) {
-	// TODO
-	return nil, nil
+func rookAttackWrapper(a [][]int) [][]int {
+	copyA := make([][]int, len(a))
+	copy(copyA, a)
+
+	RookAttack(copyA)
+
+	return copyA
 }

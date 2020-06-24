@@ -3,7 +3,6 @@ package epi_test
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -43,8 +42,8 @@ func TestIsDeadlocked(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := IsDeadlocked(newGraph(tc.NumVertices, tc.Edges))
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			result := isDeadlockedWrapper(tc.NumVertices, tc.Edges)
+			if result != tc.ExpectedResult {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
@@ -70,7 +69,6 @@ func newGraph(numVertices int, edges [][2]int) []GraphVertex {
 	return result
 }
 
-func isDeadlockedWrapper(numNodes int, edges [][2]int) (bool, error) {
-	// TODO
-	return false, nil
+func isDeadlockedWrapper(numNodes int, edges [][2]int) bool {
+	return IsDeadlocked(newGraph(numNodes, edges))
 }

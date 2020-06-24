@@ -1,9 +1,9 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -21,9 +21,9 @@ func TestHasCycle(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Head           list.ListNodeDecoder
-		ExpectedResult list.ListNodeDecoder
-		Details        string
+		Head     list.ListNodeDecoder
+		CycleIdx int
+		Details  string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -35,16 +35,15 @@ func TestHasCycle(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.Head,
-			&tc.ExpectedResult,
+			&tc.CycleIdx,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := HasCycle(tc.Head.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+			if err := hasCycleWrapper(tc.Head.Value, tc.CycleIdx); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -54,6 +53,55 @@ func TestHasCycle(t *testing.T) {
 }
 
 func hasCycleWrapper(head *list.ListNode, cycleIdx int) error {
-	// TODO
+	cycleLength := 0
+	if cycleIdx != -1 {
+		var cycleStart *list.ListNode
+		cursor := head
+
+		for cursor.Next != nil {
+			if cursor.Data.(int) == cycleIdx {
+				cycleStart = cursor
+			}
+			cursor = cursor.Next
+			if cycleStart != nil {
+				cycleLength++
+			}
+		}
+
+		if cursor.Data == cycleIdx {
+			cycleStart = cursor
+		}
+
+		cursor.Next = cycleStart
+		cycleLength++
+	}
+
+	result := HasCycle(head)
+
+	if cycleIdx == -1 {
+		if result != nil {
+			return fmt.Errorf("expected no cycle, got %d", result.Data.(int))
+		}
+	} else {
+		if result == nil {
+			return errors.New("expected a cycle, got nil")
+		}
+
+		cursor := result
+		for cursor.Next != result {
+			cursor = cursor.Next
+			cycleLength--
+
+			if cursor == nil || cycleLength <= 0 {
+				return errors.New("returned node does not belong to the cycle or is not the closest node to the head")
+			}
+		}
+
+		// when cursor.Next == result, the remaining length of the cycle should be 1
+		if cycleLength != 1 {
+			return errors.New("returned node does not belong to the cycle or is not the closest node to the head")
+		}
+	}
+
 	return nil
 }

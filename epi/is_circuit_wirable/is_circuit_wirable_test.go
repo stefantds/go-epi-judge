@@ -1,4 +1,4 @@
-package epi_test
+package is_circuit_wirable_test
 
 import (
 	"fmt"
@@ -8,11 +8,11 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
+	. "github.com/stefantds/go-epi-judge/epi/is_circuit_wirable"
 )
 
-func TestFindKthLargestUnknownLength(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "kth_largest_element_in_long_array.tsv"
+func TestIsAnyPlacementFeasible(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "is_circuit_wirable.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -20,9 +20,9 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Stream         []int
 		K              int
-		ExpectedResult int
+		Edges          [][2]int
+		ExpectedResult bool
 		Details        string
 	}
 
@@ -34,8 +34,8 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Stream,
 			&tc.K,
+			&tc.Edges,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -43,7 +43,7 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindKthLargestUnknownLength(tc.Stream, tc.K)
+			result := isAnyPlacementFeasibleWrapper(tc.K, tc.Edges)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -54,7 +54,22 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 	}
 }
 
-func findKthLargestUnknownLengthWrapper(stream []int, k int) (int, error) {
-	// TODO
-	return 0, nil
+func isAnyPlacementFeasibleWrapper(k int, edges [][2]int) bool {
+	return IsAnyPlacementFeasible(newGraph(k, edges))
+}
+
+func newGraph(numVertices int, edges [][2]int) []GraphVertex {
+	result := make([]GraphVertex, numVertices)
+
+	for _, edge := range edges {
+		from := edge[0]
+		to := edge[1]
+
+		if from < 0 || from > numVertices-1 || to < 0 || to > numVertices-1 {
+			panic(fmt.Errorf("vertex out of bound: %v", edge))
+		}
+		result[from].Edges = append(result[from].Edges, &result[to])
+	}
+
+	return result
 }

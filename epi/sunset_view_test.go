@@ -21,7 +21,7 @@ func TestExamineBuildingsWithSunset(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Sequence       *iterator.Iterator
+		Sequence       []int
 		ExpectedResult []int
 		Details        string
 	}
@@ -42,7 +42,7 @@ func TestExamineBuildingsWithSunset(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := ExamineBuildingsWithSunset(tc.Sequence)
+			result := examineBuildingsWithSunsetWrapper(tc.Sequence)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -53,7 +53,7 @@ func TestExamineBuildingsWithSunset(t *testing.T) {
 	}
 }
 
-func examineBuildingsWithSunsetWrapper(sequence []int) ([]int, error) {
-	// TODO
-	return nil, nil
+func examineBuildingsWithSunsetWrapper(sequence []int) []int {
+	stream := iterator.New(iterator.Ints(sequence))
+	return ExamineBuildingsWithSunset(stream)
 }

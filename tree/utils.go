@@ -22,7 +22,6 @@ func isNil(tree TreeLike) bool {
 }
 
 func binaryTreeToString(tree TreeLike) (string, error) {
-
 	var buf bytes.Buffer
 
 	nodes := make([]TreeLike, 0)

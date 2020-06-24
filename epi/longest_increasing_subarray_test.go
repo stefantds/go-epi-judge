@@ -3,7 +3,6 @@ package epi_test
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -21,7 +20,7 @@ func TestFindLongestIncreasingSubarray(t *testing.T) {
 
 	type TestCase struct {
 		A              []int
-		ExpectedResult Subarray
+		ExpectedLength int
 		Details        string
 	}
 
@@ -34,16 +33,15 @@ func TestFindLongestIncreasingSubarray(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.A,
-			&tc.ExpectedResult,
+			&tc.ExpectedLength,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindLongestIncreasingSubarray(tc.A)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			if err := findLongestIncreasingSubarrayWrapper(tc.A, tc.ExpectedLength); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -52,7 +50,27 @@ func TestFindLongestIncreasingSubarray(t *testing.T) {
 	}
 }
 
-func findLongestIncreasingSubarrayWrapper(a []int) (int, error) {
-	// TODO
-	return 0, nil
+func findLongestIncreasingSubarrayWrapper(a []int, expectedLength int) error {
+	result := FindLongestIncreasingSubarray(a)
+
+	switch {
+	case result.Start < 0 || result.Start >= len(a):
+		return fmt.Errorf("invalid start index %d", result.Start)
+	case result.End < 0 || result.End >= len(a):
+		return fmt.Errorf("invalid end index %d", result.End)
+	case result.End < result.Start:
+		return fmt.Errorf("invalid result: start %d, end %d", result.Start, result.End)
+	case result.End-result.Start+1 != expectedLength:
+		return fmt.Errorf("expected length %d, got %d", expectedLength, result.End-result.Start+1)
+	}
+
+	previous := a[result.Start]
+	for i := result.Start + 1; i <= result.End; i++ {
+		if a[i] < previous {
+			return fmt.Errorf("element at index %d is smaller than previous element", i)
+		}
+		previous = a[i]
+	}
+
+	return nil
 }

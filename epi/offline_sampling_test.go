@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"sort"
 	"testing"
 
@@ -86,18 +85,20 @@ func randomSamplingRunner(k int, a []int) bool {
 	sort.Ints(a)
 
 	combinations := make([][]int, totalPossibleOutcomes)
-
 	for i := 0; i < totalPossibleOutcomes; i++ {
 		combinations[i] = random.ComputeCombinationIdx(a, k, i)
 	}
 
-	sequence := make([]int, len(results))
+	sort.Slice(combinations, func(i, j int) bool {
+		return utils.LexicographicalArrayComparator(combinations[i], combinations[j])
+	})
 
+	sequence := make([]int, len(results))
 	for i, r := range results {
 		sort.Ints(r)
-		sequence[i] = utils.SliceIndex(
+		sequence[i] = sort.Search(
 			len(combinations),
-			func(i int) bool { return reflect.DeepEqual(combinations[i], r) },
+			func(i int) bool { return !utils.LexicographicalArrayComparator(r, combinations[i]) },
 		)
 	}
 

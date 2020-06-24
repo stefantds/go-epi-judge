@@ -21,7 +21,7 @@ func TestDeleteDuplicates(t *testing.T) {
 
 	type TestCase struct {
 		A              []int
-		ExpectedResult int
+		ExpectedResult []int
 		Details        string
 	}
 
@@ -41,7 +41,7 @@ func TestDeleteDuplicates(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := DeleteDuplicates(tc.A)
+			result := deleteDuplicatesWrapper(tc.A)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -52,7 +52,7 @@ func TestDeleteDuplicates(t *testing.T) {
 	}
 }
 
-func deleteDuplicatesWrapper(a []int) ([]int, error) {
-	// TODO
-	return nil, nil
+func deleteDuplicatesWrapper(a []int) []int {
+	end := DeleteDuplicates(a)
+	return a[:end]
 }

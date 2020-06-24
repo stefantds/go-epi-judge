@@ -1,18 +1,17 @@
-package epi_test
+package max_teams_in_photograph_test
 
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
+	. "github.com/stefantds/go-epi-judge/epi/max_teams_in_photograph"
 )
 
-func TestSearchFrequentItems(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_frequent_items.tsv"
+func TestFindLargestNumberTeams(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "max_teams_in_photograph.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -21,8 +20,8 @@ func TestSearchFrequentItems(t *testing.T) {
 
 	type TestCase struct {
 		K              int
-		Stream         []string
-		ExpectedResult []string
+		Edges          [][2]int
+		ExpectedResult int
 		Details        string
 	}
 
@@ -35,7 +34,7 @@ func TestSearchFrequentItems(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.K,
-			&tc.Stream,
+			&tc.Edges,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -43,8 +42,8 @@ func TestSearchFrequentItems(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SearchFrequentItems(tc.K, tc.Stream)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			result := FindLargestNumberTeams(newGraph(tc.K, tc.Edges))
+			if result != tc.ExpectedResult {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
@@ -54,7 +53,18 @@ func TestSearchFrequentItems(t *testing.T) {
 	}
 }
 
-func searchFrequentItemsWrapper(k int, stream []string) ([]string, error) {
-	// TODO
-	return nil, nil
+func newGraph(numVertices int, edges [][2]int) []GraphVertex {
+	result := make([]GraphVertex, numVertices)
+
+	for _, edge := range edges {
+		from := edge[0]
+		to := edge[1]
+
+		if from < 0 || from > numVertices-1 || to < 0 || to > numVertices-1 {
+			panic(fmt.Errorf("vertex out of bound: %v", edge))
+		}
+		result[from].Edges = append(result[from].Edges, &result[to])
+	}
+
+	return result
 }

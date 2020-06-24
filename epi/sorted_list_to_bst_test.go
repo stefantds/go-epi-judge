@@ -1,14 +1,15 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
+	"github.com/stefantds/go-epi-judge/iterator"
 	"github.com/stefantds/go-epi-judge/list"
 )
 
@@ -21,10 +22,9 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L              list.DoublyListNodeDecoder
-		Length         int
-		ExpectedResult list.DoublyListNodeDecoder
-		Details        string
+		RawL        []int
+		DoublyListL list.DoublyListNodeDecoder
+		Details     string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -35,18 +35,22 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.L,
-			&tc.Length,
-			&tc.ExpectedResult,
+			&tc.RawL,
+			&tc.Details,
+		); err != nil {
+			t.Fatal(err)
+		}
+
+		if err := parser.Scan(
+			&tc.DoublyListL,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := BuildBSTFromSortedList(tc.L.Value, tc.Length)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+			if err := buildBSTFromSortedListWrapper(tc.RawL, tc.DoublyListL.Value); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -55,7 +59,44 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 	}
 }
 
-func buildBSTFromSortedListWrapper(l []int) error {
-	// TODO
+func buildBSTFromSortedListWrapper(l []int, dl *list.DoublyListNode) error {
+	result := BuildBSTFromSortedList(dl, len(l))
+
+	current := iterator.New(iterator.Ints(l))
+
+	if err := compareIterAndTree(result, current); err != nil {
+		return err
+	}
+
+	if current.HasNext() {
+		return errors.New("too few values in the tree")
+	}
+
+	return nil
+}
+
+func compareIterAndTree(tree *list.DoublyListNode, it *iterator.Iterator) error {
+	if tree == nil {
+		return nil
+	}
+
+	if err := compareIterAndTree(tree.Prev, it); err != nil {
+		return err
+	}
+
+	if !it.HasNext() {
+		return errors.New("too many values in the tree")
+	}
+
+	next := it.Next()
+
+	if next != tree.Data {
+		return fmt.Errorf("expected value %d, got %d", next.(int), tree.Data.(int))
+	}
+
+	if err := compareIterAndTree(tree.Next, it); err != nil {
+		return err
+	}
+
 	return nil
 }

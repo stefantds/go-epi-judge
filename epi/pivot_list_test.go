@@ -1,9 +1,11 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"reflect"
+	"sort"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -21,10 +23,9 @@ func TestListPivoting(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L              list.ListNodeDecoder
-		X              int
-		ExpectedResult list.ListNodeDecoder
-		Details        string
+		L       list.ListNodeDecoder
+		X       int
+		Details string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -37,16 +38,14 @@ func TestListPivoting(t *testing.T) {
 		if err := parser.Scan(
 			&tc.L,
 			&tc.X,
-			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := ListPivoting(tc.L.Value, tc.X)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+			if err := listPivotingWrapper(tc.L.Value, tc.X); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -56,6 +55,43 @@ func TestListPivoting(t *testing.T) {
 }
 
 func listPivotingWrapper(l *list.ListNode, x int) error {
-	// TODO
+	original := list.ToArray(l)
+	ListPivoting(l, x)
+	pivoted := list.ToArray(l)
+
+	const smaller, equal, greater int = 0, 1, 2
+
+	mode := smaller
+
+	for _, i := range pivoted {
+		switch mode {
+		case smaller:
+			switch {
+			case i == x:
+				mode = equal
+			case i > x:
+				mode = greater
+			}
+		case equal:
+			switch {
+			case i < x:
+				return errors.New("result list is not pivoted")
+			case i > x:
+				mode = greater
+			}
+		case greater:
+			if i <= x {
+				return errors.New("result list is not pivoted")
+			}
+		}
+	}
+
+	sort.Ints(original)
+	sort.Ints(pivoted)
+
+	if !reflect.DeepEqual(original, pivoted) {
+		return errors.New("result list contains different values")
+	}
+
 	return nil
 }

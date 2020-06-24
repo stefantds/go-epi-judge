@@ -1,4 +1,4 @@
-package epi_test
+package zip_list_test
 
 import (
 	"fmt"
@@ -8,12 +8,12 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
-	"github.com/stefantds/go-epi-judge/tree"
+	. "github.com/stefantds/go-epi-judge/epi/zip_list"
+	"github.com/stefantds/go-epi-judge/list"
 )
 
-func TestFindKthNodeBinaryTree(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "kth_node_in_tree.tsv"
+func TestZippingLinkedList(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "zip_list.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -21,9 +21,8 @@ func TestFindKthNodeBinaryTree(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Tree           tree.BinaryTreeNodeDecoder
-		K              int
-		ExpectedResult tree.BinaryTreeNodeDecoder
+		L              list.ListNodeDecoder
+		ExpectedResult list.ListNodeDecoder
 		Details        string
 	}
 
@@ -35,8 +34,7 @@ func TestFindKthNodeBinaryTree(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Tree,
-			&tc.K,
+			&tc.L,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -44,18 +42,13 @@ func TestFindKthNodeBinaryTree(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindKthNodeBinaryTree(tc.Tree.Value, tc.K)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			result := ZippingLinkedList(tc.L.Value)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
-}
-
-func findKthNodeBinaryTreeWrapper(tree *tree.BinaryTree, k int) (int, error) {
-	// TODO
-	return 0, nil
 }

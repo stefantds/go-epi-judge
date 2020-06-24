@@ -1,18 +1,17 @@
-package epi_test
+package kth_largest_element_in_long_array_test
 
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi"
+	. "github.com/stefantds/go-epi-judge/epi/kth_largest_element_in_long_array"
 )
 
-func TestUnionOfIntervals(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "intervals_union.tsv"
+func TestFindKthLargestUnknownLength(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "kth_largest_element_in_long_array.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -20,8 +19,9 @@ func TestUnionOfIntervals(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Intervals      []IntervalWithEnds
-		ExpectedResult []IntervalWithEnds
+		Stream         []int
+		K              int
+		ExpectedResult int
 		Details        string
 	}
 
@@ -33,7 +33,8 @@ func TestUnionOfIntervals(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.Intervals,
+			&tc.Stream,
+			&tc.K,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -41,8 +42,8 @@ func TestUnionOfIntervals(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := UnionOfIntervals(tc.Intervals)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			result := FindKthLargestUnknownLength(tc.Stream, tc.K)
+			if result != tc.ExpectedResult {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
@@ -50,9 +51,4 @@ func TestUnionOfIntervals(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
-}
-
-func unionIntervalWrapper(intervals []FlatInterval) ([]FlatInterval, error) {
-	// TODO
-	return nil, nil
 }

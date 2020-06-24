@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"sort"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
+	"github.com/stefantds/go-epi-judge/stack"
 	"github.com/stefantds/go-epi-judge/tree"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestGenerateAllBinaryTrees(t *testing.T) {
@@ -21,9 +24,9 @@ func TestGenerateAllBinaryTrees(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		NumNodes int
-		ExpectedResult []*tree.BinaryTreeNode
-		Details string
+		NumNodes       int
+		ExpectedResult [][]int
+		Details        string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -37,7 +40,7 @@ func TestGenerateAllBinaryTrees(t *testing.T) {
 			&tc.NumNodes,
 			&tc.ExpectedResult,
 			&tc.Details,
-			); err != nil {
+		); err != nil {
 			t.Fatal(err)
 		}
 
@@ -53,7 +56,44 @@ func TestGenerateAllBinaryTrees(t *testing.T) {
 	}
 }
 
-func generateAllBinaryTreesWrapper(numNodes int) ([][]int, error) {
-	// TODO
-	return nil, nil
+func generateAllBinaryTreesWrapper(numNodes int) [][]int {
+	result := GenerateAllBinaryTrees(numNodes)
+
+	serialized := make([][]int, len(result))
+
+	for i, x := range result {
+		serialized[i] = serializeTree(x)
+	}
+
+	sort.Slice(serialized, func(i, j int) bool {
+		return utils.LexicographicalArrayComparator(serialized[i], serialized[j])
+	})
+
+	return serialized
+}
+
+func serializeTree(t *tree.BinaryTreeNode) []int {
+	s := make(stack.Stack, 0)
+	s = s.Push(t)
+
+	result := make([]int, 0)
+	var n interface{}
+
+	for !s.IsEmpty() {
+		s, n = s.Pop()
+		p := n.(*tree.BinaryTreeNode)
+
+		if p == nil {
+			result = append(result, 0)
+		} else {
+			result = append(result, 1)
+		}
+
+		if p != nil {
+			s = s.Push(p.Left)
+			s = s.Push(p.Right)
+		}
+	}
+
+	return result
 }

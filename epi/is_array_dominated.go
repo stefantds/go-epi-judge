@@ -5,7 +5,7 @@ type Player struct {
 }
 
 type Team struct {
-	Players []*Player
+	Players []Player
 }
 
 func ValidPlacementExists(team0 Team, team1 Team) bool {

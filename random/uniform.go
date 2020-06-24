@@ -12,15 +12,16 @@ func CheckSequenceIsUniformlyRandom(seq []int, n int, falseNegativeTolerance flo
 }
 
 func CheckFrequencies(seq []int, n int, falseNegativeTolerance float64) bool {
-	avg := float64(len(seq)) / float64(n)
+	lenSeq := float64(len(seq))
+	avg := lenSeq / float64(n)
 	kIndiv := float64(ComputeDeviationMultiplier(falseNegativeTolerance, n))
-	p := float64(1.0 / n)
-	sigmaIndiv := math.Sqrt(float64(len(seq)) * p * (1.0 - p))
-	kSigmaIndiv := float64(kIndiv * sigmaIndiv)
+	p := 1.0 / float64(n)
+	sigmaIndiv := math.Sqrt(lenSeq * p * (1.0 - p))
+	kSigmaIndiv := kIndiv * sigmaIndiv
 
 	// To make our testing meaningful "sufficiently large", we need to have enough testing data.
-	if float64(len(seq))*p < 50 || float64(len(seq))*(1-p) < 50 {
-		return true // Sample size is too small so we cannot use normal  approximation
+	if lenSeq*p < 50 || lenSeq*(1-p) < 50 {
+		return true // Sample size is too small so we cannot use normal approximation
 	}
 
 	indivFreqs := make(map[int]int)
@@ -64,13 +65,13 @@ func CheckBirthdaySpacings(seq []int, n int) bool {
 	)
 
 	expectedAvgRepetitionLength := int(math.Ceil(math.Sqrt(math.Log(2.0) * 2.0 * float64(n))))
-	numberOfSubarrays := len(seq) - expectedAvgRepetitionLength + 1
+	numberOfSubarrays := float64(len(seq) - expectedAvgRepetitionLength + 1)
 
 	if numberOfSubarrays < minNumberSubarrays {
 		return true // Not enough subarrays for birthday spacing check
 	}
 
-	numberOfSubarraysWithRepetitions := 0
+	numberOfSubarraysWithRepetitions := float64(0)
 
 	for i := 0; i < len(seq)-expectedAvgRepetitionLength; i++ {
 		seqWindow := make(map[int]bool)
@@ -82,7 +83,7 @@ func CheckBirthdaySpacings(seq []int, n int) bool {
 		}
 	}
 
-	return countTolerance*float64(numberOfSubarrays) <= float64(numberOfSubarraysWithRepetitions)
+	return countTolerance*numberOfSubarrays <= numberOfSubarraysWithRepetitions
 }
 
 func ComputeDeviationMultiplier(allowedFalseNegative float64, numRvs int) int {
@@ -97,8 +98,8 @@ func ComputeDeviationMultiplier(allowedFalseNegative float64, numRvs int) int {
 		1 - 0.999999999997440,
 	}
 
-	for i := 0; i < len(errorBounds); i++ {
-		if errorBounds[i] <= individualRvError {
+	for i, errBound := range errorBounds {
+		if errBound <= individualRvError {
 			return i + 1
 		}
 	}

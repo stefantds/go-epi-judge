@@ -20,7 +20,7 @@ func TestTransformString(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		D              map[string]interface{}
+		D              map[string]struct{}
 		S              string
 		T              string
 		ExpectedResult int

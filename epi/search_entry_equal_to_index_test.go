@@ -1,9 +1,9 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -20,9 +20,8 @@ func TestSearchEntryEqualToItsIndex(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		A              []int
-		ExpectedResult int
-		Details        string
+		A       []int
+		Details string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -34,16 +33,14 @@ func TestSearchEntryEqualToItsIndex(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.A,
-			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SearchEntryEqualToItsIndex(tc.A)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			if err := searchEntryEqualToItsIndexWrapper(tc.A); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -53,6 +50,22 @@ func TestSearchEntryEqualToItsIndex(t *testing.T) {
 }
 
 func searchEntryEqualToItsIndexWrapper(a []int) error {
-	// TODO
+	result := SearchEntryEqualToItsIndex(a)
+
+	if result < -1 || result > len(a)-1 {
+		return fmt.Errorf("invalid index %d", result)
+	}
+	if result != -1 {
+		if a[result] != result {
+			return fmt.Errorf("got index %d; a[%d] is %d", result, result, a[result])
+		}
+	} else {
+		for i, x := range a {
+			if i == x {
+				return errors.New("got -1 but there are entries which equal to their index")
+			}
+		}
+	}
+
 	return nil
 }

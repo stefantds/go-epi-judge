@@ -47,9 +47,9 @@ func TestFlipColor(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			FlipColor(tc.X, tc.Y, tc.Image.Value)
-			if !reflect.DeepEqual(tc.Image.Value, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, tc.Image.Value)
+			result := flipColorWrapper(tc.X, tc.Y, tc.Image.Value)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}
@@ -85,7 +85,7 @@ func (d *imageDecoder) DecodeRecord(record string) error {
 	return nil
 }
 
-func flipColorWrapper(x int, y int, image [][]int) ([][]int, error) {
-	// TODO
-	return nil, nil
+func flipColorWrapper(x int, y int, image [][]bool) [][]bool {
+	FlipColor(x, y, image)
+	return image
 }

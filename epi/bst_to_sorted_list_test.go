@@ -1,6 +1,7 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"reflect"
@@ -22,7 +23,7 @@ func TestBstToDoublyLinkedList(t *testing.T) {
 
 	type TestCase struct {
 		Tree           tree.BSTNodeDecoder
-		ExpectedResult tree.BSTNodeDecoder
+		ExpectedResult []int
 		Details        string
 	}
 
@@ -53,7 +54,21 @@ func TestBstToDoublyLinkedList(t *testing.T) {
 	}
 }
 
-func bstToDoublyLinkedListWrapper(tree *tree.BSTNode) ([]int, error) {
-	// TODO
-	return nil, nil
+func bstToDoublyLinkedListWrapper(t *tree.BSTNode) ([]int, error) {
+	list := BstToDoublyLinkedList(t)
+
+	if list != nil && list.Left != nil {
+		return nil, errors.New("function must return the head of the list. Left link must be nil")
+	}
+
+	v := make([]int, 0)
+	for list != nil {
+		v = append(v, list.Data.(int))
+		if list.Right != nil && list.Right.Left != list {
+			return nil, errors.New("list is ill-formed")
+		}
+		list = list.Right
+	}
+
+	return v, nil
 }

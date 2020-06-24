@@ -1,4 +1,4 @@
-package epi
+package zip_list
 
 import (
 	"github.com/stefantds/go-epi-judge/list"

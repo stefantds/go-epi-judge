@@ -3,7 +3,6 @@ package epi_test
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -20,10 +19,9 @@ func TestFindAmpleCity(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Gallons        []int
-		Distances      []int
-		ExpectedResult int
-		Details        string
+		Gallons   []int
+		Distances []int
+		Details   string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -36,16 +34,14 @@ func TestFindAmpleCity(t *testing.T) {
 		if err := parser.Scan(
 			&tc.Gallons,
 			&tc.Distances,
-			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindAmpleCity(tc.Gallons, tc.Distances)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			if err := findAmpleCityWrapper(tc.Gallons, tc.Distances); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -55,6 +51,18 @@ func TestFindAmpleCity(t *testing.T) {
 }
 
 func findAmpleCityWrapper(gallons []int, distances []int) error {
-	// TODO
+	result := FindAmpleCity(gallons, distances)
+	numCities := len(gallons)
+	tank := 0
+
+	for i := 0; i < numCities; i++ {
+		city := (result + i) % numCities
+		tank += gallons[city]*MPG - distances[city]
+
+		if tank < 0 {
+			return fmt.Errorf("out of gas on city %d", city)
+		}
+	}
+
 	return nil
 }

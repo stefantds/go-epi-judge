@@ -41,9 +41,9 @@ func TestRotateMatrix(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			RotateMatrix(tc.SquareMatrix)
-			if !reflect.DeepEqual(tc.SquareMatrix, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, tc.SquareMatrix)
+			result := rotateMatrixWrapper(tc.SquareMatrix)
+			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
 	}
@@ -52,7 +52,7 @@ func TestRotateMatrix(t *testing.T) {
 	}
 }
 
-func rotateMatrixWrapper(squareMatrix [][]int) ([][]int, error) {
-	// TODO
-	return nil, nil
+func rotateMatrixWrapper(squareMatrix [][]int) [][]int {
+	RotateMatrix(squareMatrix)
+	return squareMatrix
 }

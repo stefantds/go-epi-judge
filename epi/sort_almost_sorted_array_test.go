@@ -21,7 +21,7 @@ func TestSortApproximatelySortedData(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Sequence       *iterator.Iterator
+		Sequence       []int
 		K              int
 		ExpectedResult []int
 		Details        string
@@ -44,7 +44,7 @@ func TestSortApproximatelySortedData(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SortApproximatelySortedData(tc.Sequence, tc.K)
+			result := sortApproximatelySortedDataWrapper(tc.Sequence, tc.K)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -55,7 +55,7 @@ func TestSortApproximatelySortedData(t *testing.T) {
 	}
 }
 
-func sortApproximatelySortedDataWrapper(sequence []int, k int) ([]int, error) {
-	// TODO
-	return nil, nil
+func sortApproximatelySortedDataWrapper(sequence []int, k int) []int {
+	iter := iterator.New(iterator.Ints(sequence))
+	return SortApproximatelySortedData(iter, k)
 }

@@ -23,7 +23,7 @@ func TestFindFirstGreaterThanK(t *testing.T) {
 	type TestCase struct {
 		Tree           tree.BSTNodeDecoder
 		K              int
-		ExpectedResult tree.BSTNodeDecoder
+		ExpectedResult int
 		Details        string
 	}
 
@@ -44,7 +44,10 @@ func TestFindFirstGreaterThanK(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindFirstGreaterThanK(tc.Tree.Value, tc.K)
+			result, err := findFirstGreaterThanKWrapper(tc.Tree.Value, tc.K)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -56,6 +59,8 @@ func TestFindFirstGreaterThanK(t *testing.T) {
 }
 
 func findFirstGreaterThanKWrapper(tree *tree.BSTNode, k int) (int, error) {
-	// TODO
-	return 0, nil
+	if result := FindFirstGreaterThanK(tree, k); result != nil {
+		return result.Data.(int), nil
+	}
+	return -1, nil
 }

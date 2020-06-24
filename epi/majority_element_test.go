@@ -3,7 +3,6 @@ package epi_test
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -41,8 +40,8 @@ func TestMajoritySearch(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := MajoritySearch(tc.Stream)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			result := majoritySearchWrapper(tc.Stream)
+			if result != tc.ExpectedResult {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
@@ -52,7 +51,6 @@ func TestMajoritySearch(t *testing.T) {
 	}
 }
 
-func majoritySearchWrapper(stream []string) (string, error) {
-	// TODO
-	return "", nil
+func majoritySearchWrapper(stream []string) string {
+	return MajoritySearch(stream)
 }

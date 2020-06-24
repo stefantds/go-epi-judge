@@ -3,7 +3,6 @@ package epi_test
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -23,7 +22,7 @@ func TestSearchList(t *testing.T) {
 	type TestCase struct {
 		L              list.ListNodeDecoder
 		Key            int
-		ExpectedResult list.ListNodeDecoder
+		ExpectedResult int
 		Details        string
 	}
 
@@ -44,9 +43,9 @@ func TestSearchList(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SearchList(tc.L.Value, tc.Key)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+			result := searchListWrapper(tc.L.Value, tc.Key)
+			if result != tc.ExpectedResult {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
 	}
@@ -55,7 +54,10 @@ func TestSearchList(t *testing.T) {
 	}
 }
 
-func searchListWrapper(l *list.ListNode, key int) (int, error) {
-	// TODO
-	return 0, nil
+func searchListWrapper(l *list.ListNode, key int) int {
+	if result := SearchList(l, key); result != nil {
+		return result.Data.(int)
+	}
+
+	return -1
 }

@@ -1,10 +1,13 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
+	"math"
 	"os"
-	"reflect"
 	"testing"
+
+	"github.com/stefantds/go-epi-judge/utils"
 
 	csv "github.com/stefantds/csvdecoder"
 
@@ -21,7 +24,6 @@ func TestSolveSudoku(t *testing.T) {
 
 	type TestCase struct {
 		PartialAssignment [][]int
-		ExpectedResult    bool
 		Details           string
 	}
 
@@ -34,16 +36,14 @@ func TestSolveSudoku(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.PartialAssignment,
-			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SolveSudoku(tc.PartialAssignment)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			if err := solveSudokuWrapper(tc.PartialAssignment); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -53,6 +53,82 @@ func TestSolveSudoku(t *testing.T) {
 }
 
 func solveSudokuWrapper(partialAssignment [][]int) error {
-	// TODO
+	solved := make([][]int, len(partialAssignment))
+	for i, row := range partialAssignment {
+		solved[i] = make([]int, len(row))
+		copy(solved[i], row)
+	}
+
+	SolveSudoku(solved)
+
+	if len(solved) != len(partialAssignment) {
+		return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFmt{solved})
+	}
+
+	for i, br := range partialAssignment {
+		sr := solved[i]
+
+		if len(br) != len(sr) {
+			return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFmt{solved})
+		}
+
+		for j := 0; j < len(br); j++ {
+			if br[j] != 0 && br[j] != sr[j] {
+				return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFmt{solved})
+			}
+		}
+	}
+
+	blockSize := int(math.Sqrt(float64(len(solved))))
+
+	for i := 0; i < len(solved); i++ {
+		if err := assertUniqueSeq(solved[i]); err != nil {
+			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFmt{solved})
+		}
+		if err := assertUniqueSeq(gatherColumn(solved, i)); err != nil {
+			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFmt{solved})
+		}
+		if err := assertUniqueSeq(gatherSquareBlock(solved, blockSize, i)); err != nil {
+			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFmt{solved})
+		}
+	}
+
 	return nil
+}
+
+func assertUniqueSeq(seq []int) error {
+	seen := make(map[int]bool)
+	for _, x := range seq {
+		switch {
+		case x == 0:
+			return errors.New("cell left uninitialized")
+		case x < 0, x > len(seq):
+			return errors.New("cell value out of range")
+		case seen[x]:
+			return errors.New("duplicate value in section")
+		}
+		seen[x] = true
+	}
+	return nil
+}
+
+func gatherColumn(data [][]int, i int) []int {
+	result := make([]int, len(data))
+	for j, row := range data {
+		result[j] = row[i]
+	}
+	return result
+}
+
+func gatherSquareBlock(data [][]int, blockSize, n int) []int {
+	result := make([]int, 0)
+	blockX := n % blockSize
+	blockY := n / blockSize
+	for i := blockX * blockSize; i < (blockX+1)*blockSize; i++ {
+		for j := blockY * blockSize; j < (blockY+1)*blockSize; j++ {
+			result = append(result, data[i][j])
+		}
+	}
+
+	return result
 }

@@ -22,7 +22,7 @@ func TestCreateListOfLeaves(t *testing.T) {
 
 	type TestCase struct {
 		Tree           tree.BinaryTreeNodeDecoder
-		ExpectedResult []*tree.BinaryTreeNode
+		ExpectedResult []int
 		Details        string
 	}
 
@@ -42,7 +42,10 @@ func TestCreateListOfLeaves(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := CreateListOfLeaves(tc.Tree.Value)
+			result, err := createListOfLeavesWrapper(tc.Tree.Value)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -54,6 +57,18 @@ func TestCreateListOfLeaves(t *testing.T) {
 }
 
 func createListOfLeavesWrapper(tree *tree.BinaryTreeNode) ([]int, error) {
-	// TODO
-	return nil, nil
+	result := CreateListOfLeaves(tree)
+
+	for i, n := range result {
+		if n == nil || n.Data == nil {
+			return nil, fmt.Errorf("result contains a nil node at index %d", i)
+		}
+	}
+
+	extractedRes := make([]int, len(result))
+	for i, n := range result {
+		extractedRes[i] = n.Data.(int)
+	}
+
+	return extractedRes, nil
 }

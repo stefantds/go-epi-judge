@@ -21,10 +21,10 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L0             list.ListNodeDecoder
-		L1             list.ListNodeDecoder
-		ExpectedResult list.ListNodeDecoder
-		Details        string
+		FirstPrefix  list.ListNodeDecoder
+		SecondPrefix list.ListNodeDecoder
+		CommonPart   list.ListNodeDecoder
+		Details      string
 	}
 
 	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
@@ -35,18 +35,21 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.L0,
-			&tc.L1,
-			&tc.ExpectedResult,
+			&tc.FirstPrefix,
+			&tc.SecondPrefix,
+			&tc.CommonPart,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := OverlappingNoCycleLists(tc.L0.Value, tc.L1.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+			if err := overlappingNoCycleListsWrapper(
+				tc.FirstPrefix.Value,
+				tc.SecondPrefix.Value,
+				tc.CommonPart.Value,
+			); err != nil {
+				t.Error(err)
 			}
 		})
 	}
@@ -56,6 +59,33 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 }
 
 func overlappingNoCycleListsWrapper(l0 *list.ListNode, l1 *list.ListNode, common *list.ListNode) error {
-	// TODO
+	if common != nil {
+		if l0 != nil {
+			i := l0
+			for i.Next != nil {
+				i = i.Next
+			}
+			i.Next = common
+		} else {
+			l0 = common
+		}
+
+		if l1 != nil {
+			i := l1
+			for i.Next != nil {
+				i = i.Next
+			}
+			i.Next = common
+		} else {
+			l1 = common
+		}
+	}
+
+	result := OverlappingNoCycleLists(l0, l1)
+
+	if !reflect.DeepEqual(result, list.DeepCopy(common)) {
+		return fmt.Errorf("expected %v, got %v", common, result)
+	}
+
 	return nil
 }

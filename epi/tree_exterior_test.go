@@ -1,6 +1,7 @@
 package epi_test
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"reflect"
@@ -22,7 +23,7 @@ func TestExteriorBinaryTree(t *testing.T) {
 
 	type TestCase struct {
 		Tree           tree.BinaryTreeNodeDecoder
-		ExpectedResult []*tree.BinaryTreeNode
+		ExpectedResult []int
 		Details        string
 	}
 
@@ -42,7 +43,10 @@ func TestExteriorBinaryTree(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := ExteriorBinaryTree(tc.Tree.Value)
+			result, err := exteriorBinaryTreeWrapper(tc.Tree.Value)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -54,6 +58,19 @@ func TestExteriorBinaryTree(t *testing.T) {
 }
 
 func exteriorBinaryTreeWrapper(tree *tree.BinaryTreeNode) ([]int, error) {
-	// TODO
-	return nil, nil
+	result := ExteriorBinaryTree(tree)
+	return createOutputList(result)
+}
+
+func createOutputList(l []*tree.BinaryTreeNode) ([]int, error) {
+	output := make([]int, 0)
+
+	for _, t := range l {
+		if t == nil {
+			return nil, errors.New("result list contains nil")
+		}
+		output = append(output, t.Data.(int))
+	}
+
+	return output, nil
 }

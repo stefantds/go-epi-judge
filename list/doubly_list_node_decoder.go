@@ -29,6 +29,20 @@ func (d *DoublyListNodeDecoder) DecodeRecord(record string) error {
 	}
 
 	d.Value = dummyHead.Next
-	d.Value.Prev = nil
 	return nil
+
+	// var current DoublyListNode
+	// for i := len(allData) - 1; i >= 0; i-- {
+	// 	current = DoublyListNode{
+	// 		Data: allData[i],
+	// 		Next: &current,
+	// 	}
+
+	// 	if current.Next != nil {
+	// 		current.Next.Prev = &current
+	// 	}
+	// }
+
+	// d.Value = &current
+	// return nil
 }

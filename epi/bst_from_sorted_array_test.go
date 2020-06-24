@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/stefantds/go-epi-judge/utils"
+
 	csv "github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi"
@@ -22,7 +24,7 @@ func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
 
 	type TestCase struct {
 		A              []int
-		ExpectedResult tree.BSTNodeDecoder
+		ExpectedHeight int
 		Details        string
 	}
 
@@ -35,16 +37,19 @@ func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.A,
-			&tc.ExpectedResult,
+			&tc.ExpectedHeight,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := BuildMinHeightBSTFromSortedArray(tc.A)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			result, err := buildMinHeightBSTFromSortedArrayWrapper(tc.A)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(result, tc.ExpectedHeight) {
+				t.Errorf("expected %v, got %v", tc.ExpectedHeight, result)
 			}
 		})
 	}
@@ -54,6 +59,17 @@ func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
 }
 
 func buildMinHeightBSTFromSortedArrayWrapper(a []int) (int, error) {
-	// TODO
-	return 0, nil
+	result := BuildMinHeightBSTFromSortedArray(a)
+
+	inorder := tree.GenerateInorder(result)
+
+	if err := utils.AssertAllValuesPresent(a, inorder); err != nil {
+		return 0, err
+	}
+
+	if err := tree.AssertTreeIsBST(result); err != nil {
+		return 0, err
+	}
+
+	return tree.BinaryTreeHeight(result), nil
 }

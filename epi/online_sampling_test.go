@@ -81,7 +81,7 @@ func onlineRandomSampleRunner(stream []int, k int) bool {
 	}
 
 	sort.Slice(combinations, func(i, j int) bool {
-		return utils.LexicographicalArrayComparator(combinations[i], combinations[j])
+		return utils.LexIntsCompare(combinations[i], combinations[j])
 	})
 
 	sequence := make([]int, nbRuns)
@@ -89,7 +89,7 @@ func onlineRandomSampleRunner(stream []int, k int) bool {
 		sort.Ints(r)
 		sequence[i] = sort.Search(
 			len(combinations),
-			func(i int) bool { return !utils.LexicographicalArrayComparator(r, combinations[i]) },
+			func(i int) bool { return !utils.LexIntsCompare(r, combinations[i]) },
 		)
 	}
 	return random.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)

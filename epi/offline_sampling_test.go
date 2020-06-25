@@ -90,7 +90,7 @@ func randomSamplingRunner(k int, a []int) bool {
 	}
 
 	sort.Slice(combinations, func(i, j int) bool {
-		return utils.LexicographicalArrayComparator(combinations[i], combinations[j])
+		return utils.LexIntsCompare(combinations[i], combinations[j])
 	})
 
 	sequence := make([]int, len(results))
@@ -98,7 +98,7 @@ func randomSamplingRunner(k int, a []int) bool {
 		sort.Ints(r)
 		sequence[i] = sort.Search(
 			len(combinations),
-			func(i int) bool { return !utils.LexicographicalArrayComparator(r, combinations[i]) },
+			func(i int) bool { return !utils.LexIntsCompare(r, combinations[i]) },
 		)
 	}
 

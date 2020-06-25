@@ -66,7 +66,7 @@ func generateAllBinaryTreesWrapper(numNodes int) [][]int {
 	}
 
 	sort.Slice(serialized, func(i, j int) bool {
-		return utils.LexicographicalArrayComparator(serialized[i], serialized[j])
+		return utils.LexIntsCompare(serialized[i], serialized[j])
 	})
 
 	return serialized

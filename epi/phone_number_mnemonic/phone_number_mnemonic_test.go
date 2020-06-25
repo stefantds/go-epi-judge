@@ -1,4 +1,4 @@
-package search_frequent_items_test
+package phone_number_mnemonic_test
 
 import (
 	"fmt"
@@ -9,11 +9,11 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi/search_frequent_items"
+	. "github.com/stefantds/go-epi-judge/epi/phone_number_mnemonic"
 )
 
-func TestSearchFrequentItems(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_frequent_items.tsv"
+func TestPhoneMnemonic(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "phone_number_mnemonic.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -21,8 +21,7 @@ func TestSearchFrequentItems(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		K              int
-		Stream         []string
+		PhoneNumber    string
 		ExpectedResult []string
 		Details        string
 	}
@@ -35,8 +34,7 @@ func TestSearchFrequentItems(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.K,
-			&tc.Stream,
+			&tc.PhoneNumber,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -44,7 +42,7 @@ func TestSearchFrequentItems(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SearchFrequentItems(tc.K, tc.Stream)
+			result := PhoneMnemonic(tc.PhoneNumber)
 			if !equal(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -55,8 +53,9 @@ func TestSearchFrequentItems(t *testing.T) {
 	}
 }
 
-func equal(result []string, expected []string) bool {
-	sort.Strings(expected)
+func equal(result, expected []string) bool {
 	sort.Strings(result)
+	sort.Strings(expected)
+
 	return reflect.DeepEqual(result, expected)
 }

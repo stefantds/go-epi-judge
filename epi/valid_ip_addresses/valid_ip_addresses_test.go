@@ -1,4 +1,4 @@
-package search_frequent_items_test
+package valid_ip_addresses_test
 
 import (
 	"fmt"
@@ -9,11 +9,11 @@ import (
 
 	csv "github.com/stefantds/csvdecoder"
 
-	. "github.com/stefantds/go-epi-judge/epi/search_frequent_items"
+	. "github.com/stefantds/go-epi-judge/epi/valid_ip_addresses"
 )
 
-func TestSearchFrequentItems(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_frequent_items.tsv"
+func TestGetValidIpAddress(t *testing.T) {
+	testFileName := testConfig.TestDataFolder + "/" + "valid_ip_addresses.tsv"
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -21,8 +21,7 @@ func TestSearchFrequentItems(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		K              int
-		Stream         []string
+		S              string
 		ExpectedResult []string
 		Details        string
 	}
@@ -35,8 +34,7 @@ func TestSearchFrequentItems(t *testing.T) {
 	for i := 0; parser.Next(); i++ {
 		tc := TestCase{}
 		if err := parser.Scan(
-			&tc.K,
-			&tc.Stream,
+			&tc.S,
 			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
@@ -44,7 +42,7 @@ func TestSearchFrequentItems(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := SearchFrequentItems(tc.K, tc.Stream)
+			result := GetValidIpAddress(tc.S)
 			if !equal(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -55,7 +53,7 @@ func TestSearchFrequentItems(t *testing.T) {
 	}
 }
 
-func equal(result []string, expected []string) bool {
+func equal(result, expected []string) bool {
 	sort.Strings(expected)
 	sort.Strings(result)
 	return reflect.DeepEqual(result, expected)

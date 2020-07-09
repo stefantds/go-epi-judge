@@ -1,9 +1,11 @@
 package minimum_points_covering_intervals_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -20,7 +22,7 @@ func TestFindMinimumVisits(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Intervals      []Interval
+		Intervals      intervalsDecoder
 		ExpectedResult int
 		Details        string
 	}
@@ -41,7 +43,7 @@ func TestFindMinimumVisits(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindMinimumVisits(tc.Intervals)
+			result := FindMinimumVisits(tc.Intervals.Values)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
@@ -50,4 +52,24 @@ func TestFindMinimumVisits(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+type intervalsDecoder struct {
+	Values []Interval
+}
+
+func (o *intervalsDecoder) DecodeRecord(record string) error {
+	allData := make([][2]int, 0)
+	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
+		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
+	}
+
+	values := make([]Interval, len(allData))
+	for i := 0; i < len(allData); i++ {
+		values[i].Left = allData[i][0]
+		values[i].Right = allData[i][1]
+	}
+
+	o.Values = values
+	return nil
 }

@@ -1,9 +1,11 @@
 package drawing_skyline_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	csv "github.com/stefantds/csvdecoder"
@@ -20,8 +22,8 @@ func TestDrawingSkylines(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Buildings      []Rect
-		ExpectedResult []Rect
+		Buildings      rectsDecoder
+		ExpectedResult rectsDecoder
 		Details        string
 	}
 
@@ -41,8 +43,8 @@ func TestDrawingSkylines(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := DrawingSkylines(tc.Buildings)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			result := DrawingSkylines(tc.Buildings.Values)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
 			}
 		})
@@ -50,4 +52,25 @@ func TestDrawingSkylines(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+type rectsDecoder struct {
+	Values []Rect
+}
+
+func (o *rectsDecoder) DecodeRecord(record string) error {
+	allData := make([][3]int, 0)
+	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
+		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
+	}
+
+	values := make([]Rect, len(allData))
+	for i := 0; i < len(allData); i++ {
+		values[i].Left = allData[i][0]
+		values[i].Right = allData[i][1]
+		values[i].Height = allData[i][2]
+	}
+
+	o.Values = values
+	return nil
 }

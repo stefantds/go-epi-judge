@@ -45,7 +45,7 @@ func TestDrawingSkylines(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := DrawingSkylines(tc.Buildings.Values)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Values, result)
 			}
 		})
 	}

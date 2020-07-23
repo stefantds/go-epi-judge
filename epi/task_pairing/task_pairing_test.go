@@ -1,9 +1,11 @@
 package task_pairing_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -21,7 +23,7 @@ func TestOptimumTaskAssignment(t *testing.T) {
 
 	type TestCase struct {
 		TaskDurations  []int
-		ExpectedResult [][2]int
+		ExpectedResult pairedTasksDecoder
 		Details        string
 	}
 
@@ -42,9 +44,8 @@ func TestOptimumTaskAssignment(t *testing.T) {
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := OptimumTaskAssignment(tc.TaskDurations)
-			expectedResult := decodePairedTasks(tc.ExpectedResult)
-			if !reflect.DeepEqual(result, expectedResult) {
-				t.Errorf("expected %v, got %v", expectedResult, result)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Values, result)
 			}
 		})
 	}
@@ -53,13 +54,22 @@ func TestOptimumTaskAssignment(t *testing.T) {
 	}
 }
 
-func decodePairedTasks(pairs [][2]int) []PairedTasks {
-	result := make([]PairedTasks, len(pairs))
+type pairedTasksDecoder struct {
+	Values []PairedTasks
+}
 
-	for i, n := range pairs {
+func (d *pairedTasksDecoder) DecodeRecord(record string) error {
+	allData := make([][2]int, 0)
+	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
+		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
+	}
+
+	result := make([]PairedTasks, len(allData))
+	for i, n := range allData {
 		result[i].Task1 = n[0]
 		result[i].Task2 = n[1]
 	}
 
-	return result
+	d.Values = result
+	return nil
 }

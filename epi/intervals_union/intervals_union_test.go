@@ -44,7 +44,7 @@ func TestUnionOfIntervals(t *testing.T) {
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := UnionOfIntervals(tc.Intervals.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
 				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
 			}
 		})

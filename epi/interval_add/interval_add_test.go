@@ -46,8 +46,8 @@ func TestAddInterval(t *testing.T) {
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := AddInterval(tc.DisjointIntervals.Values, tc.NewInterval.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
+				t.Errorf("expected %v, got %v", tc.ExpectedResult.Values, result)
 			}
 		})
 	}

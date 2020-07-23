@@ -49,7 +49,7 @@ func TestFindKthNodeBinaryTree(t *testing.T) {
 				t.Fatal(err)
 			}
 			if result != tc.ExpectedResult {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
 			}
 		})
 	}

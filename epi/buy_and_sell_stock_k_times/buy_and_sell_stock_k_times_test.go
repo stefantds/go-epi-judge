@@ -45,7 +45,7 @@ func TestBuyAndSellStockKTimes(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := BuyAndSellStockKTimes(tc.Prices, tc.K)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
 			}
 		})
 	}

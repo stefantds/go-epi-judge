@@ -45,7 +45,7 @@ func TestMultiply(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := Multiply(tc.Num1, tc.Num2)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
 			}
 		})
 	}

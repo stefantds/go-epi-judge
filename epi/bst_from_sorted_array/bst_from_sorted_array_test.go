@@ -49,7 +49,7 @@ func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
 				t.Fatal(err)
 			}
 			if !reflect.DeepEqual(result, tc.ExpectedHeight) {
-				t.Errorf("expected %v, got %v", tc.ExpectedHeight, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedHeight, result)
 			}
 		})
 	}

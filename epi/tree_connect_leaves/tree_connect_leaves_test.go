@@ -47,7 +47,7 @@ func TestCreateListOfLeaves(t *testing.T) {
 				t.Fatal(err)
 			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
 			}
 		})
 	}

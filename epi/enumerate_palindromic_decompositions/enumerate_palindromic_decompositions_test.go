@@ -45,7 +45,7 @@ func TestPalindromeDecompositions(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := PalindromeDecompositions(tc.Text)
 			if !equal(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
 			}
 		})
 	}

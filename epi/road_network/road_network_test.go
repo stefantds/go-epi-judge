@@ -49,7 +49,7 @@ func TestFindBestProposals(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := FindBestProposals(tc.H.Values, tc.P.Values, tc.N)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}

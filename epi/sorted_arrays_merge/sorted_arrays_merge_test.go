@@ -43,7 +43,7 @@ func TestMergeSortedArrays(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := MergeSortedArrays(tc.SortedArrays)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
 			}
 		})
 	}

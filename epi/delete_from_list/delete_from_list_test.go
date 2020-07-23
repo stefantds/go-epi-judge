@@ -46,7 +46,7 @@ func TestDeleteList(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := deleteListWrapper(tc.List.Value, tc.NodeIdx)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult.Value, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}

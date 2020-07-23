@@ -50,7 +50,7 @@ func TestPairIncludesAncestorAndDescendantOfM(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := pairIncludesAncestorAndDescendantOfMWrapper(tc.Tree.Value, tc.PossibleAncOrDesc0, tc.PossibleAncOrDesc1, tc.Middle)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("expected %v, got %v", tc.ExpectedResult, result)
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
 			}
 		})
 	}

@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	csv "github.com/stefantds/csvdecoder"
+	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/search_in_list"
 	"github.com/stefantds/go-epi-judge/list"
@@ -26,7 +26,7 @@ func TestSearchList(t *testing.T) {
 		Details        string
 	}
 
-	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
+	parser, err := csvdecoder.NewWithConfig(file, csvdecoder.Config{Comma: '\t', IgnoreHeaders: true})
 	if err != nil {
 		t.Fatalf("could not parse file %s: %s", testFileName, err)
 	}

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	csv "github.com/stefantds/csvdecoder"
+	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/group_equal_entries"
 )
@@ -27,7 +27,7 @@ func TestGroupByAge(t *testing.T) {
 		Details string
 	}
 
-	parser, err := csv.NewParserWithConfig(file, csv.ParserConfig{Comma: '\t', IgnoreHeaders: true})
+	parser, err := csvdecoder.NewWithConfig(file, csvdecoder.Config{Comma: '\t', IgnoreHeaders: true})
 	if err != nil {
 		t.Fatalf("could not parse file %s: %s", testFileName, err)
 	}

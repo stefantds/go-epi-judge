@@ -10,8 +10,8 @@ type ListNodeDecoder struct {
 	Value *ListNode
 }
 
-// DecodeRecord builds a list from a JSON array of ints
-func (d *ListNodeDecoder) DecodeRecord(record string) error {
+// DecodeField builds a list from a JSON array of ints
+func (d *ListNodeDecoder) DecodeField(record string) error {
 	allData := make([]int, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

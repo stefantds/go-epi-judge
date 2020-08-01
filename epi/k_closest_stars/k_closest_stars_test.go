@@ -76,7 +76,7 @@ type starsDecoder struct {
 	Value []Star
 }
 
-func (d *starsDecoder) DecodeRecord(record string) error {
+func (d *starsDecoder) DecodeField(record string) error {
 	allData := make([][3]float64, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

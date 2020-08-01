@@ -63,7 +63,7 @@ type namesDecoder struct {
 	Value []Name
 }
 
-func (d *namesDecoder) DecodeRecord(record string) error {
+func (d *namesDecoder) DecodeField(record string) error {
 	allData := make([][2]string, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

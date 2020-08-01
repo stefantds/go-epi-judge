@@ -60,7 +60,7 @@ type perorderDecoder struct {
 	Value []IntOrNull
 }
 
-func (o *perorderDecoder) DecodeRecord(record string) error {
+func (o *perorderDecoder) DecodeField(record string) error {
 	allData := make([]string, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

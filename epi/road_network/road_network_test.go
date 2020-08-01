@@ -62,7 +62,7 @@ type highwaySectionsDecoder struct {
 	Values []HighwaySection
 }
 
-func (o *highwaySectionsDecoder) DecodeRecord(record string) error {
+func (o *highwaySectionsDecoder) DecodeField(record string) error {
 	allData := make([][3]int, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
@@ -83,7 +83,7 @@ type highwaySectionDecoder struct {
 	Value HighwaySection
 }
 
-func (o *highwaySectionDecoder) DecodeRecord(record string) error {
+func (o *highwaySectionDecoder) DecodeField(record string) error {
 	allData := make([]int, 3)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

@@ -60,7 +60,7 @@ type intervalsDecoder struct {
 	Values []Interval
 }
 
-func (o *intervalsDecoder) DecodeRecord(record string) error {
+func (o *intervalsDecoder) DecodeField(record string) error {
 	allData := make([][2]int, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
@@ -80,7 +80,7 @@ type intervalDecoder struct {
 	Value Interval
 }
 
-func (i *intervalDecoder) DecodeRecord(record string) error {
+func (i *intervalDecoder) DecodeField(record string) error {
 	allData := make([]int, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

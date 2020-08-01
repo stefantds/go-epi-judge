@@ -88,7 +88,7 @@ type queueOpDecoder struct {
 	Value []*QueueOp
 }
 
-func (o *queueOpDecoder) DecodeRecord(record string) error {
+func (o *queueOpDecoder) DecodeField(record string) error {
 	allData := make([][2]interface{}, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

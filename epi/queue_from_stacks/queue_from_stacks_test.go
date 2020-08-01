@@ -78,7 +78,7 @@ type queueFromStacksDecoder struct {
 	Value []*queueFromStacksOp
 }
 
-func (o *queueFromStacksDecoder) DecodeRecord(record string) error {
+func (o *queueFromStacksDecoder) DecodeField(record string) error {
 	allData := make([][3]interface{}, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

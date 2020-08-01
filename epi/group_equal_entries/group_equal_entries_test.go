@@ -95,7 +95,7 @@ type personsDecoder struct {
 	Values []Person
 }
 
-func (o *personsDecoder) DecodeRecord(record string) error {
+func (o *personsDecoder) DecodeField(record string) error {
 	allData := make([][2]interface{}, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

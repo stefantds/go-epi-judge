@@ -58,7 +58,7 @@ type eventsDecoder struct {
 	Values []Event
 }
 
-func (o *eventsDecoder) DecodeRecord(record string) error {
+func (o *eventsDecoder) DecodeField(record string) error {
 	allData := make([][2]int, 0)
 	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
 		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)

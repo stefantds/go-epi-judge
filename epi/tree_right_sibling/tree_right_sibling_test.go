@@ -78,7 +78,7 @@ type binaryTreeNodeWithNextDecoder struct {
 	Value *BinaryTreeNodeWithNext
 }
 
-func (d *binaryTreeNodeWithNextDecoder) DecodeRecord(record string) error {
+func (d *binaryTreeNodeWithNextDecoder) DecodeField(record string) error {
 	record = strings.TrimPrefix(record, "[")
 	record = strings.TrimSuffix(record, "]")
 	allData := strings.Split(record, ",")

@@ -9,8 +9,8 @@ type BSTNodeDecoder struct {
 	Value *BSTNode
 }
 
-// DecodeRecord builds a BSTNode from a JSON array of ints
-func (d *BSTNodeDecoder) DecodeRecord(record string) error {
+// DecodeField builds a BSTNode from a JSON array of ints
+func (d *BSTNodeDecoder) DecodeField(record string) error {
 	record = strings.TrimPrefix(record, "[")
 	record = strings.TrimSuffix(record, "]")
 	allData := strings.Split(record, ",")

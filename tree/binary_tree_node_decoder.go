@@ -9,8 +9,8 @@ type BinaryTreeNodeDecoder struct {
 	Value *BinaryTreeNode
 }
 
-// DecodeRecord builds a BinaryTreeNode from a JSON array of ints
-func (d *BinaryTreeNodeDecoder) DecodeRecord(record string) error {
+// DecodeField builds a BinaryTreeNode from a JSON array of ints
+func (d *BinaryTreeNodeDecoder) DecodeField(record string) error {
 	record = strings.TrimPrefix(record, "[")
 	record = strings.TrimSuffix(record, "]")
 	allData := strings.Split(record, ",")

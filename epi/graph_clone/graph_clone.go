@@ -1,11 +1,11 @@
 package graph_clone
 
-type GraphVertexWithLabel struct {
+type GraphVertex struct {
 	Label int
-	Edges []GraphVertexWithLabel
+	Edges []*GraphVertex
 }
 
-func CloneGraph(graph GraphVertexWithLabel) *GraphVertexWithLabel {
+func CloneGraph(graph *GraphVertex) *GraphVertex {
 	// TODO - Add your code here
 	return nil
 }

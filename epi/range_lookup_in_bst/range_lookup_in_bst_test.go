@@ -1,9 +1,11 @@
 package range_lookup_in_bst_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -22,7 +24,7 @@ func TestRangeLookupInBst(t *testing.T) {
 
 	type TestCase struct {
 		Tree           tree.BSTNodeDecoder
-		Interval       Interval
+		Interval       intervalDecoder
 		ExpectedResult []int
 		Details        string
 	}
@@ -44,7 +46,7 @@ func TestRangeLookupInBst(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := RangeLookupInBst(tc.Tree.Value, tc.Interval)
+			result := RangeLookupInBst(tc.Tree.Value, tc.Interval.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
 			}
@@ -53,4 +55,20 @@ func TestRangeLookupInBst(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+type intervalDecoder struct {
+	Value Interval
+}
+
+func (i *intervalDecoder) DecodeField(record string) error {
+	var allData [2]int
+	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
+		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
+	}
+
+	i.Value.Left = allData[0]
+	i.Value.Right = allData[1]
+
+	return nil
 }

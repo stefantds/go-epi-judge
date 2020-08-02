@@ -21,7 +21,7 @@ func TestFindMinMax(t *testing.T) {
 
 	type TestCase struct {
 		A              []int
-		ExpectedResult MinMax
+		ExpectedResult []int
 		Details        string
 	}
 
@@ -41,9 +41,9 @@ func TestFindMinMax(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindMinMax(tc.A)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
+			resultMin, resultMax := FindMinMax(tc.A)
+			if !reflect.DeepEqual([]int{resultMin, resultMax}, tc.ExpectedResult) {
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, []int{resultMin, resultMax})
 			}
 		})
 	}

@@ -21,7 +21,7 @@ func TestFindDuplicateMissing(t *testing.T) {
 
 	type TestCase struct {
 		A              []int
-		ExpectedResult DuplicateAndMissing
+		ExpectedResult []int
 		Details        string
 	}
 
@@ -41,9 +41,9 @@ func TestFindDuplicateMissing(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := FindDuplicateMissing(tc.A)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
+			resultDupl, resultMissing := FindDuplicateMissing(tc.A)
+			if !reflect.DeepEqual([]int{resultDupl, resultMissing}, tc.ExpectedResult) {
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, []int{resultDupl, resultMissing})
 			}
 		})
 	}

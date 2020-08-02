@@ -1,11 +1,6 @@
 package search_for_missing_element
 
-type DuplicateAndMissing struct {
-	Duplicate int
-	Missing   int
-}
-
-func FindDuplicateMissing(a []int) *DuplicateAndMissing {
+func FindDuplicateMissing(a []int) (duplicate, missing int) {
 	// TODO - Add your code here
-	return nil
+	return 0, 0
 }

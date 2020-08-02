@@ -1,9 +1,11 @@
 package rectangle_intersection_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -20,9 +22,9 @@ func TestIntersectRectangle(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		R1             XYRect
-		R2             XYRect
-		ExpectedResult XYRect
+		R1             rectDecoder
+		R2             rectDecoder
+		ExpectedResult rectDecoder
 		Details        string
 	}
 
@@ -43,13 +45,31 @@ func TestIntersectRectangle(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			result := IntersectRectangle(tc.R1, tc.R2)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
+			result := IntersectRectangle(tc.R1.Value, tc.R2.Value)
+			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult.Value, result)
 			}
 		})
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+type rectDecoder struct {
+	Value Rect
+}
+
+func (i *rectDecoder) DecodeField(record string) error {
+	var allData [4]int
+	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
+		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
+	}
+
+	i.Value.X = allData[0]
+	i.Value.Y = allData[1]
+	i.Value.Width = allData[2]
+	i.Value.Height = allData[3]
+
+	return nil
 }

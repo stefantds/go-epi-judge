@@ -45,7 +45,7 @@ func TestOptimumTaskAssignment(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := OptimumTaskAssignment(tc.TaskDurations)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
-				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult.Values, result)
+				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Values)
 			}
 		})
 	}

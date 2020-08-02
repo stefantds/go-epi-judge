@@ -50,7 +50,7 @@ func TestInsertAfter(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			} else if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult.Value, result)
+				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
 			}
 		})
 	}

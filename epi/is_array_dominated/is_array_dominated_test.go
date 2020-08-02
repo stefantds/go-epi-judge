@@ -64,12 +64,12 @@ func TestValidPlacementExists(t *testing.T) {
 func validPlacementExistsWrapper(team0 Team, team1 Team, expected01 bool, expected10 bool) error {
 	result01 := ValidPlacementExists(team0, team1)
 	if result01 != expected01 {
-		return fmt.Errorf("expected %t, got %t", expected01, result01)
+		return fmt.Errorf("got %t, want %t", result01, expected01)
 	}
 
 	result10 := ValidPlacementExists(team1, team0)
 	if result10 != expected10 {
-		return fmt.Errorf("expected %t, got %t", expected10, result10)
+		return fmt.Errorf("got %t, want %t", result10, expected10)
 	}
 
 	return nil

@@ -45,7 +45,7 @@ func TestPermutations(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := Permutations(tc.A)
 			if !equal(result, tc.ExpectedResult) {
-				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
+				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
 		})
 	}

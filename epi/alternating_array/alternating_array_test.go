@@ -68,22 +68,22 @@ func checkOrder(a []int) error {
 	for i := 0; i < len(a); i++ {
 		if (i % 2) != 0 {
 			if a[i] < a[i-1] {
-				return fmt.Errorf("wrong order found: want: a[%d] <= a[%d]; have: %d > %d", i-1, i, a[i-1], a[i])
+				return fmt.Errorf("wrong order found: got: %d > %d; want: a[%d] <= a[%d]", a[i-1], a[i], i-1, i)
 			}
 			if i < len(a)-1 {
 				if a[i] < a[i+1] {
-					return fmt.Errorf("wrong order found: want: a[%d] >= a[%d]; have: %d < %d", i, i+1, a[i], a[i+1])
+					return fmt.Errorf("wrong order found: got: %d < %d; want: a[%d] >= a[%d]", a[i], a[i+1], i, i+1)
 				}
 			}
 		} else {
 			if i > 0 {
 				if a[i-1] < a[i] {
-					return fmt.Errorf("wrong order found: want: a[%d] >= a[%d]; have: %d < %d", i-1, i, a[i-1], a[i])
+					return fmt.Errorf("wrong order found: got: %d < %d; want: a[%d] >= a[%d]", a[i-1], a[i], i-1, i)
 				}
 			}
 			if i < len(a)-1 {
 				if a[i+1] < a[i] {
-					return fmt.Errorf("wrong order found: want: a[%d] <= a[%d]; have: %d > %d", i, i+1, a[i], a[i+1])
+					return fmt.Errorf("wrong order found: got: %d > %d; want: a[%d] <= a[%d]", a[i], a[i+1], i, i+1)
 				}
 			}
 		}

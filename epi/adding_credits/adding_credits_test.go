@@ -64,7 +64,7 @@ func clientsCreditsInfoTester(operations []*Operation) error {
 				result = 0
 			}
 			if result != o.IArg {
-				return fmt.Errorf("mismatch at index %d: operation %s: want %d, have %d", opIdx, o.Op, o.IArg, result)
+				return fmt.Errorf("mismatch at index %d: operation %s: got: %v, want: %v", opIdx, o.Op, result, o.IArg)
 			}
 		case "insert":
 			cr.Insert(o.SArg, o.IArg)
@@ -73,7 +73,7 @@ func clientsCreditsInfoTester(operations []*Operation) error {
 		case "lookup":
 			result := cr.Lookup(o.SArg)
 			if result != o.IArg {
-				return fmt.Errorf("mismatch at index %d: operation %s: want %d, have %d", opIdx, o.Op, o.IArg, result)
+				return fmt.Errorf("mismatch at index %d: operation %s: got: %v, want: %v", opIdx, o.Op, result, o.IArg)
 			}
 		}
 	}

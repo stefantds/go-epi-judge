@@ -59,7 +59,7 @@ func lruCacheTester(operations []*LRUCacheOp) error {
 		case "lookup":
 			result := cache.Lookup(o.Arg1)
 			if result != o.Arg2 {
-				return fmt.Errorf("mismatch at index %d: operation %s: want %d, have %d", opIdx, o.Code, o.Arg2, result)
+				return fmt.Errorf("mismatch at index %d: operation %s: got %d, want %d", opIdx, o.Code, result, o.Arg2)
 			}
 		case "insert":
 			cache.Insert(o.Arg1, o.Arg2)
@@ -71,7 +71,7 @@ func lruCacheTester(operations []*LRUCacheOp) error {
 				result = 0
 			}
 			if result != o.Arg2 {
-				return fmt.Errorf("mismatch at index %d: operation %s: want %d, have %d", opIdx, o.Code, o.Arg2, result)
+				return fmt.Errorf("mismatch at index %d: operation %s: got %d, want %d", opIdx, o.Code, result, o.Arg2)
 			}
 		}
 	}

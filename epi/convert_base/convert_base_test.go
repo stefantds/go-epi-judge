@@ -47,7 +47,7 @@ func TestConvertBase(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := ConvertBase(tc.NumAsString, tc.B1, tc.B2)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\nexpected:\n%v\ngot:\n%v", tc.ExpectedResult, result)
+				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
 		})
 	}

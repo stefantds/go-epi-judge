@@ -61,7 +61,7 @@ func queueFromStacksTester(operations []*queueFromStacksOp) error {
 		case "dequeue":
 			result := q.Dequeue()
 			if result != o.Arg {
-				return fmt.Errorf("mismatch at index %d: operation %s: want %d, have %d", opIdx, o.Op, o.Arg, result)
+				return fmt.Errorf("mismatch at index %d: operation %s: got: %v, want: %v", opIdx, o.Op, result, o.Arg)
 			}
 		}
 	}

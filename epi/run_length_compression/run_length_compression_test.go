@@ -53,12 +53,12 @@ func TestRunLengthEncoding(t *testing.T) {
 func runLengthEncodingTester(encoded, decoded string) error {
 	decodedResult := Decoding(encoded)
 	if decodedResult != decoded {
-		return fmt.Errorf("decoding failed: want %s, have %s", decoded, decodedResult)
+		return fmt.Errorf("decoding failed: got %s, want %s", decodedResult, decoded)
 	}
 
 	encodedResult := Encoding(decoded)
 	if encodedResult != encoded {
-		return fmt.Errorf("encoding failed: want %s, have %s", decoded, encodedResult)
+		return fmt.Errorf("encoding failed: got %s, want %s", encodedResult, decoded)
 	}
 
 	return nil

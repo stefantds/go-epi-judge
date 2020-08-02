@@ -54,11 +54,11 @@ func TestStringIntegerInterconversion(t *testing.T) {
 func stringIntegerInterconversionWrapper(x int, s string) error {
 	stringResult := IntToString(x)
 	if y, err := strconv.Atoi(stringResult); err != nil || y != x {
-		return fmt.Errorf("int to string conversion failed: want '%s', have '%s'", s, stringResult)
+		return fmt.Errorf("int to string conversion failed: got: '%s', want: '%s'", stringResult, s)
 	}
 
 	if intResult := StringToInt(s); intResult != x {
-		return fmt.Errorf("string to int conversion failed: want %d, have %d", x, intResult)
+		return fmt.Errorf("string to int conversion failed: got: %d, want %d", intResult, x)
 	}
 
 	return nil

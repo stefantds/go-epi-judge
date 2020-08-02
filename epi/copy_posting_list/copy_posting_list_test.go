@@ -73,9 +73,9 @@ func checkPostingListsEqual(orig *PostingListNode, copy *PostingListNode) error 
 	for oIter != nil {
 		switch {
 		case cIter == nil:
-			return fmt.Errorf("copied list has fewer nodes than the original: want %v, have %v", orig, copy)
+			return fmt.Errorf("copied list has fewer nodes than the original: got %v, want %v", copy, orig)
 		case oIter.Order != cIter.Order:
-			return fmt.Errorf("elements mismatch at index %d: want %v, have %v", idx, oIter, cIter)
+			return fmt.Errorf("elements mismatch at index %d: got %v, want %v", idx, cIter, oIter)
 		}
 		nodeMap[oIter] = cIter
 		oIter = oIter.Next
@@ -84,7 +84,7 @@ func checkPostingListsEqual(orig *PostingListNode, copy *PostingListNode) error 
 	}
 
 	if cIter != nil {
-		return fmt.Errorf("copied list has more nodes than the original: want %v, have %v", orig, copy)
+		return fmt.Errorf("copied list has more nodes than the original: got %v, want %v", copy, orig)
 	}
 
 	oIter = orig

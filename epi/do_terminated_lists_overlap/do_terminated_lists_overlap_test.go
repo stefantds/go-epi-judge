@@ -84,7 +84,7 @@ func overlappingNoCycleListsWrapper(l0 *list.ListNode, l1 *list.ListNode, common
 	result := OverlappingNoCycleLists(l0, l1)
 
 	if !reflect.DeepEqual(result, list.DeepCopy(common)) {
-		return fmt.Errorf("\nexpected:\n%v\ngot:\n%v", common, result)
+		return fmt.Errorf("\ngot:\n%v\nwant:\n%v", result, common)
 	}
 
 	return nil

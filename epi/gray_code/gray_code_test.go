@@ -54,7 +54,7 @@ func grayCodeWrapper(numBits int) error {
 
 	expectedSize := 1 << numBits
 	if expectedSize != len(result) {
-		return fmt.Errorf("length mismatch: want %d, have %d", expectedSize, len(result))
+		return fmt.Errorf("length mismatch: got %d, want %d", len(result), expectedSize)
 	}
 
 	for i := 1; i < len(result); i++ {

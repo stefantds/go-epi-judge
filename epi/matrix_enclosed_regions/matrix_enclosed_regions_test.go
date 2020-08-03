@@ -10,6 +10,7 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/matrix_enclosed_regions"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestFillSurroundedRegions(t *testing.T) {
@@ -44,7 +45,7 @@ func TestFillSurroundedRegions(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := fillSurroundedRegionsWrapper(tc.Board)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				t.Errorf("\ngot:\n%v\nwant:\n%v", utils.MatrixFmt{result}, utils.MatrixFmt{tc.ExpectedResult})
 			}
 		})
 	}

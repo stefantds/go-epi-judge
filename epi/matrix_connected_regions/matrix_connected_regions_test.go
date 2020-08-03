@@ -12,6 +12,7 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/matrix_connected_regions"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestFlipColor(t *testing.T) {
@@ -50,7 +51,7 @@ func TestFlipColor(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := flipColorWrapper(tc.X, tc.Y, tc.Image.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+				t.Errorf("\ngot:\n%v\nwant:\n%v", utils.MatrixFmt{result}, utils.MatrixFmt{tc.ExpectedResult.Value})
 			}
 		})
 	}

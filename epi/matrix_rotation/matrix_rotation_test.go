@@ -10,6 +10,7 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/matrix_rotation"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestRotateMatrix(t *testing.T) {
@@ -44,7 +45,7 @@ func TestRotateMatrix(t *testing.T) {
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := rotateMatrixWrapper(tc.SquareMatrix)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				t.Errorf("\ngot:\n%v\nwant:\n%v", utils.MatrixFmt{result}, utils.MatrixFmt{tc.ExpectedResult})
 			}
 		})
 	}

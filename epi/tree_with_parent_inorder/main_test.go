@@ -1,39 +1,21 @@
 package tree_with_parent_inorder_test
 
 import (
-	"fmt"
 	"os"
 	"testing"
-
-	"gopkg.in/yaml.v2"
 
 	"github.com/stefantds/go-epi-judge/config"
 )
 
-var testConfig config.TestConfig
+var testConfig *config.Config
 
 func TestMain(m *testing.M) {
-	err := parseTestConfig()
+	var err error
+	testConfig, err = config.Parse()
 	if err != nil {
 		panic(err)
 	}
 
 	code := m.Run()
 	os.Exit(code)
-}
-
-func parseTestConfig() error {
-	f, err := os.Open("../../config.yml")
-	if err != nil {
-		return fmt.Errorf("can't find config file: %w", err)
-	}
-	defer f.Close()
-
-	decoder := yaml.NewDecoder(f)
-	err = decoder.Decode(&testConfig)
-	if err != nil {
-		return fmt.Errorf("can't parse config file: %w", err)
-	}
-
-	return nil
 }

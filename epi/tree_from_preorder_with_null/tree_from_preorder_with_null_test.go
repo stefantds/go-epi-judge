@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -16,7 +17,7 @@ import (
 )
 
 func TestReconstructPreorder(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "tree_from_preorder_with_null.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_from_preorder_with_null.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package is_valid_parenthesization_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestIsWellFormed(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_valid_parenthesization.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "is_valid_parenthesization.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

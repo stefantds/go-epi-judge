@@ -3,6 +3,7 @@ package search_in_bst_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestSearchBST(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_in_bst.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "search_in_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

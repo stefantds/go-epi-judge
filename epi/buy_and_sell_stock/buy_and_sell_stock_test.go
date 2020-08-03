@@ -3,6 +3,7 @@ package buy_and_sell_stock_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestComputeMaxProfit(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "buy_and_sell_stock.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "buy_and_sell_stock.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

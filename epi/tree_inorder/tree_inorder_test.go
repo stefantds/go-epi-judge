@@ -3,6 +3,7 @@ package tree_inorder_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestInorderTraversal(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "tree_inorder.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_inorder.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package count_inversions_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestCountInversions(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "count_inversions.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "count_inversions.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

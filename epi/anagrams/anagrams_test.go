@@ -3,6 +3,7 @@ package anagrams_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestFindAnagrams(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "anagrams.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "anagrams.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

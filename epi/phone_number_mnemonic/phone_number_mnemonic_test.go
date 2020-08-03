@@ -3,6 +3,7 @@ package phone_number_mnemonic_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestPhoneMnemonic(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "phone_number_mnemonic.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "phone_number_mnemonic.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

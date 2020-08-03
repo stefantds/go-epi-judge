@@ -3,6 +3,7 @@ package alternating_array_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/go-epi-judge/utils"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestRearrange(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "alternating_array.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "alternating_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

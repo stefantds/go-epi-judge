@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestValidPlacementExists(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_array_dominated.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "is_array_dominated.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

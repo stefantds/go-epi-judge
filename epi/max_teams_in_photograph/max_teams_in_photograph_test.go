@@ -3,6 +3,7 @@ package max_teams_in_photograph_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestFindLargestNumberTeams(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "max_teams_in_photograph.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "max_teams_in_photograph.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

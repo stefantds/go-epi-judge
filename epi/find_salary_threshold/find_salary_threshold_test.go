@@ -3,6 +3,7 @@ package find_salary_threshold_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindSalaryCap(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "find_salary_threshold.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "find_salary_threshold.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

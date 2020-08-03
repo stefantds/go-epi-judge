@@ -3,6 +3,7 @@ package do_terminated_lists_overlap_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestOverlappingNoCycleLists(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "do_terminated_lists_overlap.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "do_terminated_lists_overlap.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

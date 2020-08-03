@@ -3,6 +3,7 @@ package evaluate_rpn_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestEval(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "evaluate_rpn.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "evaluate_rpn.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

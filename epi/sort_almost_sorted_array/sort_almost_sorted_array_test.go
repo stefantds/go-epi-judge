@@ -3,6 +3,7 @@ package sort_almost_sorted_array_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestSortApproximatelySortedData(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "sort_almost_sorted_array.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "sort_almost_sorted_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

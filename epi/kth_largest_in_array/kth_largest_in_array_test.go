@@ -3,6 +3,7 @@ package kth_largest_in_array_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindKthLargest(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "kth_largest_in_array.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "kth_largest_in_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

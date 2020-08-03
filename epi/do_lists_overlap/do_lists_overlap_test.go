@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestOverlappingLists(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "do_lists_overlap.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "do_lists_overlap.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

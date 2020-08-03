@@ -3,6 +3,7 @@ package max_safe_height_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestGetHeight(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "max_safe_height.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "max_safe_height.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

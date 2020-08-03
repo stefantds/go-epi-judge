@@ -3,6 +3,7 @@ package three_sum_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestHasThreeSum(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "three_sum.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "three_sum.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

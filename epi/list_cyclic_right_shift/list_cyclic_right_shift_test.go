@@ -3,6 +3,7 @@ package list_cyclic_right_shift_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestCyclicallyRightShiftList(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "list_cyclic_right_shift.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "list_cyclic_right_shift.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

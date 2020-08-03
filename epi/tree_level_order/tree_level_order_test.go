@@ -3,6 +3,7 @@ package tree_level_order_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestBinaryTreeDepthOrder(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "tree_level_order.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_level_order.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

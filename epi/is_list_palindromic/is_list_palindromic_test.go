@@ -3,6 +3,7 @@ package is_list_palindromic_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestIsLinkedListAPalindrome(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_list_palindromic.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "is_list_palindromic.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

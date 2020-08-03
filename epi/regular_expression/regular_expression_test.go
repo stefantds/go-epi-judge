@@ -3,6 +3,7 @@ package regular_expression_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestIsMatch(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "regular_expression.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "regular_expression.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

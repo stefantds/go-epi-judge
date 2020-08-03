@@ -3,6 +3,7 @@ package levenshtein_distance_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestLevenshteinDistance(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "levenshtein_distance.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "levenshtein_distance.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package path_sum_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestHasPathSum(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "path_sum.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "path_sum.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

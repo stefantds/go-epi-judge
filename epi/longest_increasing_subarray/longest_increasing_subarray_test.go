@@ -3,6 +3,7 @@ package longest_increasing_subarray_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestFindLongestIncreasingSubarray(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "longest_increasing_subarray.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "longest_increasing_subarray.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

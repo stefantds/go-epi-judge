@@ -3,6 +3,7 @@ package minimum_weight_path_in_a_triangle_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestMinimumPathTotal(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "minimum_weight_path_in_a_triangle.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "minimum_weight_path_in_a_triangle.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

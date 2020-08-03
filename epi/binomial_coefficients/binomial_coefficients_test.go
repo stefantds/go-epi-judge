@@ -3,6 +3,7 @@ package binomial_coefficients_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestComputeBinomialCoefficient(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "binomial_coefficients.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "binomial_coefficients.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

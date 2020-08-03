@@ -3,6 +3,7 @@ package is_tree_a_bst_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestIsBinaryTreeBST(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_tree_a_bst.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "is_tree_a_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

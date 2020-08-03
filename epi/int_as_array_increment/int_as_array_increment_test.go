@@ -3,6 +3,7 @@ package int_as_array_increment_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestPlusOne(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "int_as_array_increment.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "int_as_array_increment.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

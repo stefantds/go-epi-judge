@@ -3,6 +3,7 @@ package deadlock_detection_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestIsDeadlocked(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "deadlock_detection.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "deadlock_detection.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

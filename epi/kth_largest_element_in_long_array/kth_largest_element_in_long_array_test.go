@@ -3,6 +3,7 @@ package kth_largest_element_in_long_array_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestFindKthLargestUnknownLength(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "kth_largest_element_in_long_array.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "kth_largest_element_in_long_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

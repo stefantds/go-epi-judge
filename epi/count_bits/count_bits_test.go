@@ -3,6 +3,7 @@ package count_bits_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestCountBits(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "count_bits.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "count_bits.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

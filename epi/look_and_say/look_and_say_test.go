@@ -3,6 +3,7 @@ package look_and_say_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestLookAndSay(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "look_and_say.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "look_and_say.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

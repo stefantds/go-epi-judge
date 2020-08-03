@@ -3,6 +3,7 @@ package search_for_missing_element_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindDuplicateMissing(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "find_missing_and_duplicate.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "find_missing_and_duplicate.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

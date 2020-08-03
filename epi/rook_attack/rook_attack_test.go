@@ -3,6 +3,7 @@ package rook_attack_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestRookAttack(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "rook_attack.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "rook_attack.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

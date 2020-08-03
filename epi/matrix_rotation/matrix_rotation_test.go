@@ -3,6 +3,7 @@ package matrix_rotation_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestRotateMatrix(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "matrix_rotation.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "matrix_rotation.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

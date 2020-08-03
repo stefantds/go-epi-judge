@@ -3,6 +3,7 @@ package max_product_all_but_one_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindBiggestProductNMinusOneProduct(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "max_product_all_but_one.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "max_product_all_but_one.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package string_integer_interconversion_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestStringIntegerInterconversion(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "string_integer_interconversion.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "string_integer_interconversion.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

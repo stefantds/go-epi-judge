@@ -3,6 +3,7 @@ package rotate_array_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestRotateArray(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "rotate_array.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "rotate_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

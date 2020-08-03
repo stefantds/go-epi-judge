@@ -3,6 +3,7 @@ package online_median_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestOnlineMedian(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "online_median.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "online_median.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

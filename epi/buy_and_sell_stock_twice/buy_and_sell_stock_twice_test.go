@@ -3,6 +3,7 @@ package buy_and_sell_stock_twice_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestBuyAndSellStockTwice(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "buy_and_sell_stock_twice.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "buy_and_sell_stock_twice.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

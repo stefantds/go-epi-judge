@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"path/filepath"
 	"testing"
 
 	. "github.com/stefantds/go-epi-judge/epi/nonuniform_random_number"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestNonuniformRandomNumberGeneration(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "nonuniform_random_number.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "nonuniform_random_number.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

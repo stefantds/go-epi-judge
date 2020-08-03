@@ -3,6 +3,7 @@ package search_frequent_items_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestSearchFrequentItems(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_frequent_items.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "search_frequent_items.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

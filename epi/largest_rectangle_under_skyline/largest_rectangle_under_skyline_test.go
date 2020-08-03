@@ -3,6 +3,7 @@ package largest_rectangle_under_skyline_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestCalculateLargestRectangle(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "largest_rectangle_under_skyline.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "largest_rectangle_under_skyline.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

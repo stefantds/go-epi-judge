@@ -3,6 +3,7 @@ package bst_merge_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestMergeTwoBsts(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "bst_merge.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "bst_merge.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

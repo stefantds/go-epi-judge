@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestClientsCreditsInfo(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "adding_credits.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "adding_credits.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

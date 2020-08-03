@@ -3,6 +3,7 @@ package h_index_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestHIndex(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "h_index.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "h_index.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

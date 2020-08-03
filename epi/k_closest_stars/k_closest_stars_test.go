@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestFindClosestKStars(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "k_closest_stars.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "k_closest_stars.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package number_of_traversals_matrix_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestNumberOfWays(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "number_of_traversals_matrix.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "number_of_traversals_matrix.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

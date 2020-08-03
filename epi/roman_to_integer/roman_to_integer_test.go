@@ -3,6 +3,7 @@ package roman_to_integer_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestRomanToInteger(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "roman_to_integer.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "roman_to_integer.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestBuildBSTFromSortedList(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "sorted_list_to_bst.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "sorted_list_to_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

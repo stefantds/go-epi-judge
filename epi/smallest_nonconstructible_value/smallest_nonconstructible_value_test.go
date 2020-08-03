@@ -3,6 +3,7 @@ package smallest_nonconstructible_value_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestSmallestNonconstructibleValue(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "smallest_nonconstructible_value.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "smallest_nonconstructible_value.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

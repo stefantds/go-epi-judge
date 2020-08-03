@@ -3,6 +3,7 @@ package longest_nondecreasing_subsequence_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestLongestNondecreasingSubsequenceLength(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "longest_nondecreasing_subsequence.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "longest_nondecreasing_subsequence.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

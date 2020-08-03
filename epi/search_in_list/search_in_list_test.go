@@ -3,6 +3,7 @@ package search_in_list_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -12,7 +13,7 @@ import (
 )
 
 func TestSearchList(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_in_list.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "search_in_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

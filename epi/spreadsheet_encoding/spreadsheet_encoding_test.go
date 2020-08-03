@@ -3,6 +3,7 @@ package spreadsheet_encoding_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestSsDecodeColID(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "spreadsheet_encoding.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "spreadsheet_encoding.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package ab_sqrt_2_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestGenerateFirstKABSqrt2(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "a_b_sqrt2.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "a_b_sqrt2.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

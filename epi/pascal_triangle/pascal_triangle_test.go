@@ -3,6 +3,7 @@ package pascal_triangle_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestGeneratePascalTriangle(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "pascal_triangle.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "pascal_triangle.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

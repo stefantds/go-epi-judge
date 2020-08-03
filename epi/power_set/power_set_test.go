@@ -3,6 +3,7 @@ package power_set_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestGeneratePowerSet(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "power_set.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "power_set.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

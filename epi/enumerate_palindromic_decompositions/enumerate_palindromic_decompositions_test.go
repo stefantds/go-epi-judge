@@ -3,6 +3,7 @@ package enumerate_palindromic_decompositions_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestPalindromeDecompositions(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "enumerate_palindromic_decompositions.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "enumerate_palindromic_decompositions.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestRangeLookupInBst(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "range_lookup_in_bst.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "range_lookup_in_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

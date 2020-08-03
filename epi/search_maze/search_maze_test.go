@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestSearchMaze(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_maze.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "search_maze.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

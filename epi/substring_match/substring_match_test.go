@@ -3,6 +3,7 @@ package substring_match_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestRabinKarp(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "substring_match.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "substring_match.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

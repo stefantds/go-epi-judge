@@ -3,6 +3,7 @@ package run_length_compression_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestRunLengthEncoding(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "run_length_compression.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "run_length_compression.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package is_string_in_matrix_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestIsPatternContainedInGrid(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_string_in_matrix.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "is_string_in_matrix.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

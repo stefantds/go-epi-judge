@@ -3,6 +3,7 @@ package refueling_schedule_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestFindAmpleCity(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "refueling_schedule.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "refueling_schedule.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

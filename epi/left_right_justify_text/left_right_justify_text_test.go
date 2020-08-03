@@ -3,6 +3,7 @@ package left_right_justify_text_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestJustifyText(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "left_right_justify_text.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "left_right_justify_text.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestListPivoting(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "pivot_list.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "pivot_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

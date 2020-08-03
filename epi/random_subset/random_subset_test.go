@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"testing"
 
@@ -15,7 +16,7 @@ import (
 )
 
 func TestRandomSubset(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "random_subset.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "random_subset.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

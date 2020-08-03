@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestFindMinimumVisits(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "minimum_points_covering_intervals.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "minimum_points_covering_intervals.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

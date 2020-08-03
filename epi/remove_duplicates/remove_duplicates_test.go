@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestEliminateDuplicate(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "remove_duplicates.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "remove_duplicates.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

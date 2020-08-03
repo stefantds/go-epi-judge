@@ -3,6 +3,7 @@ package fibonacci_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFibonacci(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "fibonacci.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "fibonacci.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

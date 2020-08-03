@@ -3,6 +3,7 @@ package first_missing_positive_entry_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindFirstMissingPositive(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "first_missing_positive_entry.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "first_missing_positive_entry.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

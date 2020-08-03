@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestGroupByAge(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "group_equal_entries.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "group_equal_entries.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

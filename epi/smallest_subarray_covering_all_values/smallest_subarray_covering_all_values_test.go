@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindSmallestSequentiallyCoveringSubset(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "smallest_subarray_covering_all_values.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "smallest_subarray_covering_all_values.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

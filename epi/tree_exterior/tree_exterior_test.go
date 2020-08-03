@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -14,7 +15,7 @@ import (
 )
 
 func TestExteriorBinaryTree(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "tree_exterior.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_exterior.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

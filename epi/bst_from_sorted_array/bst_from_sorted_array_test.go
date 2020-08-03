@@ -3,6 +3,7 @@ package bst_from_sorted_array_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -15,7 +16,7 @@ import (
 )
 
 func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "bst_from_sorted_array.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "bst_from_sorted_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

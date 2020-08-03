@@ -3,6 +3,7 @@ package majority_element_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestMajoritySearch(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "majority_element.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "majority_element.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

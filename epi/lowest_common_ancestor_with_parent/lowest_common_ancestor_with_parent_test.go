@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -14,7 +15,7 @@ import (
 )
 
 func TestLCA(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "lowest_common_ancestor.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "lowest_common_ancestor.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

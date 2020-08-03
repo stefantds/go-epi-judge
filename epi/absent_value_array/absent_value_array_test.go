@@ -3,6 +3,7 @@ package absent_value_array_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestFindMissingElement(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "absent_value_array.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "absent_value_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

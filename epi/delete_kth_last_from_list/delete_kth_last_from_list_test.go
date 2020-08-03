@@ -3,6 +3,7 @@ package delete_kth_last_from_list_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestRemoveKthLast(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "delete_kth_last_from_list.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "delete_kth_last_from_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package string_decompositions_into_dictionary_words_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindAllSubstrings(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "string_decompositions_into_dictionary_words.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "string_decompositions_into_dictionary_words.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

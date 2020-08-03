@@ -3,6 +3,7 @@ package k_largest_values_in_bst_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestFindKLargestInBst(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "k_largest_values_in_bst.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "k_largest_values_in_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

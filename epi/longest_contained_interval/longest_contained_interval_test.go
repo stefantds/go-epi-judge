@@ -3,6 +3,7 @@ package longest_contained_interval_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestLongestContainedRange(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "longest_contained_interval.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "longest_contained_interval.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

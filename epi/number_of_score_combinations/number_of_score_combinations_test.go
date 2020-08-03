@@ -3,6 +3,7 @@ package number_of_score_combinations_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestNumCombinationsForFinalScore(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "number_of_score_combinations.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "number_of_score_combinations.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

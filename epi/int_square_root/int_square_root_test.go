@@ -3,6 +3,7 @@ package int_square_root_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestSquareRoot(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "int_square_root.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "int_square_root.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

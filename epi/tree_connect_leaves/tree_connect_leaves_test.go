@@ -3,6 +3,7 @@ package tree_connect_leaves_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestCreateListOfLeaves(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "tree_connect_leaves.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_connect_leaves.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

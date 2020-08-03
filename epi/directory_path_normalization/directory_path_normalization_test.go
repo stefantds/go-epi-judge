@@ -3,6 +3,7 @@ package directory_path_normalization_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestShortestEquivalentPath(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "directory_path_normalization.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "directory_path_normalization.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package is_string_permutable_to_palindrome_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestCanFormPalindrome(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_string_permutable_to_palindrome.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "is_string_permutable_to_palindrome.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

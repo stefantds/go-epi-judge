@@ -3,6 +3,7 @@ package bonus_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestCalculateBonus(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "bonus.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "bonus.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

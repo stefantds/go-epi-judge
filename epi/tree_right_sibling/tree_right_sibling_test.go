@@ -3,6 +3,7 @@ package tree_right_sibling_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestConstructRightSibling(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "tree_right_sibling.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_right_sibling.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

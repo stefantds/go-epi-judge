@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestCloneGraph(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "graph_clone.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "graph_clone.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

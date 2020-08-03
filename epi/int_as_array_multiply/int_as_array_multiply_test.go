@@ -3,6 +3,7 @@ package int_as_array_multiply_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestMultiply(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "int_as_array_multiply.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "int_as_array_multiply.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

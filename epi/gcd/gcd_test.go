@@ -3,6 +3,7 @@ package gcd_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestGCD(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "gcd.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "gcd.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestQueueFromStacks(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "queue_with_max.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "queue_with_max.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

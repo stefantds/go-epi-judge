@@ -3,6 +3,7 @@ package sorted_arrays_merge_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestMergeSortedArrays(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "sorted_arrays_merge.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "sorted_arrays_merge.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package collatz_checker_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestTestCollatzConjecture(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "collatz_checker.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "collatz_checker.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestReplaceAndRemove(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "replace_and_remove.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "replace_and_remove.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

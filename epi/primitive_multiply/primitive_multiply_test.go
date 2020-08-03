@@ -3,6 +3,7 @@ package primitive_multiply_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestPrimitiveMultiply(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "primitive_multiply.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "primitive_multiply.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package valid_ip_addresses_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGetValidIpAddress(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "valid_ip_addresses.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "valid_ip_addresses.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

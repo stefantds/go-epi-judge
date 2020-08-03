@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"testing"
 
@@ -16,7 +17,7 @@ import (
 )
 
 func TestRandomSampling(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "offline_sampling.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "offline_sampling.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

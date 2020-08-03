@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestSolveSudoku(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "sudoku_solve.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "sudoku_solve.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

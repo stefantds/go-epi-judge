@@ -3,6 +3,7 @@ package longest_subarray_with_distinct_values_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestLongestSubarrayWithDistinctEntries(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "longest_subarray_with_distinct_values.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "longest_subarray_with_distinct_values.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

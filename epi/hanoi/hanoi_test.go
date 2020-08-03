@@ -3,6 +3,7 @@ package hanoi_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestComputeTowerHanoi(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "hanoi.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "hanoi.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

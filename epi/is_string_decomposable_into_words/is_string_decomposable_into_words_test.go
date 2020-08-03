@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestDecomposeIntoDictionaryWords(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_string_decomposable_into_words.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "is_string_decomposable_into_words.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

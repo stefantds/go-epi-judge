@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -12,7 +13,7 @@ import (
 )
 
 func TestDutchFlagPartition(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "dutch_national_flag.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "dutch_national_flag.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package tree_from_preorder_inorder_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestBinaryTreeFromPreorderInorder(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "tree_from_preorder_inorder.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_from_preorder_inorder.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

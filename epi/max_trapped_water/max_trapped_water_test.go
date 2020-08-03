@@ -3,6 +3,7 @@ package max_trapped_water_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestGetMaxTrappedWater(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "max_trapped_water.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "max_trapped_water.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

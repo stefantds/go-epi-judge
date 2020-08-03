@@ -3,6 +3,7 @@ package search_first_greater_value_in_bst_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestFindFirstGreaterThanK(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_first_greater_value_in_bst.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "search_first_greater_value_in_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package sorted_array_remove_dups_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestDeleteDuplicates(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "sorted_array_remove_dups.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "sorted_array_remove_dups.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestFindLineWithMostPoints(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "line_through_most_points.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "line_through_most_points.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

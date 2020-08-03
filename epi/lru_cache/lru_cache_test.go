@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestLRUCache(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "lru_cache.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "lru_cache.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

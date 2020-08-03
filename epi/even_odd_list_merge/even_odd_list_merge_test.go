@@ -3,6 +3,7 @@ package even_odd_list_merge_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestEvenOddMerge(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "even_odd_list_merge.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "even_odd_list_merge.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

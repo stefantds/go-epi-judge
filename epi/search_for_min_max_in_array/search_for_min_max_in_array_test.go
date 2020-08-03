@@ -3,6 +3,7 @@ package search_for_min_max_in_array_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindMinMax(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_for_min_max_in_array.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "search_for_min_max_in_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

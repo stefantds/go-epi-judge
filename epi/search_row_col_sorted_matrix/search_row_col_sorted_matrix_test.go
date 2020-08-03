@@ -3,6 +3,7 @@ package search_row_col_sorted_matrix_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestMatrixSearch(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "search_row_col_sorted_matrix.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "search_row_col_sorted_matrix.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

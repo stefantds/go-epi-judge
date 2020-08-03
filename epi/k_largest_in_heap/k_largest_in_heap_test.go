@@ -3,6 +3,7 @@ package k_largest_in_heap_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestKLargestInBinaryHeap(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "k_largest_in_heap.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "k_largest_in_heap.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -3,6 +3,7 @@ package advance_by_offsets_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestCanReachEnd(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "advance_by_offsets.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "advance_by_offsets.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

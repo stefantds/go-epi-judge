@@ -3,6 +3,7 @@ package reverse_sublist_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestReverseSublist(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "reverse_sublist.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "reverse_sublist.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

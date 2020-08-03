@@ -3,6 +3,7 @@ package is_valid_sudoku_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestIsValidSudoku(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "is_valid_sudoku.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "is_valid_sudoku.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

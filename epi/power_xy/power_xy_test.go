@@ -3,6 +3,7 @@ package power_xy_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestPower(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "power_x_y.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "power_x_y.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

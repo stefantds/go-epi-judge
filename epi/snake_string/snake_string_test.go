@@ -3,6 +3,7 @@ package snake_string_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestSnakeString(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "snake_string.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "snake_string.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

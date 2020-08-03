@@ -3,6 +3,7 @@ package closest_int_same_weight_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestClosestIntSameBitCount(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "closest_int_same_weight.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "closest_int_same_weight.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

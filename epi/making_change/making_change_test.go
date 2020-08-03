@@ -3,6 +3,7 @@ package making_change_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestChangeMaking(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "making_change.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "making_change.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

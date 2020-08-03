@@ -3,6 +3,7 @@ package picking_up_coins_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestPickUpCoins(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "picking_up_coins.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "picking_up_coins.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

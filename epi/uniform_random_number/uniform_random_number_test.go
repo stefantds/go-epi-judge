@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestUniformRandom(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "uniform_random_number.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "uniform_random_number.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

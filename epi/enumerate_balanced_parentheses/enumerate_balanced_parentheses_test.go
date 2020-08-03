@@ -3,6 +3,7 @@ package enumerate_balanced_parentheses_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestGenerateBalancedParentheses(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "enumerate_balanced_parentheses.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "enumerate_balanced_parentheses.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

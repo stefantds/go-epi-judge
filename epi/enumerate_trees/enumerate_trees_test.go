@@ -3,6 +3,7 @@ package enumerate_trees_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"testing"
@@ -16,7 +17,7 @@ import (
 )
 
 func TestGenerateAllBinaryTrees(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "enumerate_trees.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "enumerate_trees.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

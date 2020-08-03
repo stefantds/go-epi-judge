@@ -3,6 +3,7 @@ package int_as_list_add_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestAddTwoNumbers(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "int_as_list_add.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "int_as_list_add.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

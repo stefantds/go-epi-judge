@@ -3,6 +3,7 @@ package bst_from_preorder_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestRebuildBSTFromPreorder(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "bst_from_preorder.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "bst_from_preorder.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

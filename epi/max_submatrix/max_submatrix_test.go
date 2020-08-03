@@ -3,6 +3,7 @@ package max_submatrix_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestMaxRectangleSubmatrix(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "max_submatrix.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "max_submatrix.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

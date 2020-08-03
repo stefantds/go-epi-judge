@@ -3,6 +3,7 @@ package next_permutation_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestNextPermutation(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "next_permutation.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "next_permutation.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

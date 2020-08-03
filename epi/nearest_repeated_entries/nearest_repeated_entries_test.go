@@ -3,6 +3,7 @@ package nearest_repeated_entries_test
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 )
 
 func TestFindNearestRepetition(t *testing.T) {
-	testFileName := testConfig.TestDataFolder + "/" + "nearest_repeated_entries.tsv"
+	testFileName := filepath.Join(testConfig.TestDataFolder, "nearest_repeated_entries.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)

@@ -12,7 +12,7 @@ import (
 
 	. "github.com/stefantds/go-epi-judge/epi/online_sampling"
 	"github.com/stefantds/go-epi-judge/iterator"
-	"github.com/stefantds/go-epi-judge/random"
+	"github.com/stefantds/go-epi-judge/stats"
 	"github.com/stefantds/go-epi-judge/utils"
 )
 

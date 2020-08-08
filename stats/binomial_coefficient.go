@@ -1,4 +1,4 @@
-package random
+package stats
 
 func BinomialCoefficient(n, k int) int {
 	switch {

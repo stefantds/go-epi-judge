@@ -10,7 +10,7 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/uniform_random_number"
-	"github.com/stefantds/go-epi-judge/random"
+	"github.com/stefantds/go-epi-judge/stats"
 )
 
 func TestUniformRandom(t *testing.T) {

@@ -1,4 +1,4 @@
-package random
+package stats
 
 const numRuns = 5
 

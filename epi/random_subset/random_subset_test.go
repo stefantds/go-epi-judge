@@ -11,7 +11,7 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/random_subset"
-	"github.com/stefantds/go-epi-judge/random"
+	"github.com/stefantds/go-epi-judge/stats"
 	"github.com/stefantds/go-epi-judge/utils"
 )
 

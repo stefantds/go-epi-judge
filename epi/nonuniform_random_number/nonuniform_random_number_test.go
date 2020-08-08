@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	. "github.com/stefantds/go-epi-judge/epi/nonuniform_random_number"
-	"github.com/stefantds/go-epi-judge/random"
+	"github.com/stefantds/go-epi-judge/stats"
 
 	"github.com/stefantds/csvdecoder"
 )

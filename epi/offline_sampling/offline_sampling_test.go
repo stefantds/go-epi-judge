@@ -13,7 +13,7 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/offline_sampling"
-	"github.com/stefantds/go-epi-judge/random"
+	"github.com/stefantds/go-epi-judge/stats"
 )
 
 func TestRandomSampling(t *testing.T) {

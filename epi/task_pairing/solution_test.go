@@ -1,17 +1,17 @@
 package task_pairing_test
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
-	"strings"
+	"sort"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/task_pairing"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestOptimumTaskAssignment(t *testing.T) {
@@ -23,8 +23,8 @@ func TestOptimumTaskAssignment(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		TaskDurations  []int
-		ExpectedResult pairedTasksDecoder
+		TaskDurations  []Task
+		ExpectedResult [][2]Task
 		Details        string
 	}
 
@@ -45,8 +45,8 @@ func TestOptimumTaskAssignment(t *testing.T) {
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
 			result := OptimumTaskAssignment(tc.TaskDurations)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Values)
+			if !equal(result, tc.ExpectedResult) {
+				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
 		})
 	}
@@ -55,22 +55,22 @@ func TestOptimumTaskAssignment(t *testing.T) {
 	}
 }
 
-type pairedTasksDecoder struct {
-	Values []PairedTasks
-}
-
-func (d *pairedTasksDecoder) DecodeField(record string) error {
-	allData := make([][2]int, 0)
-	if err := json.NewDecoder(strings.NewReader(record)).Decode(&allData); err != nil {
-		return fmt.Errorf("could not parse %s as JSON array: %w", record, err)
+func equal(result, expected [][2]Task) bool {
+	for i := 0; i < len(result); i++ {
+		sort.Ints(result[i][:])
 	}
 
-	result := make([]PairedTasks, len(allData))
-	for i, n := range allData {
-		result[i].Task1 = n[0]
-		result[i].Task2 = n[1]
+	for i := 0; i < len(expected); i++ {
+		sort.Ints(expected[i][:])
 	}
 
-	d.Values = result
-	return nil
+	sort.Slice(expected, func(i, j int) bool {
+		return utils.LexIntsCompare(expected[i][:], expected[j][:])
+	})
+
+	sort.Slice(result, func(i, j int) bool {
+		return utils.LexIntsCompare(result[i][:], result[j][:])
+	})
+
+	return reflect.DeepEqual(result, expected)
 }

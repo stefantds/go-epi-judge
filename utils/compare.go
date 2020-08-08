@@ -1,6 +1,6 @@
 package utils
 
-// LexIntsCompare compares two int arrays using lexicographical order.
+// LexIntsCompare compares two int slices using lexicographical order.
 // Returns true if a < b in lexicographical order.
 func LexIntsCompare(a, b []int) bool {
 	for i := 0; i < Min(len(a), len(b)); i++ {
@@ -13,7 +13,7 @@ func LexIntsCompare(a, b []int) bool {
 	return len(a) < len(b)
 }
 
-// LexStringsCompare compares two string arrays using lexicographical order.
+// LexStringsCompare compares two string slices using lexicographical order.
 // Returns true if a < b in lexicographical order.
 func LexStringsCompare(a, b []string) bool {
 	for i := 0; i < Min(len(a), len(b)); i++ {

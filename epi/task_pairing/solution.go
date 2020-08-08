@@ -1,11 +1,8 @@
 package task_pairing
 
-type PairedTasks struct {
-	Task1 int
-	Task2 int
-}
+type Task = int
 
-func OptimumTaskAssignment(taskDurations []int) []PairedTasks {
+func OptimumTaskAssignment(taskDurations []Task) [][2]Task {
 	// TODO - Add your code here
 	return nil
 }

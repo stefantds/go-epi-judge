@@ -14,7 +14,7 @@ import (
 )
 
 func TestRemoveKthLast(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "delete_kth_last_from_list.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "delete_kth_last_from_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestRemoveKthLast(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := RemoveKthLast(tc.L.Value, tc.K)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)

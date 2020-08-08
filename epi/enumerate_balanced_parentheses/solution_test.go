@@ -14,7 +14,7 @@ import (
 )
 
 func TestGenerateBalancedParentheses(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "enumerate_balanced_parentheses.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "enumerate_balanced_parentheses.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestGenerateBalancedParentheses(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := GenerateBalancedParentheses(tc.NumPairs)
 			if !equal(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

@@ -13,7 +13,7 @@ import (
 )
 
 func TestStringIntegerInterconversion(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "string_integer_interconversion.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "string_integer_interconversion.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestStringIntegerInterconversion(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := stringIntegerInterconversionWrapper(tc.IntValue, tc.StringValue); err != nil {
 				t.Error(err)
 			}

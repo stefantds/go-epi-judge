@@ -13,7 +13,7 @@ import (
 )
 
 func TestDutchFlagPartition(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "dutch_national_flag.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "dutch_national_flag.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestDutchFlagPartition(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := dutchFlagPartitionWrapper(tc.A, tc.PivotIndex); err != nil {
 				t.Error(err)
 			}

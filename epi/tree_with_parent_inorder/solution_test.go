@@ -14,7 +14,7 @@ import (
 )
 
 func TestInorderTraversalWithParent(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_with_parent_inorder.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "tree_with_parent_inorder.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestInorderTraversalWithParent(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := InorderTraversalWithParent(tc.Tree.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

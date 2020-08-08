@@ -13,7 +13,7 @@ import (
 )
 
 func TestSearchEntryEqualToItsIndex(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "search_entry_equal_to_index.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "search_entry_equal_to_index.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -40,6 +40,9 @@ func TestSearchEntryEqualToItsIndex(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := searchEntryEqualToItsIndexWrapper(tc.A); err != nil {
 				t.Error(err)
 			}

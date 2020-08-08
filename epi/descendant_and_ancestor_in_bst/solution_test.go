@@ -14,7 +14,7 @@ import (
 )
 
 func TestPairIncludesAncestorAndDescendantOfM(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "descendant_and_ancestor_in_bst.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "descendant_and_ancestor_in_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -49,6 +49,9 @@ func TestPairIncludesAncestorAndDescendantOfM(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := pairIncludesAncestorAndDescendantOfMWrapper(tc.Tree.Value, tc.PossibleAncOrDesc0, tc.PossibleAncOrDesc1, tc.Middle)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

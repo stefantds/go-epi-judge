@@ -14,7 +14,7 @@ import (
 )
 
 func TestFindFirstGreaterThanK(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "search_first_greater_value_in_bst.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "search_first_greater_value_in_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestFindFirstGreaterThanK(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := findFirstGreaterThanKWrapper(tc.Tree.Value, tc.K)
 			if err != nil {
 				t.Fatal(err)

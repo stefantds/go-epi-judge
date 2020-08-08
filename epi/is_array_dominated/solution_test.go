@@ -14,7 +14,7 @@ import (
 )
 
 func TestValidPlacementExists(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "is_array_dominated.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "is_array_dominated.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -47,6 +47,9 @@ func TestValidPlacementExists(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := validPlacementExistsWrapper(
 				tc.Team0.Value,
 				tc.Team1.Value,

@@ -12,7 +12,7 @@ import (
 )
 
 func TestFindMissingElement(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "absent_value_array.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "absent_value_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -39,6 +39,9 @@ func TestFindMissingElement(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			err := findMissingElementWrapper(tc.Stream)
 			if err != nil {
 				t.Error(err)

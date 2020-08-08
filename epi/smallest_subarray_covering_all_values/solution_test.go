@@ -13,7 +13,7 @@ import (
 )
 
 func TestFindSmallestSequentiallyCoveringSubset(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "smallest_subarray_covering_all_values.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "smallest_subarray_covering_all_values.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestFindSmallestSequentiallyCoveringSubset(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := findSmallestSequentiallyCoveringSubsettWrapper(tc.Paragraph, tc.Keywords)
 			if err != nil {
 				t.Fatal(err)

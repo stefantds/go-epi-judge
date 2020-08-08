@@ -15,7 +15,7 @@ import (
 )
 
 func TestReplaceAndRemove(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "replace_and_remove.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "replace_and_remove.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -46,6 +46,9 @@ func TestReplaceAndRemove(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := replaceAndRemoveWrapper(tc.Size, tc.S)
 			if err != nil {
 				t.Fatal(err)

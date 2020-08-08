@@ -14,7 +14,7 @@ import (
 )
 
 func TestRearrange(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "alternating_array.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "alternating_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -41,6 +41,9 @@ func TestRearrange(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			Rearrange(tc.A)
 			if err := rearrangeWrapper(tc.A); err != nil {
 				t.Error(err)

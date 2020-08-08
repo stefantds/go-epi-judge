@@ -13,7 +13,7 @@ import (
 )
 
 func TestSearchSmallest(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "search_shifted_sorted_array.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "search_shifted_sorted_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestSearchSmallest(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := SearchSmallest(tc.A)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

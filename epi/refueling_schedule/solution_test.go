@@ -12,7 +12,7 @@ import (
 )
 
 func TestFindAmpleCity(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "refueling_schedule.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "refueling_schedule.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -41,6 +41,9 @@ func TestFindAmpleCity(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := findAmpleCityWrapper(tc.Gallons, tc.Distances); err != nil {
 				t.Error(err)
 			}

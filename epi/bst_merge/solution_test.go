@@ -14,7 +14,7 @@ import (
 )
 
 func TestMergeTwoBsts(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "bst_merge.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "bst_merge.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestMergeTwoBsts(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := MergeTwoBsts(tc.A.Value, tc.B.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)

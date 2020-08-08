@@ -14,7 +14,7 @@ import (
 )
 
 func TestSortApproximatelySortedData(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "sort_almost_sorted_array.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "sort_almost_sorted_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestSortApproximatelySortedData(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := sortApproximatelySortedDataWrapper(tc.Sequence, tc.K)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

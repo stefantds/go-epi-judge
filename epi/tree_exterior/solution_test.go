@@ -15,7 +15,7 @@ import (
 )
 
 func TestExteriorBinaryTree(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_exterior.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "tree_exterior.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestExteriorBinaryTree(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := exteriorBinaryTreeWrapper(tc.Tree.Value)
 			if err != nil {
 				t.Fatal(err)

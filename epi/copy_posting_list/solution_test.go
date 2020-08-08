@@ -14,7 +14,7 @@ import (
 )
 
 func TestCopyPostingsList(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "copy_posting_list.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "copy_posting_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -50,6 +50,9 @@ func TestCopyPostingsList(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := copyPostingsListWrapper(tc.L.Value, tc.LCopy.Value); err != nil {
 				t.Error(err)
 			}

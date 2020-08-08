@@ -16,7 +16,7 @@ import (
 )
 
 func TestRandomSubset(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "random_subset.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "random_subset.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestRandomSubset(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := randomSubsetWrapper(tc.N, tc.K); err != nil {
 				t.Error(err)
 			}

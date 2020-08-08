@@ -13,7 +13,7 @@ import (
 )
 
 func TestCalculateTrappingWater(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "max_water_trappable.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "max_water_trappable.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestCalculateTrappingWater(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := CalculateTrappingWater(tc.Heights)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

@@ -15,7 +15,7 @@ import (
 )
 
 func TestFindLca(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "lowest_common_ancestor_in_bst.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "lowest_common_ancestor_in_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -48,6 +48,9 @@ func TestFindLca(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := findLCAWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
 			if err != nil {
 				t.Fatal(err)

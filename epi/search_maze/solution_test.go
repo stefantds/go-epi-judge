@@ -14,7 +14,7 @@ import (
 )
 
 func TestSearchMaze(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "search_maze.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "search_maze.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -47,6 +47,9 @@ func TestSearchMaze(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := searchMazeWrapper(tc.Maze, decodeCoordinate(tc.S), decodeCoordinate(tc.E))
 			if err != nil {
 				t.Fatal(err)

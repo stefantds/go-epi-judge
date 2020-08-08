@@ -15,7 +15,7 @@ import (
 )
 
 func TestCloneGraph(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "graph_clone.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "graph_clone.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestCloneGraph(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := cloneGraphdWrapper(tc.NumVertices, tc.Edges); err != nil {
 				t.Error(err)
 			}

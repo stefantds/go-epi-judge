@@ -15,7 +15,7 @@ import (
 )
 
 func TestNonuniformRandomNumberGeneration(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "nonuniform_random_number.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "nonuniform_random_number.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestNonuniformRandomNumberGeneration(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := nonuniformRandomNumberGenerationWrapper(tc.Values, tc.Probabilities); err != nil {
 				t.Error(err)
 			}

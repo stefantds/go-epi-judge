@@ -7,11 +7,11 @@ import (
 	"github.com/stefantds/go-epi-judge/config"
 )
 
-var testConfig *config.Config
+var cfg *config.Config
 
 func TestMain(m *testing.M) {
 	var err error
-	testConfig, err = config.Parse()
+	cfg, err = config.Parse()
 	if err != nil {
 		panic(err)
 	}

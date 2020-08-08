@@ -13,7 +13,7 @@ import (
 )
 
 func TestEval(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "evaluate_rpn.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "evaluate_rpn.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestEval(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := Eval(tc.Expression)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

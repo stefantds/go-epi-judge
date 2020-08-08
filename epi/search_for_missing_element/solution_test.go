@@ -13,7 +13,7 @@ import (
 )
 
 func TestFindDuplicateMissing(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "find_missing_and_duplicate.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "find_missing_and_duplicate.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestFindDuplicateMissing(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			resultDupl, resultMissing := FindDuplicateMissing(tc.A)
 			if !reflect.DeepEqual([]int{resultDupl, resultMissing}, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", []int{resultDupl, resultMissing}, tc.ExpectedResult)

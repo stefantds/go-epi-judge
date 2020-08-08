@@ -12,7 +12,7 @@ import (
 )
 
 func TestRunLengthEncoding(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "run_length_compression.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "run_length_compression.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -41,6 +41,9 @@ func TestRunLengthEncoding(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := runLengthEncodingTester(tc.Encoded, tc.Decoded); err != nil {
 				t.Error(err)
 			}

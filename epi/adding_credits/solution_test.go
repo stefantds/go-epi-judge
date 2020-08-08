@@ -14,7 +14,7 @@ import (
 )
 
 func TestClientsCreditsInfo(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "adding_credits.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "adding_credits.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -41,6 +41,9 @@ func TestClientsCreditsInfo(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := clientsCreditsInfoTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}

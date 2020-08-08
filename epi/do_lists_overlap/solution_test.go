@@ -14,7 +14,7 @@ import (
 )
 
 func TestOverlappingLists(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "do_lists_overlap.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "do_lists_overlap.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -49,6 +49,9 @@ func TestOverlappingLists(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := overlappingListsWrapper(tc.L0.Value, tc.L1.Value, tc.Common.Value, tc.Cycle0, tc.Cycle1); err != nil {
 				t.Error(err)
 			}

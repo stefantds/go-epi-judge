@@ -13,7 +13,7 @@ import (
 )
 
 func TestFindMinDistanceSortedArrays(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "minimum_distance_3_sorted_arrays.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "minimum_distance_3_sorted_arrays.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestFindMinDistanceSortedArrays(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := FindMinDistanceSortedArrays(tc.SortedArrays)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

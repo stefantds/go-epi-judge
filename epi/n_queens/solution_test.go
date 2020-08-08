@@ -15,7 +15,7 @@ import (
 )
 
 func TestNQueens(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "n_queens.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "n_queens.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestNQueens(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := NQueens(tc.N)
 			if !equal(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

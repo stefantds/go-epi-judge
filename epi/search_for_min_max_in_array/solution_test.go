@@ -13,7 +13,7 @@ import (
 )
 
 func TestFindMinMax(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "search_for_min_max_in_array.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "search_for_min_max_in_array.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestFindMinMax(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			resultMin, resultMax := FindMinMax(tc.A)
 			if !reflect.DeepEqual([]int{resultMin, resultMax}, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", []int{resultMin, resultMax}, tc.ExpectedResult)

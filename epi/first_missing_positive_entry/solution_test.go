@@ -13,7 +13,7 @@ import (
 )
 
 func TestFindFirstMissingPositive(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "first_missing_positive_entry.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "first_missing_positive_entry.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestFindFirstMissingPositive(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := FindFirstMissingPositive(tc.A)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

@@ -14,7 +14,7 @@ import (
 )
 
 func TestFindKthNodeBinaryTree(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "kth_node_in_tree.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "kth_node_in_tree.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestFindKthNodeBinaryTree(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := findKthNodeBinaryTreeWrapper(tc.Tree.Value, tc.K)
 			if err != nil {
 				t.Fatal(err)

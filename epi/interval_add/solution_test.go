@@ -15,7 +15,7 @@ import (
 )
 
 func TestAddInterval(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "interval_add.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "interval_add.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -46,6 +46,9 @@ func TestAddInterval(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := AddInterval(tc.DisjointIntervals.Values, tc.NewInterval.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Values)

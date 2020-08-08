@@ -13,7 +13,7 @@ import (
 )
 
 func TestConvertBase(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "convert_base.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "convert_base.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -46,6 +46,9 @@ func TestConvertBase(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := ConvertBase(tc.NumAsString, tc.B1, tc.B2)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

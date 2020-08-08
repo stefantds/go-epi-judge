@@ -14,7 +14,7 @@ import (
 )
 
 func TestIsLinkedListAPalindrome(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "is_list_palindromic.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "is_list_palindromic.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestIsLinkedListAPalindrome(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := IsLinkedListAPalindrome(tc.L.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

@@ -13,7 +13,7 @@ import (
 )
 
 func TestFindLongestSubarrayLessEqualK(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "longest_subarray_with_sum_constraint.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "longest_subarray_with_sum_constraint.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestFindLongestSubarrayLessEqualK(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := FindLongestSubarrayLessEqualK(tc.A, tc.K)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

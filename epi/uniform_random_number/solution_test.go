@@ -14,7 +14,7 @@ import (
 )
 
 func TestUniformRandom(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "uniform_random_number.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "uniform_random_number.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestUniformRandom(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := uniformRandomWrapper(tc.LowerBound, tc.UpperBound); err != nil {
 				t.Error(err)
 			}

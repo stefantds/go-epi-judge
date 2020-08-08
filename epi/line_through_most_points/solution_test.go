@@ -15,7 +15,7 @@ import (
 )
 
 func TestFindLineWithMostPoints(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "line_through_most_points.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "line_through_most_points.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestFindLineWithMostPoints(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := FindLineWithMostPoints(tc.Points.Values)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

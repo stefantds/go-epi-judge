@@ -14,7 +14,7 @@ import (
 )
 
 func TestIsBinaryTreeBST(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "is_tree_a_bst.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "is_tree_a_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestIsBinaryTreeBST(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := IsBinaryTreeBST(tc.Tree.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

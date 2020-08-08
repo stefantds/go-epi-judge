@@ -16,7 +16,7 @@ import (
 )
 
 func TestGroupByAge(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "group_equal_entries.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "group_equal_entries.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestGroupByAge(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := groupByAgeWrapper(tc.People.Values); err != nil {
 				t.Error(err)
 			}

@@ -15,7 +15,7 @@ import (
 )
 
 func TestIntersectRectangle(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "rectangle_intersection.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "rectangle_intersection.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -46,6 +46,9 @@ func TestIntersectRectangle(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := IntersectRectangle(tc.R1.Value, tc.R2.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)

@@ -13,7 +13,7 @@ import (
 )
 
 func TestCanReachEnd(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "advance_by_offsets.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "advance_by_offsets.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestCanReachEnd(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := CanReachEnd(tc.MaxAdvanceSteps)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

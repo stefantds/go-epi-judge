@@ -13,7 +13,7 @@ import (
 )
 
 func TestSearchList(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "search_in_list.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "search_in_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestSearchList(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := searchListWrapper(tc.L.Value, tc.Key)
 			if result != tc.ExpectedResult {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

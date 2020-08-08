@@ -14,7 +14,7 @@ import (
 )
 
 func TestZippingLinkedList(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "zip_list.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "zip_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestZippingLinkedList(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := ZippingLinkedList(tc.L.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)

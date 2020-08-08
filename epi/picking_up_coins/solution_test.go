@@ -13,7 +13,7 @@ import (
 )
 
 func TestPickUpCoins(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "picking_up_coins.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "picking_up_coins.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestPickUpCoins(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := PickUpCoins(tc.Coins)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

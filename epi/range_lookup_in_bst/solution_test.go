@@ -16,7 +16,7 @@ import (
 )
 
 func TestRangeLookupInBst(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "range_lookup_in_bst.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "range_lookup_in_bst.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -47,6 +47,9 @@ func TestRangeLookupInBst(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := RangeLookupInBst(tc.Tree.Value, tc.Interval.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

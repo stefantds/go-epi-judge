@@ -14,7 +14,7 @@ import (
 )
 
 func TestHasCycle(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "is_list_cyclic.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "is_list_cyclic.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestHasCycle(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := hasCycleWrapper(tc.Head.Value, tc.CycleIdx); err != nil {
 				t.Error(err)
 			}

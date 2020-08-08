@@ -13,7 +13,7 @@ import (
 )
 
 func TestMinimumMessiness(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "pretty_printing.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "pretty_printing.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestMinimumMessiness(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := MinimumMessiness(tc.Words, tc.LineLength)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

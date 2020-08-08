@@ -13,7 +13,7 @@ import (
 )
 
 func TestMinimumPathTotal(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "minimum_weight_path_in_a_triangle.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "minimum_weight_path_in_a_triangle.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestMinimumPathTotal(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := MinimumPathTotal(tc.Triangle)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

@@ -15,7 +15,7 @@ import (
 )
 
 func TestTransformString(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "string_transformability.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "string_transformability.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -50,6 +50,9 @@ func TestTransformString(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := TransformString(map[string]struct{}(tc.D), tc.S, tc.T)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

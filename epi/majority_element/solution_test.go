@@ -12,7 +12,7 @@ import (
 )
 
 func TestMajoritySearch(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "majority_element.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "majority_element.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -41,6 +41,9 @@ func TestMajoritySearch(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := majoritySearchWrapper(tc.Stream)
 			if result != tc.ExpectedResult {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

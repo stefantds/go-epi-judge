@@ -14,7 +14,7 @@ import (
 )
 
 func TestCircularQueue(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "circular_queue.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "circular_queue.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -41,6 +41,9 @@ func TestCircularQueue(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := circularQueueTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}

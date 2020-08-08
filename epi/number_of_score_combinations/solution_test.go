@@ -12,7 +12,7 @@ import (
 )
 
 func TestNumCombinationsForFinalScore(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "number_of_score_combinations.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "number_of_score_combinations.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestNumCombinationsForFinalScore(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := NumCombinationsForFinalScore(tc.FinalScore, tc.IndividualPlayScores)
 			if result != tc.ExpectedResult {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

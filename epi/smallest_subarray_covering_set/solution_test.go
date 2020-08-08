@@ -13,7 +13,7 @@ import (
 )
 
 func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "smallest_subarray_covering_set.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "smallest_subarray_covering_set.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := findSmallestSubarrayCoveringSetWrapper(tc.Paragraph, tc.Keywords, tc.ExpectedLength); err != nil {
 				t.Error(err)
 			}

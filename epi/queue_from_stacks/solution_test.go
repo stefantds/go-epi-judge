@@ -14,7 +14,7 @@ import (
 )
 
 func TestQueueFromStacks(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "queue_with_max.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "queue_with_max.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -41,6 +41,9 @@ func TestQueueFromStacks(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := queueFromStacksTester(tc.Operations.Value); err != nil {
 				t.Error(err)
 			}

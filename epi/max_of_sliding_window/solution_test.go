@@ -15,7 +15,7 @@ import (
 )
 
 func TestComputeTrafficVolumes(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "max_of_sliding_window.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "max_of_sliding_window.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -46,6 +46,9 @@ func TestComputeTrafficVolumes(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := ComputeTrafficVolumes(tc.A.Values, tc.W)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Values)

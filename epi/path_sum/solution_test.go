@@ -14,7 +14,7 @@ import (
 )
 
 func TestHasPathSum(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "path_sum.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "path_sum.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestHasPathSum(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := HasPathSum(tc.Tree.Value, tc.RemainingWeight)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

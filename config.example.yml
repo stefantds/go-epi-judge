@@ -1,1 +1,2 @@
 testDataFolder: <replace-me!>
+runParallelTests: true

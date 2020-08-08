@@ -13,7 +13,7 @@ import (
 )
 
 func TestMultiply(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "int_as_array_multiply.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "int_as_array_multiply.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestMultiply(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := Multiply(tc.Num1, tc.Num2)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

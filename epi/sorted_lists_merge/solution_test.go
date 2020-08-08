@@ -14,7 +14,7 @@ import (
 )
 
 func TestMergeTwoSortedLists(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "sorted_lists_merge.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "sorted_lists_merge.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestMergeTwoSortedLists(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := MergeTwoSortedLists(tc.L1.Value, tc.L2.Value)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)

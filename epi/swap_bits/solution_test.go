@@ -13,7 +13,7 @@ import (
 )
 
 func TestSwapBits(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "swap_bits.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "swap_bits.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -46,6 +46,9 @@ func TestSwapBits(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := SwapBits(tc.X, tc.I, tc.J)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

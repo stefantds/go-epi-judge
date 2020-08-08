@@ -13,7 +13,7 @@ import (
 )
 
 func TestTestCollatzConjecture(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "collatz_checker.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "collatz_checker.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestTestCollatzConjecture(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := TestCollatzConjecture(tc.N)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

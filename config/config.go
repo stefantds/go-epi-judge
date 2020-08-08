@@ -9,7 +9,8 @@ import (
 )
 
 type Config struct {
-	TestDataFolder string `yaml:"testDataFolder"`
+	TestDataFolder   string `yaml:"testDataFolder"`
+	RunParallelTests bool   `yaml:"runParallelTests"`
 }
 
 // Parse parses the config file and returns the configuration object

@@ -15,7 +15,7 @@ import (
 )
 
 func TestSolveSudoku(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "sudoku_solve.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "sudoku_solve.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -42,6 +42,9 @@ func TestSolveSudoku(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := solveSudokuWrapper(tc.PartialAssignment); err != nil {
 				t.Error(err)
 			}

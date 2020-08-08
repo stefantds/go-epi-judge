@@ -14,7 +14,7 @@ import (
 )
 
 func TestDeleteList(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "delete_from_list.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "delete_from_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestDeleteList(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := deleteListWrapper(tc.List.Value, tc.NodeIdx)
 			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)

@@ -13,7 +13,7 @@ import (
 )
 
 func TestFindKthNTwoSortedArrays(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "kth_largest_element_in_two_sorted_arrays.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "kth_largest_element_in_two_sorted_arrays.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -46,6 +46,9 @@ func TestFindKthNTwoSortedArrays(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := FindKthNTwoSortedArrays(tc.A, tc.B, tc.K)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

@@ -14,7 +14,7 @@ import (
 )
 
 func TestGetValidIpAddress(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "valid_ip_addresses.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "valid_ip_addresses.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestGetValidIpAddress(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := GetValidIpAddress(tc.S)
 			if !equal(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

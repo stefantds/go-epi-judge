@@ -15,7 +15,7 @@ import (
 )
 
 func TestFindMinimumVisits(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "minimum_points_covering_intervals.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "minimum_points_covering_intervals.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestFindMinimumVisits(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := FindMinimumVisits(tc.Intervals.Values)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

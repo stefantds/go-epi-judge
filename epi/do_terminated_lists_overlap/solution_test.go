@@ -14,7 +14,7 @@ import (
 )
 
 func TestOverlappingNoCycleLists(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "do_terminated_lists_overlap.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "do_terminated_lists_overlap.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -45,6 +45,9 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := overlappingNoCycleListsWrapper(
 				tc.FirstPrefix.Value,
 				tc.SecondPrefix.Value,

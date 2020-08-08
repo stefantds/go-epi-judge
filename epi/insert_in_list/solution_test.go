@@ -14,7 +14,7 @@ import (
 )
 
 func TestInsertAfter(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "insert_in_list.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "insert_in_list.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -47,6 +47,9 @@ func TestInsertAfter(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := insertListWrapper(tc.Node.Value, tc.NodeIdx, tc.NewNodeData)
 			if err != nil {
 				t.Error(err)

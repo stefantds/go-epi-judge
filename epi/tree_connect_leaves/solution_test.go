@@ -14,7 +14,7 @@ import (
 )
 
 func TestCreateListOfLeaves(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "tree_connect_leaves.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "tree_connect_leaves.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -43,6 +43,9 @@ func TestCreateListOfLeaves(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result, err := createListOfLeavesWrapper(tc.Tree.Value)
 			if err != nil {
 				t.Fatal(err)

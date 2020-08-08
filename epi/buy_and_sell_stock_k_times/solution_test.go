@@ -13,7 +13,7 @@ import (
 )
 
 func TestBuyAndSellStockKTimes(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "buy_and_sell_stock_k_times.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "buy_and_sell_stock_k_times.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestBuyAndSellStockKTimes(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := BuyAndSellStockKTimes(tc.Prices, tc.K)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

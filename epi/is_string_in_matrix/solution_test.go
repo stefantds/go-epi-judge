@@ -13,7 +13,7 @@ import (
 )
 
 func TestIsPatternContainedInGrid(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "is_string_in_matrix.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "is_string_in_matrix.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -44,6 +44,9 @@ func TestIsPatternContainedInGrid(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			result := IsPatternContainedInGrid(tc.Grid, tc.Pattern)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)

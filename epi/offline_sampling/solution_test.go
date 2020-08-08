@@ -17,7 +17,7 @@ import (
 )
 
 func TestRandomSampling(t *testing.T) {
-	testFileName := filepath.Join(testConfig.TestDataFolder, "offline_sampling.tsv")
+	testFileName := filepath.Join(cfg.TestDataFolder, "offline_sampling.tsv")
 	file, err := os.Open(testFileName)
 	if err != nil {
 		t.Fatalf("could not open file %s: %v", testFileName, err)
@@ -46,6 +46,9 @@ func TestRandomSampling(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
+			if cfg.RunParallelTests {
+				t.Parallel()
+			}
 			if err := randomSamplingWrapper(tc.K, tc.A); err != nil {
 				t.Error(err)
 			}

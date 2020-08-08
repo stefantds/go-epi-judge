@@ -56,7 +56,7 @@ func TestRandomSubset(t *testing.T) {
 }
 
 func randomSubsetWrapper(n int, k int) error {
-	return random.RunFuncWithRetries(
+	return stats.RunFuncWithRetries(
 		func() bool {
 			return randomSubsetRunner(n, k)
 		},
@@ -72,7 +72,7 @@ func randomSubsetRunner(n int, k int) bool {
 		results[i] = RandomSubset(n, k)
 	}
 
-	totalPossibleOutcomes := random.BinomialCoefficient(n, k)
+	totalPossibleOutcomes := stats.BinomialCoefficient(n, k)
 	a := make([]int, n)
 	for i := 0; i < n; i++ {
 		a[i] = i
@@ -80,7 +80,7 @@ func randomSubsetRunner(n int, k int) bool {
 
 	combinations := make([][]int, totalPossibleOutcomes)
 	for i := 0; i < totalPossibleOutcomes; i++ {
-		combinations[i] = random.ComputeCombinationIdx(a, k, i)
+		combinations[i] = stats.ComputeCombinationIdx(a, k, i)
 	}
 
 	sort.Slice(combinations, func(i, j int) bool {
@@ -95,5 +95,5 @@ func randomSubsetRunner(n int, k int) bool {
 			func(i int) bool { return !utils.LexIntsCompare(r, combinations[i]) },
 		)
 	}
-	return random.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)
+	return stats.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)
 }

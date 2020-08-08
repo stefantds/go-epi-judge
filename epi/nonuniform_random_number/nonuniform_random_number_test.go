@@ -55,7 +55,7 @@ func TestNonuniformRandomNumberGeneration(t *testing.T) {
 }
 
 func nonuniformRandomNumberGenerationWrapper(values []int, probabilities []float64) error {
-	return random.RunFuncWithRetries(
+	return stats.RunFuncWithRetries(
 		func() bool {
 			return nonuniformRandomNumberGenerationRunner(values, probabilities)
 		},

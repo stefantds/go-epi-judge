@@ -52,7 +52,7 @@ func TestComputeRandomPermutation(t *testing.T) {
 }
 
 func computeRandomPermutationWrapper(n int) error {
-	return random.RunFuncWithRetries(
+	return stats.RunFuncWithRetries(
 		func() bool {
 			return computeRandomPermutationRunner(n)
 		},
@@ -72,7 +72,7 @@ func computeRandomPermutationRunner(n int) bool {
 	for i, r := range results {
 		sequence[i] = permutationIndex(r)
 	}
-	return random.CheckSequenceIsUniformlyRandom(sequence, factorial(n), 0.01)
+	return stats.CheckSequenceIsUniformlyRandom(sequence, factorial(n), 0.01)
 }
 
 func factorial(n int) int {

@@ -57,7 +57,7 @@ func TestRandomSampling(t *testing.T) {
 }
 
 func randomSamplingWrapper(k int, a []int) error {
-	return random.RunFuncWithRetries(
+	return stats.RunFuncWithRetries(
 		func() bool {
 			return randomSamplingRunner(k, a)
 		},
@@ -81,13 +81,13 @@ func randomSamplingRunner(k int, a []int) bool {
 		results[i] = result
 	}
 
-	totalPossibleOutcomes := random.BinomialCoefficient(len(a), k)
+	totalPossibleOutcomes := stats.BinomialCoefficient(len(a), k)
 
 	sort.Ints(a)
 
 	combinations := make([][]int, totalPossibleOutcomes)
 	for i := 0; i < totalPossibleOutcomes; i++ {
-		combinations[i] = random.ComputeCombinationIdx(a, k, i)
+		combinations[i] = stats.ComputeCombinationIdx(a, k, i)
 	}
 
 	sort.Slice(combinations, func(i, j int) bool {
@@ -103,5 +103,5 @@ func randomSamplingRunner(k int, a []int) bool {
 		)
 	}
 
-	return random.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)
+	return stats.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)
 }

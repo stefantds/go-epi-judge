@@ -54,7 +54,7 @@ func TestUniformRandom(t *testing.T) {
 }
 
 func uniformRandomWrapper(lowerBound int, upperBound int) error {
-	return random.RunFuncWithRetries(
+	return stats.RunFuncWithRetries(
 		func() bool {
 			return uniformRandomRunner(lowerBound, upperBound)
 		},
@@ -74,5 +74,5 @@ func uniformRandomRunner(lowerBound, upperBound int) bool {
 	for i, result := range results {
 		sequence[i] = result - lowerBound
 	}
-	return random.CheckSequenceIsUniformlyRandom(sequence, upperBound-lowerBound+1, 0.01)
+	return stats.CheckSequenceIsUniformlyRandom(sequence, upperBound-lowerBound+1, 0.01)
 }

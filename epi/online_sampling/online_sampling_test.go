@@ -57,7 +57,7 @@ func TestOnlineRandomSample(t *testing.T) {
 }
 
 func onlineRandomSampleWrapper(stream []int, k int) error {
-	return random.RunFuncWithRetries(
+	return stats.RunFuncWithRetries(
 		func() bool {
 			return onlineRandomSampleRunner(stream, k)
 		},
@@ -74,11 +74,11 @@ func onlineRandomSampleRunner(stream []int, k int) bool {
 		results[i] = OnlineRandomSample(iter, k)
 	}
 
-	totalPossibleOutcomes := random.BinomialCoefficient(len(stream), k)
+	totalPossibleOutcomes := stats.BinomialCoefficient(len(stream), k)
 
 	combinations := make([][]int, totalPossibleOutcomes)
 	for i := 0; i < totalPossibleOutcomes; i++ {
-		combinations[i] = random.ComputeCombinationIdx(stream, k, i)
+		combinations[i] = stats.ComputeCombinationIdx(stream, k, i)
 	}
 
 	sort.Slice(combinations, func(i, j int) bool {
@@ -93,5 +93,5 @@ func onlineRandomSampleRunner(stream []int, k int) bool {
 			func(i int) bool { return !utils.LexIntsCompare(r, combinations[i]) },
 		)
 	}
-	return random.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)
+	return stats.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)
 }

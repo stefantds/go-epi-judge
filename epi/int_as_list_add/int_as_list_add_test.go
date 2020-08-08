@@ -22,9 +22,9 @@ func TestAddTwoNumbers(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L1             list.ListNodeDecoder
-		L2             list.ListNodeDecoder
-		ExpectedResult list.ListNodeDecoder
+		L1             list.NodeDecoder
+		L2             list.NodeDecoder
+		ExpectedResult list.NodeDecoder
 		Details        string
 	}
 

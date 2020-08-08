@@ -4,7 +4,7 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func MergeTwoSortedLists(l1 *list.ListNode, l2 *list.ListNode)*list.ListNode {
+func MergeTwoSortedLists(l1 *list.Node, l2 *list.Node)*list.Node {
 	// TODO - Add your code here
 	return nil
 }

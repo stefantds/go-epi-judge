@@ -5,14 +5,14 @@ import (
 	"fmt"
 )
 
-type ListNode struct {
+type Node struct {
 	Data interface{}
-	Next *ListNode
+	Next *Node
 }
 
-func (l ListNode) String() string {
+func (l Node) String() string {
 	var buf bytes.Buffer
-	visited := make(map[*ListNode]bool)
+	visited := make(map[*Node]bool)
 
 	for current := &l; current != nil; current = current.Next {
 		_, seen := visited[current]

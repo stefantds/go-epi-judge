@@ -4,6 +4,6 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func InsertAfter(node *list.ListNode, newNode *list.ListNode) {
+func InsertAfter(node *list.Node, newNode *list.Node) {
 	// TODO - Add your code here
 }

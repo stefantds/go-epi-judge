@@ -4,6 +4,6 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func DeletionFromList(nodeToDelete *list.ListNode) {
+func DeletionFromList(nodeToDelete *list.Node) {
 	// TODO - Add your code here
 }

@@ -2,9 +2,9 @@ package list
 
 // ToArray transforms a list into an array of values.
 // It only handles non-cyclic lists. If a cycle is detected, it will panic.
-func ToArray(l *ListNode) []int {
+func ToArray(l *Node) []int {
 	result := make([]int, 0)
-	seenNodes := make(map[*ListNode]bool)
+	seenNodes := make(map[*Node]bool)
 	for cursor := l; cursor != nil; cursor = cursor.Next {
 		if ok, _ := seenNodes[cursor]; ok {
 			panic("cycle detected")
@@ -17,13 +17,13 @@ func ToArray(l *ListNode) []int {
 
 // DeepCopy makes a depp copy of a list.
 // It handles both non-cyclic and cyclic lists.
-func DeepCopy(l *ListNode) *ListNode {
+func DeepCopy(l *Node) *Node {
 	if l == nil {
 		return nil
 	}
 
-	copiedNodes := make(map[*ListNode]*ListNode)
-	dummyHead := &ListNode{}
+	copiedNodes := make(map[*Node]*Node)
+	dummyHead := &Node{}
 	cursorCopy := dummyHead
 	for cursor := l; cursor != nil; cursor = cursor.Next {
 		if copy, ok := copiedNodes[cursor]; ok {
@@ -32,7 +32,7 @@ func DeepCopy(l *ListNode) *ListNode {
 			// cycle detected - break the loop
 			break
 		}
-		newNode := ListNode{
+		newNode := Node{
 			Data: cursor.Data,
 		}
 		cursorCopy.Next = &newNode
@@ -46,20 +46,20 @@ func DeepCopy(l *ListNode) *ListNode {
 
 // DeepCopyDoubleLinked makes a depp copy of a doubly-linked list.
 // It handles linear as well as branching lists.
-func DeepCopyDoubleLinked(l *DoublyListNode) *DoublyListNode {
+func DeepCopyDoubleLinked(l *DoublyLinkedNode) *DoublyLinkedNode {
 	if l == nil {
 		return nil
 	}
 
-	nodes := make([]*DoublyListNode, 0)
-	copiedNodes := make(map[*DoublyListNode]*DoublyListNode)
+	nodes := make([]*DoublyLinkedNode, 0)
+	copiedNodes := make(map[*DoublyLinkedNode]*DoublyLinkedNode)
 	nodes = append(nodes, l)
 
 	for currentIdx := 0; currentIdx < len(nodes); currentIdx++ {
 		node := nodes[currentIdx]
 		if _, ok := copiedNodes[node]; !ok {
 
-			newNode := DoublyListNode{
+			newNode := DoublyLinkedNode{
 				Data: node.Data,
 			}
 
@@ -91,14 +91,14 @@ func DeepCopyDoubleLinked(l *DoublyListNode) *DoublyListNode {
 	return copiedNodes[l]
 }
 
-// DoublyListNodeFromSlice transforms an array of values into a doubly linked list.
+// DoublyLinkedNodeFromSlice transforms an array of values into a doubly linked list.
 // The result is non-cyclic and without any branches.
-func DoublyListNodeFromSlice(allData []int) *DoublyListNode {
-	dummyHead := &DoublyListNode{}
+func DoublyLinkedNodeFromSlice(allData []int) *DoublyLinkedNode {
+	dummyHead := &DoublyLinkedNode{}
 	current := dummyHead
 
 	for _, d := range allData {
-		current.Next = &DoublyListNode{
+		current.Next = &DoublyLinkedNode{
 			Data: d,
 		}
 		current.Next.Prev = current
@@ -112,13 +112,13 @@ func DoublyListNodeFromSlice(allData []int) *DoublyListNode {
 	return dummyHead.Next
 }
 
-// DoublyListNodeToSlice transforms a doubly linked list into a slice of values.
+// DoublyLinkedNodeToSlice transforms a doubly linked list into a slice of values.
 // It only handles non-cyclic lists. If a cycle is detected, it will panic.
 // It only guarantees to include all the values if there are no branches and the given
 // node pointer points to the beginning of the list.
-func DoublyListNodeToSlice(l *DoublyListNode) []int {
+func DoublyLinkedNodeToSlice(l *DoublyLinkedNode) []int {
 	result := make([]int, 0)
-	seenNodes := make(map[*DoublyListNode]bool)
+	seenNodes := make(map[*DoublyLinkedNode]bool)
 	for cursor := l; cursor != nil; cursor = cursor.Next {
 		if ok, _ := seenNodes[cursor]; ok {
 			panic("cycle detected")

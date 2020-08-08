@@ -22,9 +22,9 @@ func TestOverlappingLists(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L0      list.ListNodeDecoder
-		L1      list.ListNodeDecoder
-		Common  list.ListNodeDecoder
+		L0      list.NodeDecoder
+		L1      list.NodeDecoder
+		Common  list.NodeDecoder
 		Cycle0  int
 		Cycle1  int
 		Details string
@@ -59,7 +59,7 @@ func TestOverlappingLists(t *testing.T) {
 	}
 }
 
-func overlappingListsWrapper(l0 *list.ListNode, l1 *list.ListNode, common *list.ListNode, cycle0 int, cycle1 int) error {
+func overlappingListsWrapper(l0 *list.Node, l1 *list.Node, common *list.Node, cycle0 int, cycle1 int) error {
 	if common != nil {
 		if l0 == nil {
 			l0 = common

@@ -4,7 +4,7 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func IsLinkedListAPalindrome(l *list.ListNode)bool {
+func IsLinkedListAPalindrome(l *list.Node)bool {
 	// TODO - Add your code here
 	return false
 }

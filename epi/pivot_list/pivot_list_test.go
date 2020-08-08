@@ -24,7 +24,7 @@ func TestListPivoting(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L       list.ListNodeDecoder
+		L       list.NodeDecoder
 		X       int
 		Details string
 	}
@@ -55,7 +55,7 @@ func TestListPivoting(t *testing.T) {
 	}
 }
 
-func listPivotingWrapper(l *list.ListNode, x int) error {
+func listPivotingWrapper(l *list.Node, x int) error {
 	original := list.ToArray(l)
 	ListPivoting(l, x)
 	pivoted := list.ToArray(l)

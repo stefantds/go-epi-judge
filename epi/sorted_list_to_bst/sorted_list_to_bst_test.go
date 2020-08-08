@@ -23,7 +23,7 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		DoublyListL list.DoublyListNodeDecoder
+		DoublyListL list.DoublyLinkedNodeDecoder
 		Details     string
 	}
 
@@ -53,8 +53,8 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 	}
 }
 
-func buildBSTFromSortedListWrapper(dl *list.DoublyListNode) error {
-	l := list.DoublyListNodeToSlice(dl)
+func buildBSTFromSortedListWrapper(dl *list.DoublyLinkedNode) error {
+	l := list.DoublyLinkedNodeToSlice(dl)
 	result := BuildBSTFromSortedList(dl, len(l))
 
 	current := iterator.New(iterator.Ints(l))
@@ -70,7 +70,7 @@ func buildBSTFromSortedListWrapper(dl *list.DoublyListNode) error {
 	return nil
 }
 
-func compareIterAndTree(tree *list.DoublyListNode, it *iterator.Iterator) error {
+func compareIterAndTree(tree *list.DoublyLinkedNode, it *iterator.Iterator) error {
 	if tree == nil {
 		return nil
 	}

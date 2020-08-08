@@ -22,8 +22,8 @@ func TestEvenOddMerge(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L              list.ListNodeDecoder
-		ExpectedResult list.ListNodeDecoder
+		L              list.NodeDecoder
+		ExpectedResult list.NodeDecoder
 		Details        string
 	}
 

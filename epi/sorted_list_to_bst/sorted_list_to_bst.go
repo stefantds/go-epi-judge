@@ -4,7 +4,7 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func BuildBSTFromSortedList(l *list.DoublyListNode, length int) *list.DoublyListNode {
+func BuildBSTFromSortedList(l *list.DoublyLinkedNode, length int) *list.DoublyLinkedNode {
 	// TODO - Add your code here
 	return nil
 }

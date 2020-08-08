@@ -22,7 +22,7 @@ func TestIsLinkedListAPalindrome(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L              list.ListNodeDecoder
+		L              list.NodeDecoder
 		ExpectedResult bool
 		Details        string
 	}

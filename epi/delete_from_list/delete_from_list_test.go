@@ -22,9 +22,9 @@ func TestDeleteList(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		List           list.ListNodeDecoder
+		List           list.NodeDecoder
 		NodeIdx        int
-		ExpectedResult list.ListNodeDecoder
+		ExpectedResult list.NodeDecoder
 		Details        string
 	}
 
@@ -56,9 +56,9 @@ func TestDeleteList(t *testing.T) {
 	}
 }
 
-func deleteListWrapper(head *list.ListNode, nodeIdx int) *list.ListNode {
+func deleteListWrapper(head *list.Node, nodeIdx int) *list.Node {
 	nodeToDelete := head
-	var prev *list.ListNode
+	var prev *list.Node
 
 	if nodeToDelete == nil {
 		panic("list is empty")

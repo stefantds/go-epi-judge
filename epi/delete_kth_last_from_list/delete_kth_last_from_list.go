@@ -4,7 +4,7 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func RemoveKthLast(l *list.ListNode, k int)*list.ListNode {
+func RemoveKthLast(l *list.Node, k int)*list.Node {
 	// TODO - Add your code here
 	return nil
 }

@@ -22,10 +22,10 @@ func TestInsertAfter(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Node           list.ListNodeDecoder
+		Node           list.NodeDecoder
 		NodeIdx        int
 		NewNodeData    int
-		ExpectedResult list.ListNodeDecoder
+		ExpectedResult list.NodeDecoder
 		Details        string
 	}
 
@@ -60,7 +60,7 @@ func TestInsertAfter(t *testing.T) {
 	}
 }
 
-func insertListWrapper(l *list.ListNode, nodeIdx int, newNodeData int) (*list.ListNode, error) {
+func insertListWrapper(l *list.Node, nodeIdx int, newNodeData int) (*list.Node, error) {
 	node := l
 
 	for nodeIdx > 1 {
@@ -68,7 +68,7 @@ func insertListWrapper(l *list.ListNode, nodeIdx int, newNodeData int) (*list.Li
 		nodeIdx -= 1
 	}
 
-	newNode := list.ListNode{
+	newNode := list.Node{
 		Data: newNodeData,
 	}
 

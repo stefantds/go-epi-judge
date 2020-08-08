@@ -22,9 +22,9 @@ func TestDeletionFromList(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		List           list.ListNodeDecoder
+		List           list.NodeDecoder
 		NodeIdx        int
-		ExpectedResult list.ListNodeDecoder
+		ExpectedResult list.NodeDecoder
 		Details        string
 	}
 
@@ -56,7 +56,7 @@ func TestDeletionFromList(t *testing.T) {
 	}
 }
 
-func deletionFromListWrapper(head *list.ListNode, nodeIdx int) *list.ListNode {
+func deletionFromListWrapper(head *list.Node, nodeIdx int) *list.Node {
 	nodeToDelete := head
 
 	if nodeToDelete == nil {

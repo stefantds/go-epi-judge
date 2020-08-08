@@ -22,9 +22,9 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		FirstPrefix  list.ListNodeDecoder
-		SecondPrefix list.ListNodeDecoder
-		CommonPart   list.ListNodeDecoder
+		FirstPrefix  list.NodeDecoder
+		SecondPrefix list.NodeDecoder
+		CommonPart   list.NodeDecoder
 		Details      string
 	}
 
@@ -59,7 +59,7 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 	}
 }
 
-func overlappingNoCycleListsWrapper(l0 *list.ListNode, l1 *list.ListNode, common *list.ListNode) error {
+func overlappingNoCycleListsWrapper(l0 *list.Node, l1 *list.Node, common *list.Node) error {
 	if common != nil {
 		if l0 != nil {
 			i := l0

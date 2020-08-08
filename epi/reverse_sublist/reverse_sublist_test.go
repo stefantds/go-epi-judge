@@ -22,10 +22,10 @@ func TestReverseSublist(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L              list.ListNodeDecoder
+		L              list.NodeDecoder
 		Start          int
 		Finish         int
-		ExpectedResult list.ListNodeDecoder
+		ExpectedResult list.NodeDecoder
 		Details        string
 	}
 

@@ -22,7 +22,7 @@ func TestHasCycle(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Head     list.ListNodeDecoder
+		Head     list.NodeDecoder
 		CycleIdx int
 		Details  string
 	}
@@ -53,10 +53,10 @@ func TestHasCycle(t *testing.T) {
 	}
 }
 
-func hasCycleWrapper(head *list.ListNode, cycleIdx int) error {
+func hasCycleWrapper(head *list.Node, cycleIdx int) error {
 	cycleLength := 0
 	if cycleIdx != -1 {
-		var cycleStart *list.ListNode
+		var cycleStart *list.Node
 		cursor := head
 
 		for cursor.Next != nil {

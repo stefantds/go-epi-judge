@@ -21,7 +21,7 @@ func TestSearchList(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		L              list.ListNodeDecoder
+		L              list.NodeDecoder
 		Key            int
 		ExpectedResult int
 		Details        string
@@ -55,7 +55,7 @@ func TestSearchList(t *testing.T) {
 	}
 }
 
-func searchListWrapper(l *list.ListNode, key int) int {
+func searchListWrapper(l *list.Node, key int) int {
 	if result := SearchList(l, key); result != nil {
 		return result.Data.(int)
 	}

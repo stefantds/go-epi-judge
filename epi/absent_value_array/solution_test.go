@@ -54,7 +54,13 @@ func TestFindMissingElement(t *testing.T) {
 }
 
 func findMissingElementWrapper(stream []int) error {
-	res := FindMissingElement(stream)
+	streamChan := make(chan int, len(stream))
+	for _, v := range stream {
+		streamChan <- v
+	}
+	close(streamChan)
+
+	res := FindMissingElement(streamChan)
 
 	for _, i := range stream {
 		if i == res {

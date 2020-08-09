@@ -56,5 +56,11 @@ func TestMajoritySearch(t *testing.T) {
 }
 
 func majoritySearchWrapper(stream []string) string {
-	return MajoritySearch(stream)
+	streamChan := make(chan string, len(stream))
+	for _, v := range stream {
+		streamChan <- v
+	}
+	close(streamChan)
+
+	return MajoritySearch(streamChan)
 }

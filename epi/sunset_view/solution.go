@@ -1,10 +1,6 @@
 package sunset_view
 
-import (
-	"github.com/stefantds/go-epi-judge/iterator"
-)
-
-func ExamineBuildingsWithSunset(sequence *iterator.Iterator)[]int {
+func ExamineBuildingsWithSunset(sequence chan int) []int {
 	// TODO - Add your code here
 	return nil
 }

@@ -10,7 +10,6 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/sort_almost_sorted_array"
-	"github.com/stefantds/go-epi-judge/iterator"
 )
 
 func TestSortApproximatelySortedData(t *testing.T) {
@@ -60,6 +59,11 @@ func TestSortApproximatelySortedData(t *testing.T) {
 }
 
 func sortApproximatelySortedDataWrapper(sequence []int, k int) []int {
-	iter := iterator.New(iterator.Ints(sequence))
-	return SortApproximatelySortedData(iter, k)
+	sequenceChan := make(chan int, len(sequence))
+	for _, v := range sequence {
+		sequenceChan <- v
+	}
+	close(sequenceChan)
+
+	return SortApproximatelySortedData(sequenceChan, k)
 }

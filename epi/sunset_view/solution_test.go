@@ -10,7 +10,6 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/sunset_view"
-	"github.com/stefantds/go-epi-judge/iterator"
 )
 
 func TestExamineBuildingsWithSunset(t *testing.T) {
@@ -58,6 +57,11 @@ func TestExamineBuildingsWithSunset(t *testing.T) {
 }
 
 func examineBuildingsWithSunsetWrapper(sequence []int) []int {
-	stream := iterator.New(iterator.Ints(sequence))
-	return ExamineBuildingsWithSunset(stream)
+	sequenceChan := make(chan int, len(sequence))
+	for _, v := range sequence {
+		sequenceChan <- v
+	}
+	close(sequenceChan)
+
+	return ExamineBuildingsWithSunset(sequenceChan)
 }

@@ -46,7 +46,7 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 			if cfg.RunParallelTests {
 				t.Parallel()
 			}
-			result := FindKthLargestUnknownLength(tc.Stream, tc.K)
+			result := findKthLargestUnknownLengthWrapper(tc.Stream, tc.K)
 			if result != tc.ExpectedResult {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
@@ -55,4 +55,14 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func findKthLargestUnknownLengthWrapper(stream []int, k int) int {
+	streamChan := make(chan int, len(stream))
+	for _, s := range stream {
+		streamChan <- s
+	}
+	close(streamChan)
+
+	return FindKthLargestUnknownLength(streamChan, k)
 }

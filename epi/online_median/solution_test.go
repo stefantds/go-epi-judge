@@ -10,7 +10,6 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/online_median"
-	"github.com/stefantds/go-epi-judge/iterator"
 )
 
 func TestOnlineMedian(t *testing.T) {
@@ -58,6 +57,11 @@ func TestOnlineMedian(t *testing.T) {
 }
 
 func onlineMedianWrapper(sequence []int) []float64 {
-	stream := iterator.New(iterator.Ints(sequence))
-	return OnlineMedian(stream)
+	seqChan := make(chan int, len(sequence))
+	for _, v := range sequence {
+		seqChan <- v
+	}
+	close(seqChan)
+
+	return OnlineMedian(seqChan)
 }

@@ -49,7 +49,7 @@ func TestFindClosestKStars(t *testing.T) {
 			if cfg.RunParallelTests {
 				t.Parallel()
 			}
-			result := FindClosestKStars(tc.Stars.Value, tc.K)
+			result := findClosestKStarsWrapper(tc.Stars.Value, tc.K)
 			if !equal(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
@@ -58,6 +58,16 @@ func TestFindClosestKStars(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func findClosestKStarsWrapper(stars []Star, k int) []Star {
+	starsChan := make(chan Star, len(stars))
+	for _, s := range stars {
+		starsChan <- s
+	}
+	close(starsChan)
+
+	return FindClosestKStars(starsChan, k)
 }
 
 func equal(result []Star, expected []float64) bool {

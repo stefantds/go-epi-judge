@@ -48,7 +48,7 @@ func TestSearchFrequentItems(t *testing.T) {
 			if cfg.RunParallelTests {
 				t.Parallel()
 			}
-			result := SearchFrequentItems(tc.K, tc.Stream)
+			result := searchFrequentItemsWrapper(tc.K, tc.Stream)
 			if !equal(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
@@ -57,6 +57,16 @@ func TestSearchFrequentItems(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+func searchFrequentItemsWrapper(k int, stream []string) []string {
+	streamChan := make(chan string, len(stream))
+	for _, v := range stream {
+		streamChan <- v
+	}
+	close(streamChan)
+
+	return SearchFrequentItems(k, streamChan)
 }
 
 func equal(result []string, expected []string) bool {

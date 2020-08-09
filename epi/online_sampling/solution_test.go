@@ -11,7 +11,6 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/online_sampling"
-	"github.com/stefantds/go-epi-judge/iterator"
 	"github.com/stefantds/go-epi-judge/stats"
 	"github.com/stefantds/go-epi-judge/utils"
 )
@@ -73,8 +72,12 @@ func onlineRandomSampleRunner(stream []int, k int) bool {
 
 	results := make([][]int, nbRuns)
 	for i := 0; i < nbRuns; i++ {
-		iter := iterator.New(iterator.Ints(stream))
-		results[i] = OnlineRandomSample(iter, k)
+		streamChan := make(chan int, len(stream))
+		for _, v := range stream {
+			streamChan <- v
+		}
+		close(streamChan)
+		results[i] = OnlineRandomSample(streamChan, k)
 	}
 
 	totalPossibleOutcomes := stats.BinomialCoefficient(len(stream), k)

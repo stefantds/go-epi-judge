@@ -4,7 +4,7 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func OverlappingNoCycleLists(l0 *list.Node, l1 *list.Node)*list.Node {
+func OverlappingNoCycleLists(l0 *list.Node, l1 *list.Node) *list.Node {
 	// TODO - Add your code here
 	return nil
 }

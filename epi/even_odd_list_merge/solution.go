@@ -4,7 +4,7 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func EvenOddMerge(l *list.Node)*list.Node {
+func EvenOddMerge(l *list.Node) *list.Node {
 	// TODO - Add your code here
 	return nil
 }

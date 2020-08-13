@@ -4,7 +4,7 @@ import (
 	"github.com/stefantds/go-epi-judge/list"
 )
 
-func AddTwoNumbers(l1 *list.Node, l2 *list.Node)*list.Node {
+func AddTwoNumbers(l1 *list.Node, l2 *list.Node) *list.Node {
 	// TODO - Add your code here
 	return nil
 }

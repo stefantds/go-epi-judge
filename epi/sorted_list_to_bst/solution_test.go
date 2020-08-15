@@ -89,7 +89,7 @@ func compareIterAndTree(tree *list.DoublyLinkedNode, it *iterator.Iterator) erro
 	next := it.Next()
 
 	if next != tree.Data {
-		return fmt.Errorf("expected value %d, got %d", next.(int), tree.Data.(int))
+		return fmt.Errorf("expected value %d, got %d", next.(int), tree.Data)
 	}
 
 	if err := compareIterAndTree(tree.Next, it); err != nil {

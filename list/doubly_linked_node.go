@@ -1,6 +1,6 @@
 package list
 
 type DoublyLinkedNode struct {
-	Data       interface{}
+	Data       int
 	Prev, Next *DoublyLinkedNode
 }

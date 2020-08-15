@@ -12,7 +12,7 @@ import (
 )
 
 type TreeLike interface {
-	GetData() interface{}
+	GetData() int
 	GetLeft() TreeLike
 	GetRight() TreeLike
 }
@@ -117,7 +117,7 @@ func GenerateInorder(tree TreeLike) []int {
 		if initial {
 			initial = false
 		} else {
-			result = append(result, treeNode.GetData().(int))
+			result = append(result, treeNode.GetData())
 			treeNode = treeNode.GetRight()
 		}
 
@@ -204,7 +204,7 @@ func AssertTreeIsBST(tree TreeLike) error {
 			continue
 		}
 
-		value := node.Tree.GetData().(int)
+		value := node.Tree.GetData()
 
 		if !node.Range.contains(value) {
 			return fmt.Errorf(

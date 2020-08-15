@@ -68,5 +68,5 @@ func findSuccessorWrapper(inputTree *tree.BinaryTree, nodeIdx int) int {
 		return -1
 	}
 
-	return result.Data.(int)
+	return result.Data
 }

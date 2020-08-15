@@ -63,7 +63,7 @@ func hasCycleWrapper(head *list.Node, cycleIdx int) error {
 		cursor := head
 
 		for cursor.Next != nil {
-			if cursor.Data.(int) == cycleIdx {
+			if cursor.Data == cycleIdx {
 				cycleStart = cursor
 			}
 			cursor = cursor.Next
@@ -84,7 +84,7 @@ func hasCycleWrapper(head *list.Node, cycleIdx int) error {
 
 	if cycleIdx == -1 {
 		if result != nil {
-			return fmt.Errorf("expected no cycle, got %d", result.Data.(int))
+			return fmt.Errorf("expected no cycle, got %d", result.Data)
 		}
 	} else {
 		if result == nil {

@@ -64,14 +64,14 @@ func createListOfLeavesWrapper(tree *tree.BinaryTreeNode) ([]int, error) {
 	result := CreateListOfLeaves(tree)
 
 	for i, n := range result {
-		if n == nil || n.Data == nil {
+		if n == nil {
 			return nil, fmt.Errorf("result contains a nil node at index %d", i)
 		}
 	}
 
 	extractedRes := make([]int, len(result))
 	for i, n := range result {
-		extractedRes[i] = n.Data.(int)
+		extractedRes[i] = n.Data
 	}
 
 	return extractedRes, nil

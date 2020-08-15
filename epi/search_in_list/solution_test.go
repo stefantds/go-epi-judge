@@ -60,7 +60,7 @@ func TestSearchList(t *testing.T) {
 
 func searchListWrapper(l *list.Node, key int) int {
 	if result := SearchList(l, key); result != nil {
-		return result.Data.(int)
+		return result.Data
 	}
 
 	return -1

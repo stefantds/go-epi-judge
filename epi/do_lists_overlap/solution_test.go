@@ -119,11 +119,11 @@ func overlappingListsWrapper(l0 *list.Node, l1 *list.Node, common *list.Node, cy
 
 	commonNodes := make(map[int]bool)
 	for it := common; it != nil; it = it.Next {
-		if _, ok := commonNodes[it.Data.(int)]; ok {
+		if _, ok := commonNodes[it.Data]; ok {
 			break
 		}
 
-		commonNodes[it.Data.(int)] = true
+		commonNodes[it.Data] = true
 	}
 
 	result := OverlappingLists(l0, l1)
@@ -137,7 +137,7 @@ func overlappingListsWrapper(l0 *list.Node, l1 *list.Node, common *list.Node, cy
 			return errors.New("invalid result")
 		}
 
-		_, ok := commonNodes[result.Data.(int)]
+		_, ok := commonNodes[result.Data]
 		if !ok {
 			return errors.New("invalid result")
 		}

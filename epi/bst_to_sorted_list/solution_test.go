@@ -67,7 +67,7 @@ func bstToDoublyLinkedListWrapper(t *tree.BSTNode) ([]int, error) {
 
 	v := make([]int, 0)
 	for list != nil {
-		v = append(v, list.Data.(int))
+		v = append(v, list.Data)
 		if list.Right != nil && list.Right.Left != list {
 			return nil, errors.New("list is ill-formed")
 		}

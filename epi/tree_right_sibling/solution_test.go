@@ -68,7 +68,7 @@ func constructRightSiblingWrapper(tree *BinaryTreeNodeWithNext) [][]int {
 		level := make([]int, 0)
 		levelIter := levelStart
 		for levelIter != nil {
-			level = append(level, levelIter.Data.(int))
+			level = append(level, levelIter.Data)
 			levelIter = levelIter.Next
 		}
 		result = append(result, level)

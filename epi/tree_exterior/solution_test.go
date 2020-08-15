@@ -73,7 +73,7 @@ func createOutputList(l []*tree.BinaryTreeNode) ([]int, error) {
 		if t == nil {
 			return nil, errors.New("result list contains nil")
 		}
-		output = append(output, t.Data.(int))
+		output = append(output, t.Data)
 	}
 
 	return output, nil

@@ -1,7 +1,7 @@
 package tree_right_sibling
 
 type BinaryTreeNodeWithNext struct {
-	Data        interface{}
+	Data        int
 	Left, Right *BinaryTreeNodeWithNext
 	Next        *BinaryTreeNodeWithNext
 }

@@ -1,7 +1,7 @@
 package tree
 
 type BinaryTreeNode struct {
-	Data        interface{}
+	Data        int
 	Left, Right *BinaryTreeNode
 }
 
@@ -13,7 +13,7 @@ func (b *BinaryTreeNode) String() string {
 	return s
 }
 
-func (b BinaryTreeNode) GetData() interface{} {
+func (b BinaryTreeNode) GetData() int {
 	return b.Data
 }
 

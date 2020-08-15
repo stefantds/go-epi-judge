@@ -1,7 +1,7 @@
 package tree
 
 type BSTNode struct {
-	Data        interface{}
+	Data        int
 	Left, Right *BSTNode
 }
 
@@ -13,7 +13,7 @@ func (b *BSTNode) String() string {
 	return s
 }
 
-func (b BSTNode) GetData() interface{} {
+func (b BSTNode) GetData() int {
 	return b.Data
 }
 

@@ -10,7 +10,7 @@ func ToArray(l *Node) []int {
 			panic("cycle detected")
 		}
 		seenNodes[cursor] = true
-		result = append(result, cursor.Data.(int))
+		result = append(result, cursor.Data)
 	}
 	return result
 }
@@ -124,7 +124,7 @@ func DoublyLinkedNodeToSlice(l *DoublyLinkedNode) []int {
 			panic("cycle detected")
 		}
 		seenNodes[cursor] = true
-		result = append(result, cursor.Data.(int))
+		result = append(result, cursor.Data)
 	}
 	return result
 }

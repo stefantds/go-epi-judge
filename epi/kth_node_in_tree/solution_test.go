@@ -78,7 +78,7 @@ func convertToTreeWithSize(original *tree.BinaryTree) *BinaryTreeNode {
 	}
 
 	return &BinaryTreeNode{
-		Data:  original.Data.(int),
+		Data:  original.Data,
 		Left:  left,
 		Right: right,
 		Size:  1 + lSize + rSize,

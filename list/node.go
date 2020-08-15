@@ -6,7 +6,7 @@ import (
 )
 
 type Node struct {
-	Data interface{}
+	Data int
 	Next *Node
 }
 

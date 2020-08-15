@@ -75,5 +75,5 @@ func lcaWrapper(inputTree *tree.BinaryTree, key0 int, key1 int) (int, error) {
 		return 0, errors.New("result can not be nil")
 	}
 
-	return result.Data.(int), nil
+	return result.Data, nil
 }

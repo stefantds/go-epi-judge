@@ -59,7 +59,7 @@ func TestEliminateDuplicate(t *testing.T) {
 }
 
 func eliminateDuplicateWrapper(names []Name) []Name {
-	EliminateDuplicate(names)
+	EliminateDuplicate(&names)
 	return names
 }
 

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"reflect"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/find_salary_threshold"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestFindSalaryCap(t *testing.T) {
@@ -48,7 +48,7 @@ func TestFindSalaryCap(t *testing.T) {
 				t.Parallel()
 			}
 			result := FindSalaryCap(tc.TargetPayroll, tc.CurrentSalaries)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			if !utils.EqualFloat(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
 		})

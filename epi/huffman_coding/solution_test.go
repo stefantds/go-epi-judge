@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/huffman_coding"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestHuffmanEncoding(t *testing.T) {
@@ -48,7 +48,7 @@ func TestHuffmanEncoding(t *testing.T) {
 				t.Parallel()
 			}
 			result := HuffmanEncoding(tc.Symbols.Values)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			if !utils.EqualFloat(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
 		})

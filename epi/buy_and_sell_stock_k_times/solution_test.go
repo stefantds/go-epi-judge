@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"reflect"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/buy_and_sell_stock_k_times"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestBuyAndSellStockKTimes(t *testing.T) {
@@ -48,7 +48,7 @@ func TestBuyAndSellStockKTimes(t *testing.T) {
 				t.Parallel()
 			}
 			result := BuyAndSellStockKTimes(tc.Prices, tc.K)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			if !utils.EqualFloat(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
 		})

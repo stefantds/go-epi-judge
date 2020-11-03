@@ -1,5 +1,7 @@
 package utils
 
+import "math"
+
 func Abs(val int) int {
 	if val < 0 {
 		return -val
@@ -23,4 +25,11 @@ func Min(a int, b int) int {
 		return a
 	}
 	return b
+}
+
+// EqualFloat returns true if the two float values are "equal" within
+// the tolerance value
+func EqualFloat(a, b float64) bool {
+	tolerance := 0.0000000001
+	return math.Abs(a-b) < tolerance
 }

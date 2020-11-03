@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"reflect"
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/real_square_root"
+	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestSquareRootReal(t *testing.T) {
@@ -46,7 +46,7 @@ func TestSquareRootReal(t *testing.T) {
 				t.Parallel()
 			}
 			result := SquareRootReal(tc.X)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
+			if !utils.EqualFloat(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}
 		})

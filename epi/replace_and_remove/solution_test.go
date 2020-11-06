@@ -70,7 +70,7 @@ func replaceAndRemoveWrapper(size int, s []string) ([]string, error) {
 	}
 	resSize := ReplaceAndRemove(size, allChars)
 
-	if resSize >= size {
+	if resSize > len(s) {
 		return nil, errors.New("result can't be greater than the original size")
 	}
 	result := make([]string, resSize)

@@ -26,7 +26,7 @@ func TestIsPalindrome(t *testing.T) {
 		Details        string
 	}
 
-	parser, err := csvdecoder.NewWithConfig(file, csvdecoder.Config{Comma: '\t', IgnoreHeaders: true})
+	parser, err := csvdecoder.NewWithConfig(file, csvdecoder.Config{Comma: '\t', IgnoreHeaders: true, EscapeChar: '\\'})
 	if err != nil {
 		t.Fatalf("could not parse file %s: %s", testFileName, err)
 	}

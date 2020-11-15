@@ -35,6 +35,7 @@ func TestReverseWords(t *testing.T) {
 		tc := TestCase{}
 		if err := parser.Scan(
 			&tc.Input,
+			&tc.ExpectedResult,
 			&tc.Details,
 		); err != nil {
 			t.Fatal(err)

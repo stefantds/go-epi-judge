@@ -130,16 +130,16 @@ func overlappingListsWrapper(l0 *list.Node, l1 *list.Node, common *list.Node, cy
 
 	if len(commonNodes) == 0 {
 		if result != nil {
-			return errors.New("invalid result")
+			return fmt.Errorf("expected nil, got %v", result)
 		}
 	} else {
 		if result == nil {
-			return errors.New("invalid result")
+			return errors.New("expected a node, got nil")
 		}
 
 		_, ok := commonNodes[result.Data]
 		if !ok {
-			return errors.New("invalid result")
+			return errors.New("the returned node is not an acceptable answer")
 		}
 	}
 

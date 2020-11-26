@@ -57,9 +57,8 @@ func TestHasCycle(t *testing.T) {
 }
 
 func hasCycleWrapper(head *list.Node, cycleIdx int) error {
-	cycleLength := 0
+	var cycleStart *list.Node
 	if cycleIdx != -1 {
-		var cycleStart *list.Node
 		cursor := head
 
 		for cursor.Next != nil {
@@ -67,9 +66,6 @@ func hasCycleWrapper(head *list.Node, cycleIdx int) error {
 				cycleStart = cursor
 			}
 			cursor = cursor.Next
-			if cycleStart != nil {
-				cycleLength++
-			}
 		}
 
 		if cursor.Data == cycleIdx {
@@ -77,7 +73,6 @@ func hasCycleWrapper(head *list.Node, cycleIdx int) error {
 		}
 
 		cursor.Next = cycleStart
-		cycleLength++
 	}
 
 	result := HasCycle(head)
@@ -91,19 +86,8 @@ func hasCycleWrapper(head *list.Node, cycleIdx int) error {
 			return errors.New("expected a cycle, got nil")
 		}
 
-		cursor := result
-		for cursor.Next != result {
-			cursor = cursor.Next
-			cycleLength--
-
-			if cursor == nil || cycleLength <= 0 {
-				return errors.New("returned node does not belong to the cycle or is not the closest node to the head")
-			}
-		}
-
-		// when cursor.Next == result, the remaining length of the cycle should be 1
-		if cycleLength != 1 {
-			return errors.New("returned node does not belong to the cycle or is not the closest node to the head")
+		if result != cycleStart {
+			return errors.New("returned node is not the node at the start of the cycle")
 		}
 	}
 

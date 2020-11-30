@@ -16,6 +16,9 @@ type Config struct {
 // Parse parses the config file and returns the configuration object
 func Parse() (*Config, error) {
 	pwd, err := os.Getwd()
+	if err != nil {
+		return nil, fmt.Errorf("can't get the current directory: %w", err)
+	}
 
 	f, err := os.Open(filepath.Join(pwd, "../../config.yml"))
 	if err != nil {

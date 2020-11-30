@@ -82,7 +82,7 @@ func groupByAgeWrapper(people []Person) error {
 	lastAge := people[0].Age
 
 	for _, p := range people {
-		if ok, _ := ages[p.Age]; ok {
+		if ok := ages[p.Age]; ok {
 			return errors.New("entries are not grouped by age")
 		}
 

@@ -1,6 +1,6 @@
 package sudoku_solve
 
-const emptyEntry = 0
+const EmptyEntry = 0
 
 func SolveSudoku(partialAssignment [][]int) bool {
 	// TODO - Add your code here

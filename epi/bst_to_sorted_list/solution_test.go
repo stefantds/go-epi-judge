@@ -47,7 +47,10 @@ func TestBstToDoublyLinkedList(t *testing.T) {
 			if cfg.RunParallelTests {
 				t.Parallel()
 			}
-			result := BstToDoublyLinkedList(tc.Tree.Value)
+			result, err := bstToDoublyLinkedListWrapper(tc.Tree.Value)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}

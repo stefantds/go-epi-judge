@@ -6,7 +6,7 @@ func ToArray(l *Node) []int {
 	result := make([]int, 0)
 	seenNodes := make(map[*Node]bool)
 	for cursor := l; cursor != nil; cursor = cursor.Next {
-		if ok, _ := seenNodes[cursor]; ok {
+		if ok := seenNodes[cursor]; ok {
 			panic("cycle detected")
 		}
 		seenNodes[cursor] = true
@@ -120,7 +120,7 @@ func DoublyLinkedNodeToSlice(l *DoublyLinkedNode) []int {
 	result := make([]int, 0)
 	seenNodes := make(map[*DoublyLinkedNode]bool)
 	for cursor := l; cursor != nil; cursor = cursor.Next {
-		if ok, _ := seenNodes[cursor]; ok {
+		if ok := seenNodes[cursor]; ok {
 			panic("cycle detected")
 		}
 		seenNodes[cursor] = true

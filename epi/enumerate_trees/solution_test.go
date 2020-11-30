@@ -49,7 +49,7 @@ func TestGenerateAllBinaryTrees(t *testing.T) {
 			if cfg.RunParallelTests {
 				t.Parallel()
 			}
-			result := GenerateAllBinaryTrees(tc.NumNodes)
+			result := generateAllBinaryTreesWrapper(tc.NumNodes)
 			if !reflect.DeepEqual(result, tc.ExpectedResult) {
 				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 			}

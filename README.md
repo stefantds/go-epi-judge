@@ -87,6 +87,41 @@ This can be easily achieved with the default Go testing tools, by using the time
 go test ./epi/nonuniform_random_number -timeout 30s
 ```
 
+## Progress Tracking
+
+In order to track the progress, a CLI tool is included in this repository. The original EPI Judge has a similar tool (but presented as a HTML page).
+
+See progress aggregated per chapter (for all chapters):
+
+```sh
+go run ./progress
+```
+
+See progress aggregated per chapter (for selected chapters):
+
+```sh
+go run ./progress 7 8
+```
+
+See progress with details (for all chapters):
+
+```sh
+go run ./progress -v
+```
+
+See progress with details (for selected chapters):
+
+```sh
+go run ./progress -v 7 8
+```
+
+Note that running the commands from a different repository requires to additionally pass the path to the `epi` folder as a parameter.
+See help for more details:
+
+```sh
+go run ./progress -h
+```
+
 ## FAQ
 
 - Is this EPI Judge "official"?
@@ -113,10 +148,6 @@ This should make it easier to follow the problems and solutions in the book or i
 
 As I haven't implemented all the solutions to all the problems yet, there might still be some hidden bugs. However, I've tested many of the functions and hope to have found most of the problems. If you find an issue in the test code, please open a ticket.
 If you can find the cause of the problem and know how to fix it, feel free to open a pull request. If you are not sure, we can first discuss the different options in the ticket.
-
-- Does the "Tracking your progress" feature (from the original EPI Judge) work for Go?
-
-No, this feature was not included in this repository.
 
 ## Contributing
 

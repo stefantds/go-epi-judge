@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	ProgressFileName = ".progress"
-	fileAccessRights = 0777
+	ProgressFileName     = ".progress"
+	TestSuccessCharacter = '0' // 0 is the success code for a go test. We use the same for convenience
+	fileAccessRights     = 0777
 )
 
 func PersistResult(testOutCode int) error {

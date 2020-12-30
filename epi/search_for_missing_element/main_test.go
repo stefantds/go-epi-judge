@@ -1,10 +1,12 @@
 package search_for_missing_element_test
 
 import (
+	"log"
 	"os"
 	"testing"
 
 	"github.com/stefantds/go-epi-judge/config"
+	progress "github.com/stefantds/go-epi-judge/progress/lib"
 )
 
 var cfg *config.Config
@@ -17,5 +19,9 @@ func TestMain(m *testing.M) {
 	}
 
 	code := m.Run()
+
+	if err = progress.PersistResult(code); err != nil {
+		log.Print(err)
+	}
 	os.Exit(code)
 }

@@ -22,8 +22,3 @@ func (q *Queue) Size() int {
 	// TODO - Add your code here
 	return 0
 }
-
-func (q *Queue) String() string {
-	// TODO - Add your code here
-	return ""
-}

@@ -26,8 +26,3 @@ func (cc *ClientsCreditsInfo) Max() string {
 	// TODO - Add your code here
 	return ""
 }
-
-func (cc *ClientsCreditsInfo) String() string {
-	// TODO - Add your code here
-	return ""
-}

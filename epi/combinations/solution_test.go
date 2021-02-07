@@ -62,9 +62,11 @@ func TestCombinations(t *testing.T) {
 }
 
 func equal(result, expected [][]int) bool {
-	sort.Slice(expected, func(i, j int) bool {
-		return utils.LexIntsCompare(expected[i], expected[j])
-	})
+	// sort the results in order to compare with the expected values
+	// (which are sorted already)
+	for _, v := range result {
+		sort.Ints(v)
+	}
 
 	sort.Slice(result, func(i, j int) bool {
 		return utils.LexIntsCompare(result[i], result[j])

@@ -1,7 +1,6 @@
 package is_string_decomposable_into_words_test
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -68,19 +67,19 @@ func decomposeIntoDictionaryWordsWrapper(domain string, dictionary []string, dec
 
 	if !decomposable {
 		if len(result) != 0 {
-			return errors.New("domain is not decomposable")
+			return fmt.Errorf("domain is not decomposable. Got: %v", result)
 		}
 		return nil
 	}
 
 	for _, w := range result {
 		if _, ok := dictionaryMap[w]; !ok {
-			return errors.New("result uses words not in dictionary")
+			return fmt.Errorf("result uses words not in dictionary. Got: %v", result)
 		}
 	}
 
 	if strings.Join(result, "") != domain {
-		return errors.New("result is not composed into domain")
+		return fmt.Errorf("result is not composed into domain. Domain: %v, got: %v", domain, result)
 	}
 
 	return nil

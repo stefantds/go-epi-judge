@@ -11,7 +11,6 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/enumerate_trees"
-	"github.com/stefantds/go-epi-judge/stack"
 	"github.com/stefantds/go-epi-judge/tree"
 	"github.com/stefantds/go-epi-judge/utils"
 )
@@ -77,7 +76,7 @@ func generateAllBinaryTreesWrapper(numNodes int) [][]int {
 }
 
 func serializeTree(t *tree.BinaryTreeNode) []int {
-	s := make(stack.Stack, 0)
+	s := make(utils.Stack, 0)
 	s = s.Push(t)
 
 	result := make([]int, 0)

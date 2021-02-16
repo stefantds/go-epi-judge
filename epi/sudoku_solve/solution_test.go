@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 
 	. "github.com/stefantds/go-epi-judge/epi/sudoku_solve"
 )

@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/do_lists_overlap"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestOverlappingLists(t *testing.T) {

@@ -7,12 +7,12 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/bst_from_sorted_array"
-	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {

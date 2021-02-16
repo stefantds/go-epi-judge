@@ -1,7 +1,7 @@
 package bst_merge
 
 import (
-	"github.com/stefantds/go-epi-judge/tree"
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 )
 
 func MergeTwoBsts(a *tree.BSTNode, b *tree.BSTNode) *tree.BSTNode {

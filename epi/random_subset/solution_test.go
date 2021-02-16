@@ -11,8 +11,8 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/random_subset"
-	"github.com/stefantds/go-epi-judge/stats"
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
+	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
 
 func TestRandomSubset(t *testing.T) {

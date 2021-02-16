@@ -9,7 +9,7 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/buy_and_sell_stock_twice"
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
 func TestBuyAndSellStockTwice(t *testing.T) {

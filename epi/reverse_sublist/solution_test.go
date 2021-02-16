@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/reverse_sublist"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestReverseSublist(t *testing.T) {

@@ -11,8 +11,8 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/online_sampling"
-	"github.com/stefantds/go-epi-judge/stats"
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
+	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
 
 func TestOnlineRandomSample(t *testing.T) {

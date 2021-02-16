@@ -8,12 +8,12 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/offline_sampling"
-	"github.com/stefantds/go-epi-judge/stats"
+	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
 
 func TestRandomSampling(t *testing.T) {

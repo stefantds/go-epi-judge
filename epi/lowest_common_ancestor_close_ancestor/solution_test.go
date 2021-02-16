@@ -10,8 +10,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/lowest_common_ancestor_close_ancestor"
-	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestLCAClose(t *testing.T) {

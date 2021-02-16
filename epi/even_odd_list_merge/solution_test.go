@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/even_odd_list_merge"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestEvenOddMerge(t *testing.T) {

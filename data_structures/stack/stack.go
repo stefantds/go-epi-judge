@@ -1,4 +1,4 @@
-package utils
+package stack
 
 type Stack []interface{}
 

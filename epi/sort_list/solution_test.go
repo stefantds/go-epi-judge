@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/sort_list"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestStableSortList(t *testing.T) {

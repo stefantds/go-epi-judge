@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/remove_duplicates_from_sorted_list"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestRemoveDuplicates(t *testing.T) {

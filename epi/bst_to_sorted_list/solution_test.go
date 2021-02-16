@@ -10,8 +10,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/bst_to_sorted_list"
-	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestBstToDoublyLinkedList(t *testing.T) {

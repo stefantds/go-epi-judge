@@ -10,8 +10,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/k_largest_values_in_bst"
-	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestFindKLargestInBst(t *testing.T) {

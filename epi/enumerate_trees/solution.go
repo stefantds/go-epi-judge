@@ -1,7 +1,7 @@
 package enumerate_trees
 
 import (
-	"github.com/stefantds/go-epi-judge/tree"
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 )
 
 func GenerateAllBinaryTrees(numNodes int) []*tree.BinaryTreeNode {

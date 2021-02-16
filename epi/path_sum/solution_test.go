@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/path_sum"
-	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestHasPathSum(t *testing.T) {

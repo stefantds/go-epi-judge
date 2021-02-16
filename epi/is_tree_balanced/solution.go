@@ -1,7 +1,7 @@
 package is_tree_balanced
 
 import (
-	"github.com/stefantds/go-epi-judge/tree"
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 )
 
 func IsBalanced(t *tree.BinaryTreeNode) bool {

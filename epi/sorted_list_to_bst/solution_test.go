@@ -9,9 +9,9 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/iterator"
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/sorted_list_to_bst"
-	"github.com/stefantds/go-epi-judge/iterator"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestBuildBSTFromSortedList(t *testing.T) {

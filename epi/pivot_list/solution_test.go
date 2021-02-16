@@ -11,8 +11,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/pivot_list"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestListPivoting(t *testing.T) {

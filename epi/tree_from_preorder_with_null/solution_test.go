@@ -12,8 +12,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/tree_from_preorder_with_null"
-	"github.com/stefantds/go-epi-judge/tree"
 )
 
 func TestReconstructPreorder(t *testing.T) {

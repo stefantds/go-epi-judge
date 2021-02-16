@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/delete_node_from_list"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestDeletionFromList(t *testing.T) {

@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/is_list_cyclic"
-	"github.com/stefantds/go-epi-judge/list"
 )
 
 func TestHasCycle(t *testing.T) {

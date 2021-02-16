@@ -9,8 +9,8 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/stack"
 	. "github.com/stefantds/go-epi-judge/epi/hanoi"
-	"github.com/stefantds/go-epi-judge/utils"
 )
 
 func TestComputeTowerHanoi(t *testing.T) {
@@ -55,10 +55,10 @@ func TestComputeTowerHanoi(t *testing.T) {
 }
 
 func computeTowerHanoiWrapper(numRings int) error {
-	pegs := make([]utils.Stack, NumPegs)
+	pegs := make([]stack.Stack, NumPegs)
 
 	for i := 0; i < NumPegs; i++ {
-		pegs[i] = make(utils.Stack, 0, numRings)
+		pegs[i] = make(stack.Stack, 0, numRings)
 	}
 
 	for i := numRings; i >= 1; i-- {
@@ -77,18 +77,18 @@ func computeTowerHanoiWrapper(numRings int) error {
 		pegs[to] = pegs[to].Push(top)
 	}
 
-	fullPeg := make(utils.Stack, 0, numRings)
+	fullPeg := make(stack.Stack, 0, numRings)
 	for i := numRings; i >= 1; i-- {
 		fullPeg = fullPeg.Push(i)
 	}
 
-	expectedPegs1 := []utils.Stack{
+	expectedPegs1 := []stack.Stack{
 		{},
 		fullPeg,
 		{},
 	}
 
-	expectedPegs2 := []utils.Stack{
+	expectedPegs2 := []stack.Stack{
 		{},
 		{},
 		fullPeg,

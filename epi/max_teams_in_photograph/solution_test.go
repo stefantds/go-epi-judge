@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/max_teams_in_photograph"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]GraphVertex) int
+
+var solutions = []solutionFunc{
+	FindLargestNumberTeams,
+}
 
 func TestFindLargestNumberTeams(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "max_teams_in_photograph.tsv")
@@ -42,15 +49,17 @@ func TestFindLargestNumberTeams(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := FindLargestNumberTeams(newGraph(tc.K, tc.Edges))
-			if result != tc.ExpectedResult {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := FindLargestNumberTeams(newGraph(tc.K, tc.Edges))
+				if result != tc.ExpectedResult {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

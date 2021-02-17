@@ -11,7 +11,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/stack_with_max"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func() Solution
+
+var solutions = []solutionFunc{
+	NewStackWithMax,
+}
 
 func TestStackWithMax(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "stack_with_max.tsv")
@@ -40,26 +47,28 @@ func TestStackWithMax(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := stackWithMaxTester(tc.Operations.Value); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := stackWithMaxTester(s, tc.Operations.Value); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func stackWithMaxTester(operations []*StackWithMaxOp) error {
-	var q StackWithMax
+func stackWithMaxTester(sol solutionFunc, operations []*StackWithMaxOp) error {
+	var q Solution
 	for opIdx, o := range operations {
 		switch o.Op {
 		case "Stack":
-			q = NewStackWithMax()
+			q = sol()
 		case "push":
 			q.Push(o.Arg)
 		case "pop":

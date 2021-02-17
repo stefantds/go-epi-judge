@@ -1,7 +1,7 @@
 package tree_with_parent_inorder
 
 import (
-	"github.com/stefantds/go-epi-judge/tree"
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 )
 
 func InorderTraversalWithParent(t *tree.BinaryTree) []int {

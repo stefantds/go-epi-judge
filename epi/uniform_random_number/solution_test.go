@@ -10,8 +10,15 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/uniform_random_number"
-	"github.com/stefantds/go-epi-judge/stats"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
+	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
+
+type solutionFunc = func(int, int) int
+
+var solutions = []solutionFunc{
+	UniformRandom,
+}
 
 func TestUniformRandom(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "uniform_random_number.tsv")
@@ -42,35 +49,37 @@ func TestUniformRandom(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := uniformRandomWrapper(tc.LowerBound, tc.UpperBound); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := uniformRandomWrapper(s, tc.LowerBound, tc.UpperBound); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func uniformRandomWrapper(lowerBound int, upperBound int) error {
+func uniformRandomWrapper(solution solutionFunc, lowerBound int, upperBound int) error {
 	return stats.RunFuncWithRetries(
 		func() bool {
-			return uniformRandomRunner(lowerBound, upperBound)
+			return uniformRandomRunner(solution, lowerBound, upperBound)
 		},
 		errors.New("the results don't match the expected distribution"),
 	)
 }
 
-func uniformRandomRunner(lowerBound, upperBound int) bool {
+func uniformRandomRunner(solution solutionFunc, lowerBound, upperBound int) bool {
 	const nbRuns = 100000
 	results := make([]int, nbRuns)
 
 	for i := 0; i < nbRuns; i++ {
-		results[i] = UniformRandom(lowerBound, upperBound)
+		results[i] = solution(lowerBound, upperBound)
 	}
 
 	sequence := make([]int, nbRuns)

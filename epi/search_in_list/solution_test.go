@@ -8,9 +8,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/search_in_list"
-	"github.com/stefantds/go-epi-judge/list"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*list.Node, int) *list.Node
+
+var solutions = []solutionFunc{
+	SearchList,
+}
 
 func TestSearchList(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "search_in_list.tsv")
@@ -43,23 +50,25 @@ func TestSearchList(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := searchListWrapper(tc.L.Value, tc.Key)
-			if result != tc.ExpectedResult {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := searchListWrapper(s, tc.L.Value, tc.Key)
+				if result != tc.ExpectedResult {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func searchListWrapper(l *list.Node, key int) int {
-	if result := SearchList(l, key); result != nil {
+func searchListWrapper(solution solutionFunc, l *list.Node, key int) int {
+	if result := solution(l, key); result != nil {
 		return result.Data
 	}
 

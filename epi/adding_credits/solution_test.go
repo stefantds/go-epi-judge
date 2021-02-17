@@ -11,7 +11,20 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/adding_credits"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+var solutions = []Solution{
+	&ClientsCreditsInfo{},
+}
+
+type Solution interface {
+	Insert(clientID string, c int)
+	Remove(clientID string) bool
+	Lookup(clientID string) int
+	AddAll(c int)
+	Max() string
+}
 
 func TestClientsCreditsInfo(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "adding_credits.tsv")
@@ -40,29 +53,29 @@ func TestClientsCreditsInfo(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := clientsCreditsInfoTester(tc.Operations.Value); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetTypeName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := clientsCreditsInfoTester(s, tc.Operations.Value); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func clientsCreditsInfoTester(operations []*Operation) error {
-	cr := new(ClientsCreditsInfo)
-
+func clientsCreditsInfoTester(sol Solution, operations []*Operation) error {
 	for opIdx, o := range operations {
 		switch o.Op {
 		case "ClientsCreditsInfo":
 		case "remove":
 			var result int
-			if cr.Remove(o.SArg) {
+			if sol.Remove(o.SArg) {
 				result = 1
 			} else {
 				result = 0
@@ -71,11 +84,11 @@ func clientsCreditsInfoTester(operations []*Operation) error {
 				return fmt.Errorf("mismatch at index %d: operation %s: got: %v, want: %v", opIdx, o.Op, result, o.IArg)
 			}
 		case "insert":
-			cr.Insert(o.SArg, o.IArg)
+			sol.Insert(o.SArg, o.IArg)
 		case "add_all":
-			cr.AddAll(o.IArg)
+			sol.AddAll(o.IArg)
 		case "lookup":
-			result := cr.Lookup(o.SArg)
+			result := sol.Lookup(o.SArg)
 			if result != o.IArg {
 				return fmt.Errorf("mismatch at index %d: operation %s: got: %v, want: %v", opIdx, o.Op, result, o.IArg)
 			}

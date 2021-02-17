@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stefantds/go-epi-judge/config"
 	progress "github.com/stefantds/go-epi-judge/progress/lib"
+	"github.com/stefantds/go-epi-judge/test_utils/config"
 )
 
 var cfg *config.Config

@@ -10,10 +10,17 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/stack"
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/enumerate_trees"
-	"github.com/stefantds/go-epi-judge/tree"
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(int) []*tree.BinaryTreeNode
+
+var solutions = []solutionFunc{
+	GenerateAllBinaryTrees,
+}
 
 func TestGenerateAllBinaryTrees(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "enumerate_trees.tsv")
@@ -44,23 +51,25 @@ func TestGenerateAllBinaryTrees(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := generateAllBinaryTreesWrapper(tc.NumNodes)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := generateAllBinaryTreesWrapper(s, tc.NumNodes)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func generateAllBinaryTreesWrapper(numNodes int) [][]int {
-	result := GenerateAllBinaryTrees(numNodes)
+func generateAllBinaryTreesWrapper(solution solutionFunc, numNodes int) [][]int {
+	result := solution(numNodes)
 
 	serialized := make([][]int, len(result))
 
@@ -76,7 +85,7 @@ func generateAllBinaryTreesWrapper(numNodes int) [][]int {
 }
 
 func serializeTree(t *tree.BinaryTreeNode) []int {
-	s := make(utils.Stack, 0)
+	s := make(stack.Stack, 0)
 	s = s.Push(t)
 
 	result := make([]int, 0)

@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/gray_code"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(int) []int
+
+var solutions = []solutionFunc{
+	GrayCode,
+}
 
 func TestGrayCode(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "gray_code.tsv")
@@ -38,22 +45,24 @@ func TestGrayCode(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := grayCodeWrapper(tc.NumBits); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := grayCodeWrapper(s, tc.NumBits); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func grayCodeWrapper(numBits int) error {
-	result := GrayCode(numBits)
+func grayCodeWrapper(solution solutionFunc, numBits int) error {
+	result := solution(numBits)
 	uniqueEntries := make(map[int]bool)
 
 	expectedSize := 1 << numBits

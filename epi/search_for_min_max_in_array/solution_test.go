@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/search_for_min_max_in_array"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int) (int, int)
+
+var solutions = []solutionFunc{
+	FindMinMax,
+}
 
 func TestFindMinMax(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "search_for_min_max_in_array.tsv")
@@ -41,15 +48,17 @@ func TestFindMinMax(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			resultMin, resultMax := FindMinMax(tc.A)
-			if !reflect.DeepEqual([]int{resultMin, resultMax}, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", []int{resultMin, resultMax}, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				resultMin, resultMax := FindMinMax(tc.A)
+				if !reflect.DeepEqual([]int{resultMin, resultMax}, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", []int{resultMin, resultMax}, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

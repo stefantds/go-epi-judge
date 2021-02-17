@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/absent_value_array"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(stream chan int) int
+
+var solutions = []solutionFunc{
+	FindMissingElement,
+}
 
 func TestFindMissingElement(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "absent_value_array.tsv")
@@ -38,29 +45,31 @@ func TestFindMissingElement(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			err := findMissingElementWrapper(tc.Stream)
-			if err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				err := findMissingElementWrapper(s, tc.Stream)
+				if err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findMissingElementWrapper(stream []int) error {
+func findMissingElementWrapper(solution solutionFunc, stream []int) error {
 	streamChan := make(chan int, len(stream))
 	for _, v := range stream {
 		streamChan <- v
 	}
 	close(streamChan)
 
-	res := FindMissingElement(streamChan)
+	res := solution(streamChan)
 
 	for _, i := range stream {
 		if i == res {

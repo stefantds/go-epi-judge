@@ -11,7 +11,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/lru_cache"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(int) Solution
+
+var solutions = []solutionFunc{
+	NewLRUCache,
+}
 
 func TestLRUCache(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "lru_cache.tsv")
@@ -40,26 +47,28 @@ func TestLRUCache(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := lruCacheTester(tc.Operations.Value); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := lruCacheTester(s, tc.Operations.Value); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func lruCacheTester(operations []*LRUCacheOp) error {
-	var cache LRUCache
+func lruCacheTester(sol solutionFunc, operations []*LRUCacheOp) error {
+	var cache Solution
 	for opIdx, o := range operations {
 		switch o.Code {
 		case "LruCache":
-			cache = NewLRUCache(o.Arg1)
+			cache = sol(o.Arg1)
 		case "lookup":
 			result := cache.Lookup(o.Arg1)
 			if result != o.Arg2 {

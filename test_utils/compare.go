@@ -1,4 +1,4 @@
-package utils
+package test_utils
 
 // LexIntsCompare compares two int slices using lexicographical order.
 // Returns true if a < b in lexicographical order.

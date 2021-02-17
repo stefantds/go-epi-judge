@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/search_entry_equal_to_index"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int) int
+
+var solutions = []solutionFunc{
+	SearchEntryEqualToItsIndex,
+}
 
 func TestSearchEntryEqualToItsIndex(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "search_entry_equal_to_index.tsv")
@@ -39,22 +46,24 @@ func TestSearchEntryEqualToItsIndex(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := searchEntryEqualToItsIndexWrapper(tc.A); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := searchEntryEqualToItsIndexWrapper(s, tc.A); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func searchEntryEqualToItsIndexWrapper(a []int) error {
-	result := SearchEntryEqualToItsIndex(a)
+func searchEntryEqualToItsIndexWrapper(solution solutionFunc, a []int) error {
+	result := solution(a)
 
 	if result < -1 || result > len(a)-1 {
 		return fmt.Errorf("invalid index %d", result)

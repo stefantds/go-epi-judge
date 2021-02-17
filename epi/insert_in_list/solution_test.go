@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/insert_in_list"
-	"github.com/stefantds/go-epi-judge/list"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*list.Node, *list.Node)
+
+var solutions = []solutionFunc{
+	InsertAfter,
+}
 
 func TestInsertAfter(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "insert_in_list.tsv")
@@ -46,24 +53,24 @@ func TestInsertAfter(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := insertListWrapper(tc.Node.Value, tc.NodeIdx, tc.NewNodeData)
-			if err != nil {
-				t.Error(err)
-			} else if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := insertListWrapper(s, tc.Node.Value, tc.NodeIdx, tc.NewNodeData)
+				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func insertListWrapper(l *list.Node, nodeIdx int, newNodeData int) (*list.Node, error) {
+func insertListWrapper(solution solutionFunc, l *list.Node, nodeIdx int, newNodeData int) *list.Node {
 	node := l
 
 	for nodeIdx > 1 {
@@ -75,7 +82,7 @@ func insertListWrapper(l *list.Node, nodeIdx int, newNodeData int) (*list.Node, 
 		Data: newNodeData,
 	}
 
-	InsertAfter(node, &newNode)
+	solution(node, &newNode)
 
-	return l, nil
+	return l
 }

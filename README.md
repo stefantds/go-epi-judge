@@ -74,6 +74,20 @@ Run one particular test for a particular problem:
 go test ./epi/bst_from_preorder -run TestRebuildBSTFromPreorder/Test_Case_0
 ```
 
+## Multiple Solutions
+
+Multiple solutions for the same problem can be tested (assuming the same function signature). This covers the case where several solution are implemented and all should be tested against the provided test cases.
+In order to add more functions to the ones to be tested, identify in the corresponding test file the array of solutions at the beginning of the file and add all the functions (or stucts in some cases) that need to be tested.
+
+E.g. (in `epi/count_bits/solution_test.go`):
+
+```
+var solutions = []solutionFunc{
+	CountBits,
+	CountBitsV2,
+}
+```
+
 ## Parallel Testing
 
 Running test cases in parallel is supported and can be enabled or disabled by the property `runParallelTests` in `config.yml` (which enables or disables the call to `t.Parallel()` for every test case). Running test cases in parallel can increase the test speed considerably. However, the test cases are then run in a random order which, together with the parallel aspect, can make debugging difficult. Therefore, it can be easily enabled or disabled.
@@ -120,6 +134,12 @@ See help for more details:
 
 ```sh
 go run ./progress -h
+```
+
+The progress tracking is relying on some `.progress` files that are being updated when tests are run. However, if the test use cache, the progress files are not updated. In some cases a fresh calculation is desired: just run `go test` for all the problems while disabling cache:
+
+```sh
+go test ./... -count=1
 ```
 
 ## FAQ

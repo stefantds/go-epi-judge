@@ -10,8 +10,15 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/random_permutation"
-	"github.com/stefantds/go-epi-judge/stats"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
+	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
+
+type solutionFunc = func(int) []int
+
+var solutions = []solutionFunc{
+	ComputeRandomPermutation,
+}
 
 func TestComputeRandomPermutation(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "random_permutation.tsv")
@@ -40,35 +47,37 @@ func TestComputeRandomPermutation(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := computeRandomPermutationWrapper(tc.N); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := computeRandomPermutationWrapper(s, tc.N); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func computeRandomPermutationWrapper(n int) error {
+func computeRandomPermutationWrapper(solution solutionFunc, n int) error {
 	return stats.RunFuncWithRetries(
 		func() bool {
-			return computeRandomPermutationRunner(n)
+			return computeRandomPermutationRunner(solution, n)
 		},
 		errors.New("the results don't match the expected distribution"),
 	)
 }
 
-func computeRandomPermutationRunner(n int) bool {
+func computeRandomPermutationRunner(solution solutionFunc, n int) bool {
 	const nbRuns = 1000000
 
 	results := make([][]int, nbRuns)
 	for i := 0; i < nbRuns; i++ {
-		results[i] = ComputeRandomPermutation(n)
+		results[i] = solution(n)
 	}
 
 	sequence := make([]int, nbRuns)

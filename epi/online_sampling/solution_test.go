@@ -11,9 +11,15 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/online_sampling"
-	"github.com/stefantds/go-epi-judge/stats"
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
+	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
+
+type solutionFunc = func(chan int, int) []int
+
+var solutions = []solutionFunc{
+	OnlineRandomSample,
+}
 
 func TestOnlineRandomSample(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "online_sampling.tsv")
@@ -44,30 +50,32 @@ func TestOnlineRandomSample(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := onlineRandomSampleWrapper(tc.Stream, tc.K); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := onlineRandomSampleWrapper(s, tc.Stream, tc.K); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func onlineRandomSampleWrapper(stream []int, k int) error {
+func onlineRandomSampleWrapper(solution solutionFunc, stream []int, k int) error {
 	return stats.RunFuncWithRetries(
 		func() bool {
-			return onlineRandomSampleRunner(stream, k)
+			return onlineRandomSampleRunner(solution, stream, k)
 		},
 		errors.New("the results don't match the expected distribution"),
 	)
 }
 
-func onlineRandomSampleRunner(stream []int, k int) bool {
+func onlineRandomSampleRunner(solution solutionFunc, stream []int, k int) bool {
 	const nbRuns = 1000000
 
 	results := make([][]int, nbRuns)
@@ -77,7 +85,7 @@ func onlineRandomSampleRunner(stream []int, k int) bool {
 			streamChan <- v
 		}
 		close(streamChan)
-		results[i] = OnlineRandomSample(streamChan, k)
+		results[i] = solution(streamChan, k)
 	}
 
 	totalPossibleOutcomes := stats.BinomialCoefficient(len(stream), k)

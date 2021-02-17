@@ -11,7 +11,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/is_array_dominated"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(Team, Team) bool
+
+var solutions = []solutionFunc{
+	ValidPlacementExists,
+}
 
 func TestValidPlacementExists(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "is_array_dominated.tsv")
@@ -46,32 +53,35 @@ func TestValidPlacementExists(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := validPlacementExistsWrapper(
-				tc.Team0.Value,
-				tc.Team1.Value,
-				tc.ExpectedResult01,
-				tc.ExpectedResult10,
-			); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := validPlacementExistsWrapper(
+					s,
+					tc.Team0.Value,
+					tc.Team1.Value,
+					tc.ExpectedResult01,
+					tc.ExpectedResult10,
+				); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func validPlacementExistsWrapper(team0 Team, team1 Team, expected01 bool, expected10 bool) error {
-	result01 := ValidPlacementExists(team0, team1)
+func validPlacementExistsWrapper(solution solutionFunc, team0 Team, team1 Team, expected01 bool, expected10 bool) error {
+	result01 := solution(team0, team1)
 	if result01 != expected01 {
 		return fmt.Errorf("got %t, want %t", result01, expected01)
 	}
 
-	result10 := ValidPlacementExists(team1, team0)
+	result10 := solution(team1, team0)
 	if result10 != expected10 {
 		return fmt.Errorf("got %t, want %t", result10, expected10)
 	}

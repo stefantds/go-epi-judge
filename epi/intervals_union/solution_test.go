@@ -12,7 +12,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/intervals_union"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]Interval) []Interval
+
+var solutions = []solutionFunc{
+	UnionOfIntervals,
+}
 
 func TestUnionOfIntervals(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "intervals_union.tsv")
@@ -43,15 +50,17 @@ func TestUnionOfIntervals(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := UnionOfIntervals(tc.Intervals.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.Intervals.Value)
+				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

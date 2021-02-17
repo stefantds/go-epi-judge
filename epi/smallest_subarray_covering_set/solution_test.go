@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/smallest_subarray_covering_set"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]string, map[string]struct{}) (int, int)
+
+var solutions = []solutionFunc{
+	FindSmallestSubarrayCoveringSet,
+}
 
 func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "smallest_subarray_covering_set.tsv")
@@ -43,21 +50,23 @@ func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := findSmallestSubarrayCoveringSetWrapper(tc.Paragraph, tc.Keywords, tc.ExpectedLength); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := findSmallestSubarrayCoveringSetWrapper(s, tc.Paragraph, tc.Keywords, tc.ExpectedLength); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findSmallestSubarrayCoveringSetWrapper(paragraph []string, keywords []string, expectedLength int) error {
+func findSmallestSubarrayCoveringSetWrapper(solution solutionFunc, paragraph []string, keywords []string, expectedLength int) error {
 	set := make(map[string]struct{}, len(keywords))
 	copySet := make(map[string]struct{}, len(keywords))
 	for _, s := range keywords {
@@ -65,7 +74,7 @@ func findSmallestSubarrayCoveringSetWrapper(paragraph []string, keywords []strin
 		copySet[s] = struct{}{}
 	}
 
-	start, end := FindSmallestSubarrayCoveringSet(paragraph, set)
+	start, end := solution(paragraph, set)
 
 	switch {
 	case start < 0 || start >= len(paragraph):

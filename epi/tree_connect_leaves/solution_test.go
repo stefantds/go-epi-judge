@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/tree_connect_leaves"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*tree.BinaryTreeNode) []*tree.BinaryTreeNode
+
+var solutions = []solutionFunc{
+	CreateListOfLeaves,
+}
 
 func TestCreateListOfLeaves(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "tree_connect_leaves.tsv")
@@ -42,26 +49,28 @@ func TestCreateListOfLeaves(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := createListOfLeavesWrapper(tc.Tree.Value)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result, err := createListOfLeavesWrapper(s, tc.Tree.Value)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func createListOfLeavesWrapper(tree *tree.BinaryTreeNode) ([]int, error) {
-	result := CreateListOfLeaves(tree)
+func createListOfLeavesWrapper(solution solutionFunc, tree *tree.BinaryTreeNode) ([]int, error) {
+	result := solution(tree)
 
 	for i, n := range result {
 		if n == nil {

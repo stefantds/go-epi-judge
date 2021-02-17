@@ -7,13 +7,18 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/stefantds/go-epi-judge/utils"
-
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/bst_from_sorted_array"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int) *tree.BSTNode
+
+var solutions = []solutionFunc{
+	BuildMinHeightBSTFromSortedArray,
+}
 
 func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "bst_from_sorted_array.tsv")
@@ -44,26 +49,28 @@ func TestBuildMinHeightBSTFromSortedArray(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := buildMinHeightBSTFromSortedArrayWrapper(tc.A)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(result, tc.ExpectedHeight) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedHeight)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result, err := buildMinHeightBSTFromSortedArrayWrapper(s, tc.A)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !reflect.DeepEqual(result, tc.ExpectedHeight) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedHeight)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func buildMinHeightBSTFromSortedArrayWrapper(a []int) (int, error) {
-	result := BuildMinHeightBSTFromSortedArray(a)
+func buildMinHeightBSTFromSortedArrayWrapper(solution solutionFunc, a []int) (int, error) {
+	result := solution(a)
 
 	inorder := tree.GenerateInorder(result)
 

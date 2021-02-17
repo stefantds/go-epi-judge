@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/number_of_score_combinations"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(int, []int) int
+
+var solutions = []solutionFunc{
+	NumCombinationsForFinalScore,
+}
 
 func TestNumCombinationsForFinalScore(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "number_of_score_combinations.tsv")
@@ -42,15 +49,17 @@ func TestNumCombinationsForFinalScore(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := NumCombinationsForFinalScore(tc.FinalScore, tc.IndividualPlayScores)
-			if result != tc.ExpectedResult {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.FinalScore, tc.IndividualPlayScores)
+				if result != tc.ExpectedResult {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

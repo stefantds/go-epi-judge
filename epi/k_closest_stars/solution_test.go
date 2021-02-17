@@ -12,7 +12,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/k_closest_stars"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(chan Star, int) []Star
+
+var solutions = []solutionFunc{
+	FindClosestKStars,
+}
 
 func TestFindClosestKStars(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "k_closest_stars.tsv")
@@ -45,29 +52,31 @@ func TestFindClosestKStars(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := findClosestKStarsWrapper(tc.Stars.Value, tc.K)
-			if !equal(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := findClosestKStarsWrapper(s, tc.Stars.Value, tc.K)
+				if !equal(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findClosestKStarsWrapper(stars []Star, k int) []Star {
+func findClosestKStarsWrapper(solution solutionFunc, stars []Star, k int) []Star {
 	starsChan := make(chan Star, len(stars))
 	for _, s := range stars {
 		starsChan <- s
 	}
 	close(starsChan)
 
-	return FindClosestKStars(starsChan, k)
+	return solution(starsChan, k)
 }
 
 func equal(result []Star, expected []float64) bool {

@@ -10,9 +10,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/k_largest_values_in_bst"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*tree.BSTNode, int) []int
+
+var solutions = []solutionFunc{
+	FindKLargestInBst,
+}
 
 func TestFindKLargestInBst(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "k_largest_values_in_bst.tsv")
@@ -45,15 +52,17 @@ func TestFindKLargestInBst(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := FindKLargestInBst(tc.Tree.Value, tc.K)
-			if !equal(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.Tree.Value, tc.K)
+				if !equal(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

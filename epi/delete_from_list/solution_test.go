@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/delete_from_list"
-	"github.com/stefantds/go-epi-judge/list"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*list.Node)
+
+var solutions = []solutionFunc{
+	DeleteList,
+}
 
 func TestDeleteList(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "delete_from_list.tsv")
@@ -44,22 +51,24 @@ func TestDeleteList(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := deleteListWrapper(tc.List.Value, tc.NodeIdx)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := deleteListWrapper(s, tc.List.Value, tc.NodeIdx)
+				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func deleteListWrapper(head *list.Node, nodeIdx int) *list.Node {
+func deleteListWrapper(solution solutionFunc, head *list.Node, nodeIdx int) *list.Node {
 	nodeToDelete := head
 	var prev *list.Node
 
@@ -75,6 +84,6 @@ func deleteListWrapper(head *list.Node, nodeIdx int) *list.Node {
 		nodeToDelete = nodeToDelete.Next
 	}
 
-	DeleteList(prev)
+	solution(prev)
 	return head
 }

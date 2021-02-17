@@ -11,7 +11,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/copy_posting_list"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*PostingListNode) *PostingListNode
+
+var solutions = []solutionFunc{
+	CopyPostingsList,
+}
 
 func TestCopyPostingsList(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "copy_posting_list.tsv")
@@ -49,22 +56,24 @@ func TestCopyPostingsList(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := copyPostingsListWrapper(tc.L.Value, tc.LCopy.Value); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := copyPostingsListWrapper(s, tc.L.Value, tc.LCopy.Value); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func copyPostingsListWrapper(l *PostingListNode, copyL *PostingListNode) error {
-	result := CopyPostingsList(l)
+func copyPostingsListWrapper(solution solutionFunc, l *PostingListNode, copyL *PostingListNode) error {
+	result := solution(l)
 	return checkPostingListsEqual(copyL, result)
 }
 

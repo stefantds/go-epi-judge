@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/bst_from_preorder"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int) *tree.BSTNode
+
+var solutions = []solutionFunc{
+	RebuildBSTFromPreorder,
+}
 
 func TestRebuildBSTFromPreorder(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "bst_from_preorder.tsv")
@@ -42,15 +49,17 @@ func TestRebuildBSTFromPreorder(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := RebuildBSTFromPreorder(tc.PreorderSequence)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.PreorderSequence)
+				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

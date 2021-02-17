@@ -9,10 +9,16 @@ import (
 	"testing"
 
 	"github.com/stefantds/csvdecoder"
-	"github.com/stefantds/go-epi-judge/utils"
 
 	. "github.com/stefantds/go-epi-judge/epi/sudoku_solve"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([][]int) bool
+
+var solutions = []solutionFunc{
+	SolveSudoku,
+}
 
 func TestSolveSudoku(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "sudoku_solve.tsv")
@@ -41,43 +47,45 @@ func TestSolveSudoku(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := solveSudokuWrapper(tc.PartialAssignment); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := solveSudokuWrapper(s, tc.PartialAssignment); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func solveSudokuWrapper(partialAssignment [][]int) error {
+func solveSudokuWrapper(solution solutionFunc, partialAssignment [][]int) error {
 	solved := make([][]int, len(partialAssignment))
 	for i, row := range partialAssignment {
 		solved[i] = make([]int, len(row))
 		copy(solved[i], row)
 	}
 
-	SolveSudoku(solved)
+	solution(solved)
 
 	if len(solved) != len(partialAssignment) {
-		return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFmt{solved})
+		return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFormatter(solved))
 	}
 
 	for i, br := range partialAssignment {
 		sr := solved[i]
 
 		if len(br) != len(sr) {
-			return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFmt{solved})
+			return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFormatter(solved))
 		}
 
 		for j := 0; j < len(br); j++ {
 			if br[j] != 0 && br[j] != sr[j] {
-				return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFmt{solved})
+				return fmt.Errorf("initial cell assignment has been changed: got:\n%v", utils.MatrixFormatter(solved))
 			}
 		}
 	}
@@ -86,13 +94,13 @@ func solveSudokuWrapper(partialAssignment [][]int) error {
 
 	for i := 0; i < len(solved); i++ {
 		if err := assertUniqueSeq(solved[i]); err != nil {
-			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFmt{solved})
+			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFormatter(solved))
 		}
 		if err := assertUniqueSeq(gatherColumn(solved, i)); err != nil {
-			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFmt{solved})
+			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFormatter(solved))
 		}
 		if err := assertUniqueSeq(gatherSquareBlock(solved, blockSize, i)); err != nil {
-			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFmt{solved})
+			return fmt.Errorf("%s: got:\n%v", err, utils.MatrixFormatter(solved))
 		}
 	}
 

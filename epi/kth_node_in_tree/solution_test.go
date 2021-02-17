@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/kth_node_in_tree"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*BinaryTreeNode, int) *BinaryTreeNode
+
+var solutions = []solutionFunc{
+	FindKthNodeBinaryTree,
+}
 
 func TestFindKthNodeBinaryTree(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "kth_node_in_tree.tsv")
@@ -44,18 +51,20 @@ func TestFindKthNodeBinaryTree(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := findKthNodeBinaryTreeWrapper(tc.Tree.Value, tc.K)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if result != tc.ExpectedResult {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result, err := findKthNodeBinaryTreeWrapper(s, tc.Tree.Value, tc.K)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if result != tc.ExpectedResult {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
@@ -85,9 +94,9 @@ func convertToTreeWithSize(original *tree.BinaryTree) *BinaryTreeNode {
 	}
 }
 
-func findKthNodeBinaryTreeWrapper(t *tree.BinaryTree, k int) (int, error) {
+func findKthNodeBinaryTreeWrapper(solution solutionFunc, t *tree.BinaryTree, k int) (int, error) {
 	converted := convertToTreeWithSize(t)
-	result := FindKthNodeBinaryTree(converted, k)
+	result := solution(converted, k)
 
 	if result == nil {
 		return 0, errors.New("expected a result, got nil")

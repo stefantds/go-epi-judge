@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/successor_in_tree"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*tree.BinaryTree) *tree.BinaryTree
+
+var solutions = []solutionFunc{
+	FindSuccessor,
+}
 
 func TestFindSuccessor(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "successor_in_tree.tsv")
@@ -44,25 +51,27 @@ func TestFindSuccessor(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := findSuccessorWrapper(tc.Tree.Value, tc.NodeIdx)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := findSuccessorWrapper(s, tc.Tree.Value, tc.NodeIdx)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findSuccessorWrapper(inputTree *tree.BinaryTree, nodeIdx int) int {
+func findSuccessorWrapper(solution solutionFunc, inputTree *tree.BinaryTree, nodeIdx int) int {
 	n := tree.MustFindNode(inputTree, nodeIdx).(*tree.BinaryTree)
 
-	result := FindSuccessor(n)
+	result := solution(n)
 
 	if result == nil {
 		return -1

@@ -11,8 +11,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/enumerate_palindromic_decompositions"
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(string) [][]string
+
+var solutions = []solutionFunc{
+	PalindromeDecompositions,
+}
 
 func TestPalindromeDecompositions(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "enumerate_palindromic_decompositions.tsv")
@@ -43,15 +49,17 @@ func TestPalindromeDecompositions(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := PalindromeDecompositions(tc.Text)
-			if !equal(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.Text)
+				if !equal(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

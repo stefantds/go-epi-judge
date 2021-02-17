@@ -6,12 +6,17 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/stefantds/go-epi-judge/utils"
-
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/alternating_array"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(a []int)
+
+var solutions = []solutionFunc{
+	Rearrange,
+}
 
 func TestRearrange(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "alternating_array.tsv")
@@ -40,26 +45,28 @@ func TestRearrange(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			Rearrange(tc.A)
-			if err := rearrangeWrapper(tc.A); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				Rearrange(tc.A)
+				if err := rearrangeWrapper(s, tc.A); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func rearrangeWrapper(a []int) error {
+func rearrangeWrapper(solution solutionFunc, a []int) error {
 	result := make([]int, len(a))
 	_ = copy(result, a)
 
-	Rearrange(result)
+	solution(result)
 
 	if err := utils.AssertAllValuesPresent(a, result); err != nil {
 		return err

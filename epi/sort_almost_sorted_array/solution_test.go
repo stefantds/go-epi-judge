@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/sort_almost_sorted_array"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(chan int, int) []int
+
+var solutions = []solutionFunc{
+	SortApproximatelySortedData,
+}
 
 func TestSortApproximatelySortedData(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "sort_almost_sorted_array.tsv")
@@ -43,27 +50,29 @@ func TestSortApproximatelySortedData(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := sortApproximatelySortedDataWrapper(tc.Sequence, tc.K)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := sortApproximatelySortedDataWrapper(s, tc.Sequence, tc.K)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func sortApproximatelySortedDataWrapper(sequence []int, k int) []int {
+func sortApproximatelySortedDataWrapper(solution solutionFunc, sequence []int, k int) []int {
 	sequenceChan := make(chan int, len(sequence))
 	for _, v := range sequence {
 		sequenceChan <- v
 	}
 	close(sequenceChan)
 
-	return SortApproximatelySortedData(sequenceChan, k)
+	return solution(sequenceChan, k)
 }

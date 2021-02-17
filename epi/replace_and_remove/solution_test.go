@@ -12,7 +12,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/replace_and_remove"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(int, []rune) int
+
+var solutions = []solutionFunc{
+	ReplaceAndRemove,
+}
 
 func TestReplaceAndRemove(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "replace_and_remove.tsv")
@@ -45,30 +52,32 @@ func TestReplaceAndRemove(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := replaceAndRemoveWrapper(tc.Size, tc.S)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result, err := replaceAndRemoveWrapper(s, tc.Size, tc.S)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func replaceAndRemoveWrapper(size int, s []string) ([]string, error) {
+func replaceAndRemoveWrapper(solution solutionFunc, size int, s []string) ([]string, error) {
 	allChars := make([]rune, len(s))
 	for i, c := range []rune(strings.Join(s, "")) {
 		allChars[i] = c
 	}
-	resSize := ReplaceAndRemove(size, allChars)
+	resSize := solution(size, allChars)
 
 	if resSize > len(s) {
 		return nil, errors.New("result can't be greater than the original size")

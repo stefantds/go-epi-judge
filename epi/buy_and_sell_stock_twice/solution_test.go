@@ -9,8 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/buy_and_sell_stock_twice"
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]float64) float64
+
+var solutions = []solutionFunc{
+	BuyAndSellStockTwice,
+}
 
 func TestBuyAndSellStockTwice(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "buy_and_sell_stock_twice.tsv")
@@ -41,15 +47,17 @@ func TestBuyAndSellStockTwice(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := BuyAndSellStockTwice(tc.Prices)
-			if !utils.EqualFloat(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.Prices)
+				if !utils.EqualFloat(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

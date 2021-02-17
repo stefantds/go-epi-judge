@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/majority_element"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(chan string) string
+
+var solutions = []solutionFunc{
+	MajoritySearch,
+}
 
 func TestMajoritySearch(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "majority_element.tsv")
@@ -40,27 +47,29 @@ func TestMajoritySearch(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := majoritySearchWrapper(tc.Stream)
-			if result != tc.ExpectedResult {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := majoritySearchWrapper(s, tc.Stream)
+				if result != tc.ExpectedResult {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func majoritySearchWrapper(stream []string) string {
+func majoritySearchWrapper(solution solutionFunc, stream []string) string {
 	streamChan := make(chan string, len(stream))
 	for _, v := range stream {
 		streamChan <- v
 	}
 	close(streamChan)
 
-	return MajoritySearch(streamChan)
+	return solution(streamChan)
 }

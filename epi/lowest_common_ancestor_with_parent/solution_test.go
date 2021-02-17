@@ -10,9 +10,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/lowest_common_ancestor_with_parent"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*tree.BinaryTree, *tree.BinaryTree) *tree.BinaryTree
+
+var solutions = []solutionFunc{
+	LCA,
+}
 
 func TestLCA(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "lowest_common_ancestor.tsv")
@@ -47,29 +54,31 @@ func TestLCA(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := lcaWrapper(tc.Tree.Value, tc.Key0, tc.Key1)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result, err := lcaWrapper(s, tc.Tree.Value, tc.Key0, tc.Key1)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func lcaWrapper(inputTree *tree.BinaryTree, key0 int, key1 int) (int, error) {
+func lcaWrapper(solution solutionFunc, inputTree *tree.BinaryTree, key0 int, key1 int) (int, error) {
 	node0 := tree.MustFindNode(inputTree, key0)
 	node1 := tree.MustFindNode(inputTree, key1)
 
-	result := LCA(node0.(*tree.BinaryTree), node1.(*tree.BinaryTree))
+	result := solution(node0.(*tree.BinaryTree), node1.(*tree.BinaryTree))
 
 	if result == nil {
 		return 0, errors.New("result can not be nil")

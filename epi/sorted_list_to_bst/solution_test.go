@@ -9,10 +9,17 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/iterator"
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/sorted_list_to_bst"
-	"github.com/stefantds/go-epi-judge/iterator"
-	"github.com/stefantds/go-epi-judge/list"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*list.DoublyLinkedNode, int) *list.DoublyLinkedNode
+
+var solutions = []solutionFunc{
+	BuildBSTFromSortedList,
+}
 
 func TestBuildBSTFromSortedList(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "sorted_list_to_bst.tsv")
@@ -42,23 +49,25 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := buildBSTFromSortedListWrapper(tc.DoublyListL.Value); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := buildBSTFromSortedListWrapper(s, tc.DoublyListL.Value); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func buildBSTFromSortedListWrapper(dl *list.DoublyLinkedNode) error {
+func buildBSTFromSortedListWrapper(solution solutionFunc, dl *list.DoublyLinkedNode) error {
 	l := list.DoublyLinkedNodeToSlice(dl)
-	result := BuildBSTFromSortedList(dl, len(l))
+	result := solution(dl, len(l))
 
 	current := iterator.New(iterator.Ints(l))
 

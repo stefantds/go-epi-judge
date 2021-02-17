@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/two_sorted_arrays_merge"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int, int, []int, int)
+
+var solutions = []solutionFunc{
+	MergeTwoSortedArrays,
+}
 
 func TestMergeTwoSortedArrays(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "two_sorted_arrays_merge.tsv")
@@ -47,22 +54,24 @@ func TestMergeTwoSortedArrays(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := mergeTwoSortedArraysWrapper(tc.A, tc.M, tc.B, tc.N)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := mergeTwoSortedArraysWrapper(s, tc.A, tc.M, tc.B, tc.N)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func mergeTwoSortedArraysWrapper(a []int, m int, b []int, n int) []int {
-	MergeTwoSortedArrays(a, m, b, n)
+func mergeTwoSortedArraysWrapper(solution solutionFunc, a []int, m int, b []int, n int) []int {
+	solution(a, m, b, n)
 	return a
 }

@@ -1,12 +1,17 @@
 package queue_from_stacks
 
+type Solution interface {
+	Enqueue(x int)
+	Dequeue() int
+}
+
 type QueueFromStacks struct {
 	// TODO - Add your code here
 }
 
-func NewQueueFromStacks() QueueFromStacks {
+func NewQueueFromStacks() Solution {
 	// TODO - Add your code here
-	return QueueFromStacks{}
+	return &QueueFromStacks{}
 }
 
 func (q *QueueFromStacks) Enqueue(x int) {

@@ -10,9 +10,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/bst_to_sorted_list"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*tree.BSTNode) *tree.BSTNode
+
+var solutions = []solutionFunc{
+	BstToDoublyLinkedList,
+}
 
 func TestBstToDoublyLinkedList(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "bst_to_sorted_list.tsv")
@@ -43,26 +50,28 @@ func TestBstToDoublyLinkedList(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := bstToDoublyLinkedListWrapper(tc.Tree.Value)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result, err := bstToDoublyLinkedListWrapper(s, tc.Tree.Value)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func bstToDoublyLinkedListWrapper(t *tree.BSTNode) ([]int, error) {
-	list := BstToDoublyLinkedList(t)
+func bstToDoublyLinkedListWrapper(solution solutionFunc, t *tree.BSTNode) ([]int, error) {
+	list := solution(t)
 
 	if list != nil && list.Left != nil {
 		return nil, errors.New("function must return the head of the list. Left link must be nil")

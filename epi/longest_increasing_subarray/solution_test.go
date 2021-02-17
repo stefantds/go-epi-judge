@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/longest_increasing_subarray"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int) (start, end int)
+
+var solutions = []solutionFunc{
+	FindLongestIncreasingSubarray,
+}
 
 func TestFindLongestIncreasingSubarray(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "longest_increasing_subarray.tsv")
@@ -40,22 +47,24 @@ func TestFindLongestIncreasingSubarray(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := findLongestIncreasingSubarrayWrapper(tc.A, tc.ExpectedLength); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := findLongestIncreasingSubarrayWrapper(s, tc.A, tc.ExpectedLength); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findLongestIncreasingSubarrayWrapper(a []int, expectedLength int) error {
-	start, end := FindLongestIncreasingSubarray(a)
+func findLongestIncreasingSubarrayWrapper(solution solutionFunc, a []int, expectedLength int) error {
+	start, end := solution(a)
 
 	switch {
 	case start < 0 || start >= len(a):

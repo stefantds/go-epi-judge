@@ -11,9 +11,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/pivot_list"
-	"github.com/stefantds/go-epi-judge/list"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*list.Node, int) *list.Node
+
+var solutions = []solutionFunc{
+	ListPivoting,
+}
 
 func TestListPivoting(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "pivot_list.tsv")
@@ -44,23 +51,25 @@ func TestListPivoting(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := listPivotingWrapper(tc.L.Value, tc.X); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := listPivotingWrapper(s, tc.L.Value, tc.X); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func listPivotingWrapper(l *list.Node, x int) error {
+func listPivotingWrapper(solution solutionFunc, l *list.Node, x int) error {
 	original := list.ToArray(l)
-	ListPivoting(l, x)
+	solution(l, x)
 	pivoted := list.ToArray(l)
 
 	const smaller, equal, greater int = 0, 1, 2

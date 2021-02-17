@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/sunset_view"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(chan int) []int
+
+var solutions = []solutionFunc{
+	ExamineBuildingsWithSunset,
+}
 
 func TestExamineBuildingsWithSunset(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "sunset_view.tsv")
@@ -41,27 +48,29 @@ func TestExamineBuildingsWithSunset(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := examineBuildingsWithSunsetWrapper(tc.Sequence)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := examineBuildingsWithSunsetWrapper(s, tc.Sequence)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func examineBuildingsWithSunsetWrapper(sequence []int) []int {
+func examineBuildingsWithSunsetWrapper(solution solutionFunc, sequence []int) []int {
 	sequenceChan := make(chan int, len(sequence))
 	for _, v := range sequence {
 		sequenceChan <- v
 	}
 	close(sequenceChan)
 
-	return ExamineBuildingsWithSunset(sequenceChan)
+	return solution(sequenceChan)
 }

@@ -1,7 +1,7 @@
 package reverse_sublist
 
 import (
-	"github.com/stefantds/go-epi-judge/list"
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 )
 
 func ReverseSublist(l *list.Node, start int, finish int) *list.Node {

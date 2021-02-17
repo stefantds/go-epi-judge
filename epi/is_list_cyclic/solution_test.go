@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/is_list_cyclic"
-	"github.com/stefantds/go-epi-judge/list"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*list.Node) *list.Node
+
+var solutions = []solutionFunc{
+	HasCycle,
+}
 
 func TestHasCycle(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "is_list_cyclic.tsv")
@@ -42,21 +49,23 @@ func TestHasCycle(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := hasCycleWrapper(tc.Head.Value, tc.CycleIdx); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := hasCycleWrapper(s, tc.Head.Value, tc.CycleIdx); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func hasCycleWrapper(head *list.Node, cycleIdx int) error {
+func hasCycleWrapper(solution solutionFunc, head *list.Node, cycleIdx int) error {
 	var cycleStart *list.Node
 	if cycleIdx != -1 {
 		cursor := head
@@ -75,7 +84,7 @@ func hasCycleWrapper(head *list.Node, cycleIdx int) error {
 		cursor.Next = cycleStart
 	}
 
-	result := HasCycle(head)
+	result := solution(head)
 
 	if cycleIdx == -1 {
 		if result != nil {

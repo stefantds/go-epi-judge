@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/list"
 	. "github.com/stefantds/go-epi-judge/epi/do_lists_overlap"
-	"github.com/stefantds/go-epi-judge/list"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*list.Node, *list.Node) *list.Node
+
+var solutions = []solutionFunc{
+	OverlappingLists,
+}
 
 func TestOverlappingLists(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "do_lists_overlap.tsv")
@@ -48,21 +55,23 @@ func TestOverlappingLists(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := overlappingListsWrapper(tc.L0.Value, tc.L1.Value, tc.Common.Value, tc.Cycle0, tc.Cycle1); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := overlappingListsWrapper(s, tc.L0.Value, tc.L1.Value, tc.Common.Value, tc.Cycle0, tc.Cycle1); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func overlappingListsWrapper(l0 *list.Node, l1 *list.Node, common *list.Node, cycle0 int, cycle1 int) error {
+func overlappingListsWrapper(solution solutionFunc, l0 *list.Node, l1 *list.Node, common *list.Node, cycle0 int, cycle1 int) error {
 	if common != nil {
 		if l0 == nil {
 			l0 = common
@@ -126,7 +135,7 @@ func overlappingListsWrapper(l0 *list.Node, l1 *list.Node, common *list.Node, cy
 		commonNodes[it.Data] = true
 	}
 
-	result := OverlappingLists(l0, l1)
+	result := solution(l0, l1)
 
 	if len(commonNodes) == 0 {
 		if result != nil {

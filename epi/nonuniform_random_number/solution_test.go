@@ -8,11 +8,18 @@ import (
 	"path/filepath"
 	"testing"
 
-	. "github.com/stefantds/go-epi-judge/epi/nonuniform_random_number"
-	"github.com/stefantds/go-epi-judge/stats"
-
 	"github.com/stefantds/csvdecoder"
+
+	. "github.com/stefantds/go-epi-judge/epi/nonuniform_random_number"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
+	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
+
+type solutionFunc = func([]int, []float64) int
+
+var solutions = []solutionFunc{
+	NonuniformRandomNumberGeneration,
+}
 
 func TestNonuniformRandomNumberGeneration(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "nonuniform_random_number.tsv")
@@ -43,35 +50,37 @@ func TestNonuniformRandomNumberGeneration(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := nonuniformRandomNumberGenerationWrapper(tc.Values, tc.Probabilities); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := nonuniformRandomNumberGenerationWrapper(s, tc.Values, tc.Probabilities); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func nonuniformRandomNumberGenerationWrapper(values []int, probabilities []float64) error {
+func nonuniformRandomNumberGenerationWrapper(solution solutionFunc, values []int, probabilities []float64) error {
 	return stats.RunFuncWithRetries(
 		func() bool {
-			return nonuniformRandomNumberGenerationRunner(values, probabilities)
+			return nonuniformRandomNumberGenerationRunner(solution, values, probabilities)
 		},
 		errors.New("the generation doesn't match the expected distribution"),
 	)
 }
 
-func nonuniformRandomNumberGenerationRunner(values []int, probabilities []float64) bool {
+func nonuniformRandomNumberGenerationRunner(solution solutionFunc, values []int, probabilities []float64) bool {
 	const N = 1000000
 
 	results := make([]int, N)
 	for i := 0; i < N; i++ {
-		results[i] = NonuniformRandomNumberGeneration(values, probabilities)
+		results[i] = solution(values, probabilities)
 	}
 
 	counts := make(map[int]int, len(values))

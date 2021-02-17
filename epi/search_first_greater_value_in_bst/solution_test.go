@@ -9,9 +9,16 @@ import (
 
 	"github.com/stefantds/csvdecoder"
 
+	"github.com/stefantds/go-epi-judge/data_structures/tree"
 	. "github.com/stefantds/go-epi-judge/epi/search_first_greater_value_in_bst"
-	"github.com/stefantds/go-epi-judge/tree"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*tree.BSTNode, int) *tree.BSTNode
+
+var solutions = []solutionFunc{
+	FindFirstGreaterThanK,
+}
 
 func TestFindFirstGreaterThanK(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "search_first_greater_value_in_bst.tsv")
@@ -44,27 +51,26 @@ func TestFindFirstGreaterThanK(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := findFirstGreaterThanKWrapper(tc.Tree.Value, tc.K)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := findFirstGreaterThanKWrapper(s, tc.Tree.Value, tc.K)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findFirstGreaterThanKWrapper(tree *tree.BSTNode, k int) (int, error) {
-	if result := FindFirstGreaterThanK(tree, k); result != nil {
-		return result.Data, nil
+func findFirstGreaterThanKWrapper(solution solutionFunc, tree *tree.BSTNode, k int) int {
+	if result := solution(tree, k); result != nil {
+		return result.Data
 	}
-	return -1, nil
+	return -1
 }

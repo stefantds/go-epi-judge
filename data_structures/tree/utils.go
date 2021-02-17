@@ -7,7 +7,8 @@ import (
 	"math"
 	"reflect"
 
-	"github.com/stefantds/go-epi-judge/utils"
+	"github.com/stefantds/go-epi-judge/data_structures/stack"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
 type TreeLike interface {
@@ -64,7 +65,7 @@ func binaryTreeToString(tree TreeLike) (string, error) {
 }
 
 func FindNode(startNode TreeLike, val int) TreeLike {
-	s := make(utils.Stack, 0)
+	s := make(stack.Stack, 0)
 	s = s.Push(startNode)
 
 	var node interface{}
@@ -103,7 +104,7 @@ func GenerateInorder(tree TreeLike) []int {
 		return result
 	}
 
-	s := make(utils.Stack, 0)
+	s := make(stack.Stack, 0)
 	s = s.Push(tree)
 
 	initial := true
@@ -184,7 +185,7 @@ func AssertTreeIsBST(tree TreeLike) error {
 		Range *IntRange
 	}
 
-	s := make(utils.Stack, 0)
+	s := make(stack.Stack, 0)
 	s = s.Push(treePathIntRange{
 		Tree: tree,
 		Path: &TreePath{},
@@ -233,7 +234,7 @@ func BinaryTreeHeight(tree TreeLike) int {
 		Height int
 	}
 
-	s := make(utils.Stack, 0)
+	s := make(stack.Stack, 0)
 	s = s.Push(treeWithHeight{tree, 1})
 
 	height := 0

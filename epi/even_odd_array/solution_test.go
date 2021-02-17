@@ -6,12 +6,17 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/stefantds/go-epi-judge/utils"
-
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/even_odd_array"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int)
+
+var solutions = []solutionFunc{
+	EvenOdd,
+}
 
 func TestEvenOdd(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "even_odd_array.tsv")
@@ -40,25 +45,27 @@ func TestEvenOdd(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := evenOddWrapper(tc.A); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := evenOddWrapper(s, tc.A); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func evenOddWrapper(a []int) error {
+func evenOddWrapper(solution solutionFunc, a []int) error {
 	result := make([]int, len(a))
 	copy(result, a)
 
-	EvenOdd(a)
+	solution(a)
 
 	if err := utils.AssertAllValuesPresent(a, result); err != nil {
 		return err

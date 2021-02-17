@@ -13,7 +13,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/group_equal_entries"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]Person)
+
+var solutions = []solutionFunc{
+	GroupByAge,
+}
 
 func TestGroupByAge(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "group_equal_entries.tsv")
@@ -42,21 +49,23 @@ func TestGroupByAge(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := groupByAgeWrapper(tc.People.Values); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := groupByAgeWrapper(s, tc.People.Values); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func groupByAgeWrapper(people []Person) error {
+func groupByAgeWrapper(solution solutionFunc, people []Person) error {
 	if len(people) == 0 {
 		return nil
 	}
@@ -66,7 +75,7 @@ func groupByAgeWrapper(people []Person) error {
 		values[p] += 1
 	}
 
-	GroupByAge(people)
+	solution(people)
 
 	newValues := make(map[Person]int)
 	for _, p := range people {

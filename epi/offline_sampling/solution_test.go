@@ -8,13 +8,19 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/stefantds/go-epi-judge/utils"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/offline_sampling"
-	"github.com/stefantds/go-epi-judge/stats"
+	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
+
+type solutionFunc = func(int, []int)
+
+var solutions = []solutionFunc{
+	RandomSampling,
+}
 
 func TestRandomSampling(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "offline_sampling.tsv")
@@ -45,30 +51,32 @@ func TestRandomSampling(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := randomSamplingWrapper(tc.K, tc.A); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := randomSamplingWrapper(s, tc.K, tc.A); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func randomSamplingWrapper(k int, a []int) error {
+func randomSamplingWrapper(solution solutionFunc, k int, a []int) error {
 	return stats.RunFuncWithRetries(
 		func() bool {
-			return randomSamplingRunner(k, a)
+			return randomSamplingRunner(solution, k, a)
 		},
 		errors.New("the results don't match the expected distribution"),
 	)
 }
 
-func randomSamplingRunner(k int, a []int) bool {
+func randomSamplingRunner(solution solutionFunc, k int, a []int) bool {
 	const N = 1000000
 
 	results := make([][]int, N)
@@ -77,7 +85,7 @@ func randomSamplingRunner(k int, a []int) bool {
 		copyA := make([]int, len(a))
 		copy(copyA, a)
 
-		RandomSampling(k, copyA)
+		solution(k, copyA)
 
 		result := make([]int, k)
 		copy(result, a[0:k])

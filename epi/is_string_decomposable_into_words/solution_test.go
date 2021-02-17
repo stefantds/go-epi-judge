@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/is_string_decomposable_into_words"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(string, map[string]struct{}) []string
+
+var solutions = []solutionFunc{
+	DecomposeIntoDictionaryWords,
+}
 
 func TestDecomposeIntoDictionaryWords(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "is_string_decomposable_into_words.tsv")
@@ -43,27 +50,29 @@ func TestDecomposeIntoDictionaryWords(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := decomposeIntoDictionaryWordsWrapper(tc.Domain, tc.Dictionary, tc.Decomposable); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := decomposeIntoDictionaryWordsWrapper(s, tc.Domain, tc.Dictionary, tc.Decomposable); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func decomposeIntoDictionaryWordsWrapper(domain string, dictionary []string, decomposable bool) error {
+func decomposeIntoDictionaryWordsWrapper(solution solutionFunc, domain string, dictionary []string, decomposable bool) error {
 	dictionaryMap := make(map[string]struct{}, len(dictionary))
 	for _, s := range dictionary {
 		dictionaryMap[s] = struct{}{}
 	}
 
-	result := DecomposeIntoDictionaryWords(domain, dictionaryMap)
+	result := solution(domain, dictionaryMap)
 
 	if !decomposable {
 		if len(result) != 0 {

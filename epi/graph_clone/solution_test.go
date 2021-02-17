@@ -12,7 +12,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/graph_clone"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*GraphVertex) *GraphVertex
+
+var solutions = []solutionFunc{
+	CloneGraph,
+}
 
 func TestCloneGraph(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "graph_clone.tsv")
@@ -43,23 +50,25 @@ func TestCloneGraph(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := cloneGraphdWrapper(tc.NumVertices, tc.Edges); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := cloneGraphWrapper(s, tc.NumVertices, tc.Edges); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func cloneGraphdWrapper(numNodes int, edges [][2]int) error {
+func cloneGraphWrapper(solution solutionFunc, numNodes int, edges [][2]int) error {
 	graph := newGraph(numNodes, edges)
-	result := CloneGraph(&graph[0])
+	result := solution(&graph[0])
 
 	return checkGraph(result, graph)
 }

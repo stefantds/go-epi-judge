@@ -12,7 +12,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/rectangle_intersection"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(Rect, Rect) Rect
+
+var solutions = []solutionFunc{
+	IntersectRectangle,
+}
 
 func TestIntersectRectangle(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "rectangle_intersection.tsv")
@@ -45,15 +52,17 @@ func TestIntersectRectangle(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := IntersectRectangle(tc.R1.Value, tc.R2.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.R1.Value, tc.R2.Value)
+				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

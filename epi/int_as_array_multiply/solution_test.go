@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/int_as_array_multiply"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int, []int) []int
+
+var solutions = []solutionFunc{
+	Multiply,
+}
 
 func TestMultiply(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "int_as_array_multiply.tsv")
@@ -43,15 +50,17 @@ func TestMultiply(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := Multiply(tc.Num1, tc.Num2)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.Num1, tc.Num2)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

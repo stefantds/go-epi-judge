@@ -13,6 +13,12 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
+type solutionFunc = func([][]int)
+
+var solutions = []solutionFunc{
+	RotateMatrix,
+}
+
 func TestRotateMatrix(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "matrix_rotation.tsv")
 	file, err := os.Open(testFileName)
@@ -42,22 +48,24 @@ func TestRotateMatrix(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := rotateMatrixWrapper(tc.SquareMatrix)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", utils.MatrixFmt{result}, utils.MatrixFmt{tc.ExpectedResult})
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := rotateMatrixWrapper(s, tc.SquareMatrix)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", utils.MatrixFormatter(result), utils.MatrixFormatter(tc.ExpectedResult))
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func rotateMatrixWrapper(squareMatrix [][]int) [][]int {
-	RotateMatrix(squareMatrix)
+func rotateMatrixWrapper(solution solutionFunc, squareMatrix [][]int) [][]int {
+	solution(squareMatrix)
 	return squareMatrix
 }

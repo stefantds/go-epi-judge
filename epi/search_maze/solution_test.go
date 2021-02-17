@@ -11,7 +11,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/search_maze"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([][]Color, Coordinate, Coordinate) []Coordinate
+
+var solutions = []solutionFunc{
+	SearchMaze,
+}
 
 func TestSearchMaze(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "search_maze.tsv")
@@ -46,25 +53,27 @@ func TestSearchMaze(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := searchMazeWrapper(tc.Maze, decodeCoordinate(tc.S), decodeCoordinate(tc.E))
-			if err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result, err := searchMazeWrapper(s, tc.Maze, decodeCoordinate(tc.S), decodeCoordinate(tc.E))
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func searchMazeWrapper(maze [][]Color, s Coordinate, e Coordinate) (bool, error) {
+func searchMazeWrapper(solution solutionFunc, maze [][]Color, s Coordinate, e Coordinate) (bool, error) {
 	mazeCopy := make([][]Color, len(maze))
 
 	for i, row := range maze {
@@ -72,7 +81,7 @@ func searchMazeWrapper(maze [][]Color, s Coordinate, e Coordinate) (bool, error)
 		copy(mazeCopy[i], row)
 	}
 
-	path := SearchMaze(mazeCopy, s, e)
+	path := solution(mazeCopy, s, e)
 
 	if len(path) == 0 {
 		return s == e, nil

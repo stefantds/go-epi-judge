@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/refueling_schedule"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int, []int) int
+
+var solutions = []solutionFunc{
+	FindAmpleCity,
+}
 
 func TestFindAmpleCity(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "refueling_schedule.tsv")
@@ -40,22 +47,24 @@ func TestFindAmpleCity(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := findAmpleCityWrapper(tc.Gallons, tc.Distances); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := findAmpleCityWrapper(s, tc.Gallons, tc.Distances); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findAmpleCityWrapper(gallons []int, distances []int) error {
-	result := FindAmpleCity(gallons, distances)
+func findAmpleCityWrapper(solution solutionFunc, gallons []int, distances []int) error {
+	result := solution(gallons, distances)
 	numCities := len(gallons)
 	tank := 0
 

@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/search_for_missing_element"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]int) (int, int)
+
+var solutions = []solutionFunc{
+	FindDuplicateMissing,
+}
 
 func TestFindDuplicateMissing(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "find_missing_and_duplicate.tsv")
@@ -41,15 +48,17 @@ func TestFindDuplicateMissing(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			resultDupl, resultMissing := FindDuplicateMissing(tc.A)
-			if !reflect.DeepEqual([]int{resultDupl, resultMissing}, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", []int{resultDupl, resultMissing}, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				resultDupl, resultMissing := FindDuplicateMissing(tc.A)
+				if !reflect.DeepEqual([]int{resultDupl, resultMissing}, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", []int{resultDupl, resultMissing}, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

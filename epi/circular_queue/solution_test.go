@@ -11,7 +11,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/circular_queue"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(int) Solution
+
+var solutions = []solutionFunc{
+	NewQueue,
+}
 
 func TestCircularQueue(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "circular_queue.tsv")
@@ -40,27 +47,28 @@ func TestCircularQueue(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := circularQueueTester(tc.Operations.Value); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := circularQueueTester(s, tc.Operations.Value); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func circularQueueTester(operations []*QueueOp) error {
-	q := NewQueue(1)
+func circularQueueTester(solution solutionFunc, operations []*QueueOp) error {
+	q := solution(1)
 
 	for opIdx, o := range operations {
 		switch o.Op {
 		case "Queue":
-			q = NewQueue(o.Arg)
 		case "enqueue":
 			q.Enqueue(o.Arg)
 		case "dequeue":

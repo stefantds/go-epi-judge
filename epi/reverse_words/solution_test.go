@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/reverse_words"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]rune)
+
+var solutions = []solutionFunc{
+	ReverseWords,
+}
 
 func TestReverseWords(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "reverse_words.tsv")
@@ -41,25 +48,27 @@ func TestReverseWords(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := reverseWordsWrapper(tc.Input)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := reverseWordsWrapper(s, tc.Input)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func reverseWordsWrapper(s string) string {
+func reverseWordsWrapper(solution solutionFunc, s string) string {
 	sCopy := []rune(s)
 
-	ReverseWords(sCopy)
+	solution(sCopy)
 
 	return string(sCopy)
 }

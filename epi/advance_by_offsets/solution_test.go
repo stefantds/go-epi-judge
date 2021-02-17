@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/advance_by_offsets"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(maxAdvanceSteps []int) bool
+
+var solutions = []solutionFunc{
+	CanReachEnd,
+}
 
 func TestCanReachEnd(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "advance_by_offsets.tsv")
@@ -41,15 +48,17 @@ func TestCanReachEnd(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := CanReachEnd(tc.MaxAdvanceSteps)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.MaxAdvanceSteps)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

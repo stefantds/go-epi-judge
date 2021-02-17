@@ -12,7 +12,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/drawing_skyline"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]Rect) []Rect
+
+var solutions = []solutionFunc{
+	DrawingSkylines,
+}
 
 func TestDrawingSkylines(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "drawing_skyline.tsv")
@@ -43,15 +50,17 @@ func TestDrawingSkylines(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := DrawingSkylines(tc.Buildings.Values)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Values)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.Buildings.Values)
+				if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Values)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

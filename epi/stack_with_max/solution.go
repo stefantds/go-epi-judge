@@ -1,12 +1,19 @@
 package stack_with_max
 
+type Solution interface {
+	Push(x int)
+	Pop() int
+	Max() int
+	Empty() bool
+}
+
 type StackWithMax struct {
 	// TODO - Add your code here
 }
 
-func NewStackWithMax() StackWithMax {
+func NewStackWithMax() Solution {
 	// TODO - Add your code here
-	return StackWithMax{}
+	return &StackWithMax{}
 }
 
 func (q *StackWithMax) Push(x int) {

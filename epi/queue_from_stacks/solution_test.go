@@ -11,7 +11,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/queue_from_stacks"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func() Solution
+
+var solutions = []solutionFunc{
+	NewQueueFromStacks,
+}
 
 func TestQueueFromStacks(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "queue_with_max.tsv")
@@ -40,26 +47,27 @@ func TestQueueFromStacks(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := queueFromStacksTester(tc.Operations.Value); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := queueFromStacksTester(s, tc.Operations.Value); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func queueFromStacksTester(operations []*queueFromStacksOp) error {
-	var q QueueFromStacks
+func queueFromStacksTester(sol solutionFunc, operations []*queueFromStacksOp) error {
+	q := sol()
 	for opIdx, o := range operations {
 		switch o.Op {
 		case "Queue":
-			q = NewQueueFromStacks()
 		case "enqueue":
 			q.Enqueue(o.Arg)
 		case "dequeue":

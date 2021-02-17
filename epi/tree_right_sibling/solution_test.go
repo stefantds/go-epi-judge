@@ -12,7 +12,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/tree_right_sibling"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(*BinaryTreeNodeWithNext)
+
+var solutions = []solutionFunc{
+	ConstructRightSibling,
+}
 
 func TestConstructRightSibling(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "tree_right_sibling.tsv")
@@ -43,23 +50,25 @@ func TestConstructRightSibling(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := constructRightSiblingWrapper(tc.Tree.Value)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := constructRightSiblingWrapper(s, tc.Tree.Value)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func constructRightSiblingWrapper(tree *BinaryTreeNodeWithNext) [][]int {
-	ConstructRightSibling(tree)
+func constructRightSiblingWrapper(solution solutionFunc, tree *BinaryTreeNodeWithNext) [][]int {
+	solution(tree)
 
 	result := make([][]int, 0)
 	levelStart := tree

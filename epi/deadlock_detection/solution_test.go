@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/deadlock_detection"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]GraphVertex) bool
+
+var solutions = []solutionFunc{
+	IsDeadlocked,
+}
 
 func TestIsDeadlocked(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "deadlock_detection.tsv")
@@ -42,15 +49,17 @@ func TestIsDeadlocked(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := isDeadlockedWrapper(tc.NumVertices, tc.Edges)
-			if result != tc.ExpectedResult {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := isDeadlockedWrapper(s, tc.NumVertices, tc.Edges)
+				if result != tc.ExpectedResult {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
@@ -73,6 +82,6 @@ func newGraph(numVertices int, edges [][2]int) []GraphVertex {
 	return result
 }
 
-func isDeadlockedWrapper(numNodes int, edges [][2]int) bool {
-	return IsDeadlocked(newGraph(numNodes, edges))
+func isDeadlockedWrapper(solution solutionFunc, numNodes int, edges [][2]int) bool {
+	return solution(newGraph(numNodes, edges))
 }

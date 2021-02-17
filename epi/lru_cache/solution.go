@@ -1,12 +1,18 @@
 package lru_cache
 
+type Solution interface {
+	Lookup(key int) int
+	Insert(key, value int)
+	Erase(key int) bool
+}
+
 type LRUCache struct {
 	// TODO - Add your code here
 }
 
-func NewLRUCache(capacity int) LRUCache {
+func NewLRUCache(capacity int) Solution {
 	// TODO - Add your code here
-	return LRUCache{}
+	return &LRUCache{}
 }
 
 func (q *LRUCache) Lookup(key int) int {

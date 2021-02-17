@@ -12,7 +12,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/max_of_sliding_window"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]TrafficElement, int) []TrafficElement
+
+var solutions = []solutionFunc{
+	ComputeTrafficVolumes,
+}
 
 func TestComputeTrafficVolumes(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "max_of_sliding_window.tsv")
@@ -45,15 +52,17 @@ func TestComputeTrafficVolumes(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := ComputeTrafficVolumes(tc.A.Values, tc.W)
-			if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Values)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := s(tc.A.Values, tc.W)
+				if !reflect.DeepEqual(result, tc.ExpectedResult.Values) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Values)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)

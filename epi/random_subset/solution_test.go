@@ -15,6 +15,12 @@ import (
 	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
 
+type solutionFunc = func(int, int) []int
+
+var solutions = []solutionFunc{
+	RandomSubset,
+}
+
 func TestRandomSubset(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "random_subset.tsv")
 	file, err := os.Open(testFileName)
@@ -44,35 +50,37 @@ func TestRandomSubset(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := randomSubsetWrapper(tc.N, tc.K); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := randomSubsetWrapper(s, tc.N, tc.K); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func randomSubsetWrapper(n int, k int) error {
+func randomSubsetWrapper(solution solutionFunc, n int, k int) error {
 	return stats.RunFuncWithRetries(
 		func() bool {
-			return randomSubsetRunner(n, k)
+			return randomSubsetRunner(solution, n, k)
 		},
 		errors.New("the results don't match the expected distribution"),
 	)
 }
 
-func randomSubsetRunner(n int, k int) bool {
+func randomSubsetRunner(solution solutionFunc, n int, k int) bool {
 	const nbRuns = 1000000
 	results := make([][]int, nbRuns)
 
 	for i := 0; i < nbRuns; i++ {
-		results[i] = RandomSubset(n, k)
+		results[i] = solution(n, k)
 	}
 
 	totalPossibleOutcomes := stats.BinomialCoefficient(n, k)

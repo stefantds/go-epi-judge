@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/smallest_subarray_covering_all_values"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]string, []string) (int, int)
+
+var solutions = []solutionFunc{
+	FindSmallestSequentiallyCoveringSubset,
+}
 
 func TestFindSmallestSequentiallyCoveringSubset(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "smallest_subarray_covering_all_values.tsv")
@@ -43,26 +50,28 @@ func TestFindSmallestSequentiallyCoveringSubset(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result, err := findSmallestSequentiallyCoveringSubsettWrapper(tc.Paragraph, tc.Keywords)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if result != tc.ExpectedResult {
-				t.Errorf("expected min length %v, got %v", tc.ExpectedResult, result)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result, err := findSmallestSequentiallyCoveringSubsettWrapper(s, tc.Paragraph, tc.Keywords)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if result != tc.ExpectedResult {
+					t.Errorf("expected min length %v, got %v", tc.ExpectedResult, result)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findSmallestSequentiallyCoveringSubsettWrapper(paragraph, keywords []string) (int, error) {
-	start, end := FindSmallestSequentiallyCoveringSubset(paragraph, keywords)
+func findSmallestSequentiallyCoveringSubsettWrapper(solution solutionFunc, paragraph, keywords []string) (int, error) {
+	start, end := solution(paragraph, keywords)
 	if start < 0 {
 		return 0, errors.New("subarray start index is negative")
 	}

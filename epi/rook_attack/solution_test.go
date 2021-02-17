@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/rook_attack"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([][]int)
+
+var solutions = []solutionFunc{
+	RookAttack,
+}
 
 func TestRookAttack(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "rook_attack.tsv")
@@ -41,26 +48,28 @@ func TestRookAttack(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := rookAttackWrapper(tc.A)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := rookAttackWrapper(s, tc.A)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func rookAttackWrapper(a [][]int) [][]int {
+func rookAttackWrapper(solution solutionFunc, a [][]int) [][]int {
 	copyA := make([][]int, len(a))
 	copy(copyA, a)
 
-	RookAttack(copyA)
+	solution(copyA)
 
 	return copyA
 }

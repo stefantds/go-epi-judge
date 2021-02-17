@@ -9,7 +9,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/kth_largest_element_in_long_array"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(chan int, int) int
+
+var solutions = []solutionFunc{
+	FindKthLargestUnknownLength,
+}
 
 func TestFindKthLargestUnknownLength(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "kth_largest_element_in_long_array.tsv")
@@ -42,27 +49,29 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := findKthLargestUnknownLengthWrapper(tc.Stream, tc.K)
-			if result != tc.ExpectedResult {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := findKthLargestUnknownLengthWrapper(s, tc.Stream, tc.K)
+				if result != tc.ExpectedResult {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func findKthLargestUnknownLengthWrapper(stream []int, k int) int {
+func findKthLargestUnknownLengthWrapper(solution solutionFunc, stream []int, k int) int {
 	streamChan := make(chan int, len(stream))
 	for _, s := range stream {
 		streamChan <- s
 	}
 	close(streamChan)
 
-	return FindKthLargestUnknownLength(streamChan, k)
+	return solution(streamChan, k)
 }

@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/dutch_national_flag"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(int, []Color)
+
+var solutions = []solutionFunc{
+	DutchFlagPartition,
+}
 
 func TestDutchFlagPartition(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "dutch_national_flag.tsv")
@@ -41,25 +48,27 @@ func TestDutchFlagPartition(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := dutchFlagPartitionWrapper(tc.A, tc.PivotIndex); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := dutchFlagPartitionWrapper(s, tc.A, tc.PivotIndex); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func dutchFlagPartitionWrapper(a []Color, pivotIdx int) error {
+func dutchFlagPartitionWrapper(solution solutionFunc, a []Color, pivotIdx int) error {
 	result := make([]Color, len(a))
 	copy(result, a)
 
-	DutchFlagPartition(pivotIdx, result)
+	solution(pivotIdx, result)
 
 	count := make(map[Color]int, 3)
 
@@ -87,7 +96,6 @@ func dutchFlagPartitionWrapper(a []Color, pivotIdx int) error {
 
 	if i != len(result) {
 		return fmt.Errorf("not partitioned after %v-th element", i)
-
 	}
 	if count[Red] != 0 || count[White] != 0 || count[Blue] != 0 {
 		return errors.New("some elements are missing from original array")

@@ -11,7 +11,14 @@ import (
 
 	"github.com/stefantds/go-epi-judge/data_structures/stack"
 	. "github.com/stefantds/go-epi-judge/epi/hanoi"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func(int) [][]int
+
+var solutions = []solutionFunc{
+	ComputeTowerHanoi,
+}
 
 func TestComputeTowerHanoi(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "hanoi.tsv")
@@ -40,21 +47,23 @@ func TestComputeTowerHanoi(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			if err := computeTowerHanoiWrapper(tc.NumRings); err != nil {
-				t.Error(err)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				if err := computeTowerHanoiWrapper(s, tc.NumRings); err != nil {
+					t.Error(err)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func computeTowerHanoiWrapper(numRings int) error {
+func computeTowerHanoiWrapper(solution solutionFunc, numRings int) error {
 	pegs := make([]stack.Stack, NumPegs)
 
 	for i := 0; i < NumPegs; i++ {
@@ -65,7 +74,7 @@ func computeTowerHanoiWrapper(numRings int) error {
 		pegs[0] = pegs[0].Push(i)
 	}
 
-	result := ComputeTowerHanoi(numRings)
+	result := solution(numRings)
 	for _, operation := range result {
 		from := operation[0]
 		to := operation[1]

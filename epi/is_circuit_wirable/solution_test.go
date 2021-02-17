@@ -10,7 +10,14 @@ import (
 	"github.com/stefantds/csvdecoder"
 
 	. "github.com/stefantds/go-epi-judge/epi/is_circuit_wirable"
+	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
+
+type solutionFunc = func([]GraphVertex) bool
+
+var solutions = []solutionFunc{
+	IsAnyPlacementFeasible,
+}
 
 func TestIsAnyPlacementFeasible(t *testing.T) {
 	testFileName := filepath.Join(cfg.TestDataFolder, "is_circuit_wirable.tsv")
@@ -43,23 +50,25 @@ func TestIsAnyPlacementFeasible(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		t.Run(fmt.Sprintf("Test Case %d", i), func(t *testing.T) {
-			if cfg.RunParallelTests {
-				t.Parallel()
-			}
-			result := isAnyPlacementFeasibleWrapper(tc.K, tc.Edges)
-			if !reflect.DeepEqual(result, tc.ExpectedResult) {
-				t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
-			}
-		})
+		for _, s := range solutions {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
+				if cfg.RunParallelTests {
+					t.Parallel()
+				}
+				result := isAnyPlacementFeasibleWrapper(s, tc.K, tc.Edges)
+				if !reflect.DeepEqual(result, tc.ExpectedResult) {
+					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+				}
+			})
+		}
 	}
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
 }
 
-func isAnyPlacementFeasibleWrapper(k int, edges [][2]int) bool {
-	return IsAnyPlacementFeasible(newGraph(k, edges))
+func isAnyPlacementFeasibleWrapper(solution solutionFunc, k int, edges [][2]int) bool {
+	return solution(newGraph(k, edges))
 }
 
 func newGraph(numVertices int, edges [][2]int) []GraphVertex {

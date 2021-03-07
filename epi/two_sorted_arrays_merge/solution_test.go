@@ -72,6 +72,12 @@ func TestMergeTwoSortedArrays(t *testing.T) {
 }
 
 func mergeTwoSortedArraysWrapper(solution solutionFunc, a []int, m int, b []int, n int) []int {
-	solution(a, m, b, n)
-	return a
+	aCopy := make([]int, len(a))
+	_ = copy(aCopy, a)
+
+	bCopy := make([]int, len(b))
+	_ = copy(bCopy, b)
+
+	solution(aCopy, m, bCopy, n)
+	return aCopy
 }

@@ -66,6 +66,12 @@ func TestRotateMatrix(t *testing.T) {
 }
 
 func rotateMatrixWrapper(solution solutionFunc, squareMatrix [][]int) [][]int {
-	solution(squareMatrix)
-	return squareMatrix
+	result := make([][]int, len(squareMatrix))
+	for i := range squareMatrix {
+		result[i] = make([]int, len(squareMatrix[i]))
+		copy(result[i], squareMatrix[i])
+	}
+
+	solution(result)
+	return result
 }

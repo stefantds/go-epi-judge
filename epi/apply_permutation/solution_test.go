@@ -68,6 +68,8 @@ func TestApplyPermutation(t *testing.T) {
 }
 
 func applyPermutationWrapper(solution solutionFunc, perm []int, a []int) []int {
-	solution(perm, a)
-	return a
+	result := make([]int, len(a))
+	_ = copy(result, a)
+	solution(perm, result)
+	return result
 }

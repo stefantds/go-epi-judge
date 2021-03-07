@@ -67,8 +67,6 @@ func TestReverseWords(t *testing.T) {
 
 func reverseWordsWrapper(solution solutionFunc, s string) string {
 	sCopy := []rune(s)
-
 	solution(sCopy)
-
 	return string(sCopy)
 }

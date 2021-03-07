@@ -66,19 +66,18 @@ func TestGroupByAge(t *testing.T) {
 }
 
 func groupByAgeWrapper(solution solutionFunc, people []Person) error {
-	if len(people) == 0 {
-		return nil
-	}
+	result := make([]Person, len(people))
+	_ = copy(result, people)
 
 	values := make(map[Person]int)
-	for _, p := range people {
+	for _, p := range result {
 		values[p] += 1
 	}
 
-	solution(people)
+	solution(result)
 
 	newValues := make(map[Person]int)
-	for _, p := range people {
+	for _, p := range result {
 		newValues[p] += 1
 	}
 
@@ -88,9 +87,9 @@ func groupByAgeWrapper(solution solutionFunc, people []Person) error {
 
 	ages := make(map[int]bool)
 
-	lastAge := people[0].Age
+	lastAge := result[0].Age
 
-	for _, p := range people {
+	for _, p := range result {
 		if ok := ages[p.Age]; ok {
 			return errors.New("entries are not grouped by age")
 		}

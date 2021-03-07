@@ -69,6 +69,7 @@ func TestDeletionFromList(t *testing.T) {
 }
 
 func deletionFromListWrapper(solution solutionFunc, head *list.Node, nodeIdx int) *list.Node {
+	head = list.DeepCopy(head)
 	nodeToDelete := head
 
 	if nodeToDelete == nil {

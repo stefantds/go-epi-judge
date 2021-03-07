@@ -71,7 +71,8 @@ func TestInsertAfter(t *testing.T) {
 }
 
 func insertListWrapper(solution solutionFunc, l *list.Node, nodeIdx int, newNodeData int) *list.Node {
-	node := l
+	node := list.DeepCopy(l)
+	head := node
 
 	for nodeIdx > 1 {
 		node = node.Next
@@ -84,5 +85,5 @@ func insertListWrapper(solution solutionFunc, l *list.Node, nodeIdx int, newNode
 
 	solution(node, &newNode)
 
-	return l
+	return head
 }

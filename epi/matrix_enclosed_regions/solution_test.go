@@ -66,6 +66,12 @@ func TestFillSurroundedRegions(t *testing.T) {
 }
 
 func fillSurroundedRegionsWrapper(solution solutionFunc, board [][]Color) [][]Color {
-	solution(board)
-	return board
+	result := make([][]Color, len(board))
+	for i := range board {
+		result[i] = make([]Color, len(board[i]))
+		copy(result[i], board[i])
+	}
+
+	solution(result)
+	return result
 }

@@ -30,7 +30,7 @@ func TestConstructRightSibling(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Tree           binaryTreeNodeWithNextDecoder
+		Tree           string
 		ExpectedResult [][]int
 		Details        string
 	}
@@ -55,7 +55,7 @@ func TestConstructRightSibling(t *testing.T) {
 				if cfg.RunParallelTests {
 					t.Parallel()
 				}
-				result := constructRightSiblingWrapper(s, tc.Tree.Value)
+				result := constructRightSiblingWrapper(s, tc.Tree)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
 					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 				}
@@ -67,7 +67,11 @@ func TestConstructRightSibling(t *testing.T) {
 	}
 }
 
-func constructRightSiblingWrapper(solution solutionFunc, tree *BinaryTreeNodeWithNext) [][]int {
+func constructRightSiblingWrapper(solution solutionFunc, encodedTree string) [][]int {
+	treeDecoder := binaryTreeNodeWithNextDecoder{}
+	_ = treeDecoder.DecodeField(encodedTree)
+	tree := treeDecoder.Value
+
 	solution(tree)
 
 	result := make([][]int, 0)

@@ -68,6 +68,8 @@ func TestRotateArray(t *testing.T) {
 }
 
 func rotateArrayWrapper(solution solutionFunc, a []int, rotateAmount int) []int {
-	solution(rotateAmount, a)
-	return a
+	result := make([]int, len(a))
+	copy(result, a)
+	solution(rotateAmount, result)
+	return result
 }

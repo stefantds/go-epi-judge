@@ -66,10 +66,8 @@ func TestRookAttack(t *testing.T) {
 }
 
 func rookAttackWrapper(solution solutionFunc, a [][]int) [][]int {
-	copyA := make([][]int, len(a))
-	copy(copyA, a)
-
-	solution(copyA)
-
-	return copyA
+	result := make([][]int, len(a))
+	copy(result, a)
+	solution(result)
+	return result
 }

@@ -68,8 +68,10 @@ func TestEliminateDuplicate(t *testing.T) {
 }
 
 func eliminateDuplicateWrapper(solution solutionFunc, names []Name) []Name {
-	solution(&names)
-	return names
+	result := make([]Name, len(names))
+	_ = copy(result, names)
+	solution(&result)
+	return result
 }
 
 type namesDecoder struct {

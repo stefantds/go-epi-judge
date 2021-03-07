@@ -99,6 +99,12 @@ func (d *imageDecoder) DecodeField(record string) error {
 }
 
 func flipColorWrapper(solution solutionFunc, x int, y int, image [][]bool) [][]bool {
-	solution(x, y, image)
-	return image
+	result := make([][]bool, len(image))
+	for i := range image {
+		result[i] = make([]bool, len(image[i]))
+		copy(result[i], image[i])
+	}
+
+	solution(x, y, result)
+	return result
 }

@@ -78,6 +78,8 @@ func randomSamplingWrapper(solution solutionFunc, k int, a []int) error {
 
 func randomSamplingRunner(solution solutionFunc, k int, a []int) bool {
 	const N = 1000000
+	copyA := make([]int, len(a))
+	copy(copyA, a)
 
 	results := make([][]int, N)
 
@@ -94,11 +96,11 @@ func randomSamplingRunner(solution solutionFunc, k int, a []int) bool {
 
 	totalPossibleOutcomes := stats.BinomialCoefficient(len(a), k)
 
-	sort.Ints(a)
+	sort.Ints(copyA)
 
 	combinations := make([][]int, totalPossibleOutcomes)
 	for i := 0; i < totalPossibleOutcomes; i++ {
-		combinations[i] = stats.ComputeCombinationIdx(a, k, i)
+		combinations[i] = stats.ComputeCombinationIdx(copyA, k, i)
 	}
 
 	sort.Slice(combinations, func(i, j int) bool {

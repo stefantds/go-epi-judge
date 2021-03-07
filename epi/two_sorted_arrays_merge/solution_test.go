@@ -76,7 +76,7 @@ func mergeTwoSortedArraysWrapper(solution solutionFunc, a []int, m int, b []int,
 	_ = copy(aCopy, a)
 
 	bCopy := make([]int, len(b))
-	_ = copy(bCopy, a)
+	_ = copy(bCopy, b)
 
 	solution(aCopy, m, bCopy, n)
 	return aCopy

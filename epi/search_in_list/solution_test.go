@@ -68,6 +68,7 @@ func TestSearchList(t *testing.T) {
 }
 
 func searchListWrapper(solution solutionFunc, l *list.Node, key int) int {
+	l = list.DeepCopy(l)
 	if result := solution(l, key); result != nil {
 		return result.Data
 	}

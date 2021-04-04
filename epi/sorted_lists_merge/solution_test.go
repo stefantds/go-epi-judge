@@ -56,7 +56,7 @@ func TestMergeTwoSortedLists(t *testing.T) {
 				if cfg.RunParallelTests {
 					t.Parallel()
 				}
-				result := s(tc.L1.Value, tc.L2.Value)
+				result := s(list.DeepCopy(tc.L1.Value), list.DeepCopy(tc.L2.Value))
 				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
 					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
 				}

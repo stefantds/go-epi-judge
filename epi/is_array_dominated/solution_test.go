@@ -76,17 +76,25 @@ func TestValidPlacementExists(t *testing.T) {
 }
 
 func validPlacementExistsWrapper(solution solutionFunc, team0 Team, team1 Team, expected01 bool, expected10 bool) error {
-	result01 := solution(team0, team1)
+	result01 := solution(deepCopy(team0), deepCopy(team1))
 	if result01 != expected01 {
 		return fmt.Errorf("got %t, want %t", result01, expected01)
 	}
 
-	result10 := solution(team1, team0)
+	result10 := solution(deepCopy(team1), deepCopy(team0))
 	if result10 != expected10 {
 		return fmt.Errorf("got %t, want %t", result10, expected10)
 	}
 
 	return nil
+}
+
+func deepCopy(t Team) Team {
+	p := make([]Player, len(t.Players))
+	copy(p, t.Players)
+	return Team{
+		Players: p,
+	}
 }
 
 type teamDecoder struct {

@@ -54,7 +54,7 @@ func TestIsLinkedListAPalindrome(t *testing.T) {
 				if cfg.RunParallelTests {
 					t.Parallel()
 				}
-				result := s(tc.L.Value)
+				result := s(list.DeepCopy(tc.L.Value))
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
 					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 				}

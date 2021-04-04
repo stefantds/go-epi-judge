@@ -68,6 +68,7 @@ func TestListPivoting(t *testing.T) {
 }
 
 func listPivotingWrapper(solution solutionFunc, l *list.Node, x int) error {
+	l = list.DeepCopy(l)
 	original := list.ToArray(l)
 	solution(l, x)
 	pivoted := list.ToArray(l)

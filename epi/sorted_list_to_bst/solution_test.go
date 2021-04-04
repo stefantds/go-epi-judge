@@ -66,6 +66,7 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 }
 
 func buildBSTFromSortedListWrapper(solution solutionFunc, dl *list.DoublyLinkedNode) error {
+	dl = list.DeepCopyDoubleLinked(dl)
 	l := list.DoublyLinkedNodeToSlice(dl)
 	result := solution(dl, len(l))
 

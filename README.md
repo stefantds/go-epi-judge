@@ -150,7 +150,7 @@ No, it's just "fan art". It's a tool that was intended for personal usage but ca
 
 - Are solution to problems included?
 
-No, there are no solutions in this repository. I might include my solution implementation in a separate repository at some point. In the meanwhile, if you need help solving a problem, you can either read the solution and explanations from the ["Elements of Programming Interview book"](https://elementsofprogramminginterviews.com/) for another programming language. The explanations are very clear and exhaustive, it is typically easy to then come up with at least a basic solution in Go. Alternatively, you could check some other repositories including solutions to the problems from EPI.
+No, there are no solutions in this repository, as it is intended as a starting point for anyone who wants to solve the EPI problems in Go. But you can find my solutions at https://github.com/stefantds/go-epi-solutions (work in progress).
 
 - Do the tests offer the same corner-case coverage as the original EPI Judge?
 

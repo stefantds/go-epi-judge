@@ -69,8 +69,9 @@ func TestCreateListOfLeaves(t *testing.T) {
 	}
 }
 
-func createListOfLeavesWrapper(solution solutionFunc, tree *tree.BinaryTreeNode) ([]int, error) {
-	result := solution(tree)
+func createListOfLeavesWrapper(solution solutionFunc, node *tree.BinaryTreeNode) ([]int, error) {
+	node = tree.DeepCopyBinaryTreeNode(node)
+	result := solution(node)
 
 	for i, n := range result {
 		if n == nil {

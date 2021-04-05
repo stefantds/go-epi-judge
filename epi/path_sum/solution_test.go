@@ -56,7 +56,7 @@ func TestHasPathSum(t *testing.T) {
 				if cfg.RunParallelTests {
 					t.Parallel()
 				}
-				result := s(tc.Tree.Value, tc.RemainingWeight)
+				result := s(tree.DeepCopyBinaryTreeNode(tc.Tree.Value), tc.RemainingWeight)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
 					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 				}

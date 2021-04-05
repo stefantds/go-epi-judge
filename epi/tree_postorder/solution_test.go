@@ -54,7 +54,7 @@ func TestPostorderTraversal(t *testing.T) {
 				if cfg.RunParallelTests {
 					t.Parallel()
 				}
-				result := s(tc.Tree.Value)
+				result := s(tree.DeepCopyBinaryTreeNode(tc.Tree.Value))
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
 					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 				}

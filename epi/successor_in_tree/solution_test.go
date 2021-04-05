@@ -69,6 +69,7 @@ func TestFindSuccessor(t *testing.T) {
 }
 
 func findSuccessorWrapper(solution solutionFunc, inputTree *tree.BinaryTree, nodeIdx int) int {
+	inputTree = tree.DeepCopyBinaryTree(inputTree)
 	n := tree.MustFindNode(inputTree, nodeIdx).(*tree.BinaryTree)
 
 	result := solution(n)

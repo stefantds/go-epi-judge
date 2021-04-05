@@ -68,8 +68,9 @@ func TestSearchBST(t *testing.T) {
 	}
 }
 
-func searchBSTWrapper(solution solutionFunc, tree *tree.BSTNode, key int) int {
-	if result := solution(tree, key); result != nil {
+func searchBSTWrapper(solution solutionFunc, node *tree.BSTNode, key int) int {
+	node = tree.DeepCopyBSTNode(node)
+	if result := solution(node, key); result != nil {
 		return result.Data
 	}
 	return -1

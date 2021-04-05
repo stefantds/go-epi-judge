@@ -75,6 +75,7 @@ func TestFindLca(t *testing.T) {
 }
 
 func findLCAWrapper(solution solutionFunc, inputTree *tree.BSTNode, key0 int, key1 int) (int, error) {
+	inputTree = tree.DeepCopyBSTNode(inputTree)
 	node0 := tree.MustFindNode(inputTree, key0).(*tree.BSTNode)
 	node1 := tree.MustFindNode(inputTree, key1).(*tree.BSTNode)
 

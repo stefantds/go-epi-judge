@@ -75,6 +75,7 @@ func TestLCA(t *testing.T) {
 }
 
 func lcaWrapper(solution solutionFunc, inputTree *tree.BinaryTreeNode, key0 int, key1 int) (int, error) {
+	inputTree = tree.DeepCopyBinaryTreeNode(inputTree)
 	node0 := tree.MustFindNode(inputTree, key0).(*tree.BinaryTreeNode)
 	node1 := tree.MustFindNode(inputTree, key1).(*tree.BinaryTreeNode)
 

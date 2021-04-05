@@ -70,8 +70,9 @@ func TestExteriorBinaryTree(t *testing.T) {
 	}
 }
 
-func exteriorBinaryTreeWrapper(solution solutionFunc, tree *tree.BinaryTreeNode) ([]int, error) {
-	result := solution(tree)
+func exteriorBinaryTreeWrapper(solution solutionFunc, node *tree.BinaryTreeNode) ([]int, error) {
+	node = tree.DeepCopyBinaryTreeNode(node)
+	result := solution(node)
 	return createOutputList(result)
 }
 

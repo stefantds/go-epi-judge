@@ -57,7 +57,7 @@ func TestFindKLargestInBst(t *testing.T) {
 				if cfg.RunParallelTests {
 					t.Parallel()
 				}
-				result := s(tc.Tree.Value, tc.K)
+				result := s(tree.DeepCopyBSTNode(tc.Tree.Value), tc.K)
 				if !equal(result, tc.ExpectedResult) {
 					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
 				}

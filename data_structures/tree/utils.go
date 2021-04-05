@@ -261,3 +261,16 @@ func BinaryTreeHeight(tree TreeLike) int {
 
 	return height
 }
+
+// DeepCopy iterates through a TreeLike structure and creates a deep copy of it.
+// It delegates the actual copy of a node to the given function. This way different types
+// of (binary) trees can be copied.
+func DeepCopy(src TreeLike, createNode func(data interface{}, left, right TreeLike) TreeLike) TreeLike {
+	if isNil(src) {
+		return nil
+	}
+
+	left := DeepCopy(src.GetLeft(), createNode)
+	right := DeepCopy(src.GetRight(), createNode)
+	return createNode(src.GetData(), left, right)
+}

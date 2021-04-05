@@ -68,8 +68,9 @@ func TestFindFirstGreaterThanK(t *testing.T) {
 	}
 }
 
-func findFirstGreaterThanKWrapper(solution solutionFunc, tree *tree.BSTNode, k int) int {
-	if result := solution(tree, k); result != nil {
+func findFirstGreaterThanKWrapper(solution solutionFunc, node *tree.BSTNode, k int) int {
+	node = tree.DeepCopyBSTNode(node)
+	if result := solution(node, k); result != nil {
 		return result.Data
 	}
 	return -1

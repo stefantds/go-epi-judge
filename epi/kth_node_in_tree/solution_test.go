@@ -95,7 +95,7 @@ func convertToTreeWithSize(original *tree.BinaryTree) *BinaryTreeNode {
 }
 
 func findKthNodeBinaryTreeWrapper(solution solutionFunc, t *tree.BinaryTree, k int) (int, error) {
-	converted := convertToTreeWithSize(t)
+	converted := convertToTreeWithSize(t) // no need to deep copy t as a new tree type is created anyway
 	result := solution(converted, k)
 
 	if result == nil {

@@ -12,7 +12,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func(int) []int
+type solutionFunc = func(int) []int64
 
 var solutions = []solutionFunc{
 	GrayCode,
@@ -63,7 +63,7 @@ func TestGrayCode(t *testing.T) {
 
 func grayCodeWrapper(solution solutionFunc, numBits int) error {
 	result := solution(numBits)
-	uniqueEntries := make(map[int]bool)
+	uniqueEntries := make(map[int64]bool)
 
 	expectedSize := 1 << numBits
 	if expectedSize != len(result) {
@@ -86,7 +86,7 @@ func grayCodeWrapper(solution solutionFunc, numBits int) error {
 	return nil
 }
 
-func differsByOneBit(x, y int) bool {
+func differsByOneBit(x, y int64) bool {
 	bitDiff := x ^ y
 	return bitDiff != 0 && bitDiff&(bitDiff-1) == 0
 }

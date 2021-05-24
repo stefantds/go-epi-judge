@@ -80,7 +80,7 @@ func findSmallestSequentiallyCoveringSubsettWrapper(solution solutionFunc, parag
 	paraIdx := start
 
 	for kwIdx < len(keywords) {
-		if paraIdx >= end {
+		if paraIdx > end {
 			return 0, errors.New("not all keywords are in the generated subarray")
 		}
 		if paraIdx >= len(paragraph) {

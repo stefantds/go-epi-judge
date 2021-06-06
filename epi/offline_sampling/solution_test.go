@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"testing"
 
@@ -90,7 +91,7 @@ func randomSamplingRunner(solution solutionFunc, k int, a []int) bool {
 		solution(k, copyA)
 
 		result := make([]int, k)
-		copy(result, a[0:k])
+		copy(result, copyA[:k])
 		results[i] = result
 	}
 
@@ -110,10 +111,15 @@ func randomSamplingRunner(solution solutionFunc, k int, a []int) bool {
 	sequence := make([]int, len(results))
 	for i, r := range results {
 		sort.Ints(r)
-		sequence[i] = sort.Search(
+		pos := sort.Search(
 			len(combinations),
-			func(i int) bool { return !utils.LexIntsCompare(r, combinations[i]) },
+			func(j int) bool { return !utils.LexIntsCompare(combinations[j], r) },
 		)
+		if pos < len(combinations) && reflect.DeepEqual(combinations[pos], r) {
+			sequence[i] = pos
+		} else {
+			panic("result not in known combinations")
+		}
 	}
 
 	return stats.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)

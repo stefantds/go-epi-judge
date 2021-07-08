@@ -12,7 +12,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func(stream chan int) int
+type solutionFunc = func(stream ResetIterator) int32
 
 var solutions = []solutionFunc{
 	FindMissingElement,
@@ -27,7 +27,7 @@ func TestFindMissingElement(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		Stream  []int
+		Stream  []int32
 		Details string
 	}
 
@@ -62,14 +62,22 @@ func TestFindMissingElement(t *testing.T) {
 	}
 }
 
-func findMissingElementWrapper(solution solutionFunc, stream []int) error {
-	streamChan := make(chan int, len(stream))
-	for _, v := range stream {
-		streamChan <- v
-	}
-	close(streamChan)
+type valuesStream struct {
+	values []int32
+}
 
-	res := solution(streamChan)
+func (v valuesStream) Iterator() <-chan int32 {
+	valuesChan := make(chan int32, len(v.values))
+	for _, v := range v.values {
+		valuesChan <- v
+	}
+	close(valuesChan)
+
+	return valuesChan
+}
+
+func findMissingElementWrapper(solution solutionFunc, stream []int32) error {
+	res := solution(valuesStream{values: stream})
 
 	for _, i := range stream {
 		if i == res {

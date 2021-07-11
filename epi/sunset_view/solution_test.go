@@ -13,7 +13,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func(chan int) []int
+type solutionFunc = func(<-chan int) []int
 
 var solutions = []solutionFunc{
 	ExamineBuildingsWithSunset,

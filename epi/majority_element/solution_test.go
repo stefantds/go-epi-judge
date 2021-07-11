@@ -12,7 +12,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func(chan string) string
+type solutionFunc = func(<-chan string) string
 
 var solutions = []solutionFunc{
 	MajoritySearch,

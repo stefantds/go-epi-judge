@@ -15,7 +15,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func(chan Star, int) []Star
+type solutionFunc = func(<-chan Star, int) []Star
 
 var solutions = []solutionFunc{
 	FindClosestKStars,

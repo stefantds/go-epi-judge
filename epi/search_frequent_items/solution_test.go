@@ -14,7 +14,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func(int, chan string) []string
+type solutionFunc = func(int, <-chan string) []string
 
 var solutions = []solutionFunc{
 	SearchFrequentItems,

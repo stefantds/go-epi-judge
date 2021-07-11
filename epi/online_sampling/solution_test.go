@@ -15,7 +15,7 @@ import (
 	"github.com/stefantds/go-epi-judge/test_utils/stats"
 )
 
-type solutionFunc = func(chan int, int) []int
+type solutionFunc = func(<-chan int, int) []int
 
 var solutions = []solutionFunc{
 	OnlineRandomSample,

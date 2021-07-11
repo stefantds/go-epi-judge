@@ -13,7 +13,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func(chan int) []float64
+type solutionFunc = func(<-chan int) []float64
 
 var solutions = []solutionFunc{
 	OnlineMedian,

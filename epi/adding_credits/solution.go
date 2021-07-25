@@ -1,7 +1,20 @@
 package adding_credits
 
+type Solution interface {
+	Insert(clientID string, c int)
+	Remove(clientID string) bool
+	Lookup(clientID string) int
+	AddAll(c int)
+	Max() string
+}
+
 type ClientsCreditsInfo struct {
 	// TODO - Add your code here
+}
+
+func NewClientsCreditsInfo() Solution {
+	// TODO - Add your code here
+	return &ClientsCreditsInfo{}
 }
 
 func (cc *ClientsCreditsInfo) Insert(clientID string, c int) {

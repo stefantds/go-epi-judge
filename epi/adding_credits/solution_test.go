@@ -14,16 +14,10 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-var solutions = []Solution{
-	&ClientsCreditsInfo{},
-}
+type solutionFunc = func() Solution
 
-type Solution interface {
-	Insert(clientID string, c int)
-	Remove(clientID string) bool
-	Lookup(clientID string) int
-	AddAll(c int)
-	Max() string
+var solutions = []solutionFunc{
+	NewClientsCreditsInfo,
 }
 
 func TestClientsCreditsInfo(t *testing.T) {
@@ -54,7 +48,7 @@ func TestClientsCreditsInfo(t *testing.T) {
 		}
 
 		for _, s := range solutions {
-			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetTypeName(s)), func(t *testing.T) {
+			t.Run(fmt.Sprintf("Test Case %d %v", i, utils.GetFuncName(s)), func(t *testing.T) {
 				if cfg.RunParallelTests {
 					t.Parallel()
 				}
@@ -69,7 +63,8 @@ func TestClientsCreditsInfo(t *testing.T) {
 	}
 }
 
-func clientsCreditsInfoTester(sol Solution, operations []*Operation) error {
+func clientsCreditsInfoTester(sf solutionFunc, operations []*Operation) error {
+	sol := sf()
 	for opIdx, o := range operations {
 		switch o.Op {
 		case "ClientsCreditsInfo":

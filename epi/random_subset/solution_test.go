@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"testing"
 
@@ -101,10 +102,16 @@ func randomSubsetRunner(solution solutionFunc, n int, k int) bool {
 	sequence := make([]int, nbRuns)
 	for i, r := range results {
 		sort.Ints(r)
-		sequence[i] = sort.Search(
+		pos := sort.Search(
 			len(combinations),
-			func(i int) bool { return !utils.LexIntsCompare(r, combinations[i]) },
+			func(i int) bool { return !utils.LexIntsCompare(combinations[i], r) },
 		)
+		if pos < len(combinations) && reflect.DeepEqual(combinations[pos], r) {
+			sequence[i] = pos
+		} else {
+			panic("result not in known combinations")
+		}
 	}
+
 	return stats.CheckSequenceIsUniformlyRandom(sequence, totalPossibleOutcomes, 0.01)
 }

@@ -13,7 +13,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func(int64, int64) int64
+type solutionFunc = func(int, int) int
 
 var solutions = []solutionFunc{
 	EuclideanGCD,
@@ -28,9 +28,9 @@ func TestEuclideanGCD(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		X              int64
-		Y              int64
-		ExpectedResult int64
+		X              int
+		Y              int
+		ExpectedResult int
 		Details        string
 	}
 

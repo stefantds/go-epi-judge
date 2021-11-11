@@ -1,6 +1,6 @@
 package euclidean_gcd
 
-func EuclideanGCD(x int64, y int64) int64 {
+func EuclideanGCD(x int, y int) int {
 	// TODO - Add your code here
 	return 0
 }

@@ -53,7 +53,7 @@ func TestComputeTowerHanoi(t *testing.T) {
 					t.Parallel()
 				}
 				if err := computeTowerHanoiWrapper(s, tc.NumRings); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

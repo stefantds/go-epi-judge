@@ -57,7 +57,7 @@ func TestListPivoting(t *testing.T) {
 					t.Parallel()
 				}
 				if err := listPivotingWrapper(s, tc.L.Value, tc.X); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

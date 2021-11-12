@@ -62,7 +62,7 @@ func TestCopyPostingsList(t *testing.T) {
 					t.Parallel()
 				}
 				if err := copyPostingsListWrapper(s, tc.L.Value, tc.LCopy.Value); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

@@ -56,7 +56,7 @@ func TestCloneGraph(t *testing.T) {
 					t.Parallel()
 				}
 				if err := cloneGraphWrapper(s, tc.NumVertices, tc.Edges); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

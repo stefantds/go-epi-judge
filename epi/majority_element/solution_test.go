@@ -54,7 +54,7 @@ func TestMajoritySearch(t *testing.T) {
 				}
 				result := majoritySearchWrapper(s, tc.Stream)
 				if result != tc.ExpectedResult {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

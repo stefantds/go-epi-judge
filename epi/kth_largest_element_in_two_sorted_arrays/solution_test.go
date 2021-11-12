@@ -59,7 +59,7 @@ func TestFindKthNTwoSortedArrays(t *testing.T) {
 				}
 				result := s(tc.A, tc.B, tc.K)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

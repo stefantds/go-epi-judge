@@ -56,7 +56,7 @@ func TestFindKthLargestUnknownLength(t *testing.T) {
 				}
 				result := findKthLargestUnknownLengthWrapper(s, tc.Stream, tc.K)
 				if result != tc.ExpectedResult {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

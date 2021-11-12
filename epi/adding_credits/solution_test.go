@@ -53,7 +53,7 @@ func TestClientsCreditsInfo(t *testing.T) {
 					t.Parallel()
 				}
 				if err := clientsCreditsInfoTester(s, tc.Operations.Value); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

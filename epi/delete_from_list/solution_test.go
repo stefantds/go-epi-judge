@@ -58,7 +58,7 @@ func TestDeleteList(t *testing.T) {
 				}
 				result := deleteListWrapper(s, tc.List.Value, tc.NodeIdx)
 				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult.Value, tc)
 				}
 			})
 		}

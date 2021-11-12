@@ -61,7 +61,7 @@ func TestFlipColor(t *testing.T) {
 				}
 				result := flipColorWrapper(s, tc.X, tc.Y, tc.Image.Value)
 				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", utils.MatrixFormatter(result), utils.MatrixFormatter(tc.ExpectedResult.Value))
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", utils.MatrixFormatter(result), utils.MatrixFormatter(tc.ExpectedResult.Value), tc)
 				}
 			})
 		}

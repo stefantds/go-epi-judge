@@ -55,7 +55,7 @@ func TestFindMinMax(t *testing.T) {
 				}
 				resultMin, resultMax := FindMinMax(tc.A)
 				if !reflect.DeepEqual([]int{resultMin, resultMax}, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", []int{resultMin, resultMax}, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", []int{resultMin, resultMax}, tc.ExpectedResult, tc)
 				}
 			})
 		}

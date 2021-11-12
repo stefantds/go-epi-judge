@@ -60,7 +60,7 @@ func TestRangeLookupInBst(t *testing.T) {
 				}
 				result := s(tree.DeepCopyBSTNode(tc.Tree.Value), tc.Interval.Value)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

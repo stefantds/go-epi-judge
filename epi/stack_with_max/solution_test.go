@@ -53,7 +53,7 @@ func TestStackWithMax(t *testing.T) {
 					t.Parallel()
 				}
 				if err := stackWithMaxTester(s, tc.Operations.Value); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

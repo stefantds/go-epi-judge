@@ -58,7 +58,7 @@ func TestRandomSampling(t *testing.T) {
 					t.Parallel()
 				}
 				if err := randomSamplingWrapper(s, tc.K, tc.A); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

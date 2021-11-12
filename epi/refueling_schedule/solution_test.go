@@ -53,7 +53,7 @@ func TestFindAmpleCity(t *testing.T) {
 					t.Parallel()
 				}
 				if err := findAmpleCityWrapper(s, tc.Gallons, tc.Distances); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

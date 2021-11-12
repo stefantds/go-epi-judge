@@ -63,7 +63,7 @@ func TestTransformString(t *testing.T) {
 				}
 				result := TransformString(map[string]struct{}(tc.D), tc.S, tc.T)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

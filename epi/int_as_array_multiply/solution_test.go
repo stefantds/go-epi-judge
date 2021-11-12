@@ -57,7 +57,7 @@ func TestMultiply(t *testing.T) {
 				}
 				result := s(tc.Num1, tc.Num2)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

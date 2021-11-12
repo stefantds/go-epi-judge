@@ -57,7 +57,7 @@ func TestRandomSubset(t *testing.T) {
 					t.Parallel()
 				}
 				if err := randomSubsetWrapper(s, tc.N, tc.K); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

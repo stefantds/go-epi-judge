@@ -55,7 +55,7 @@ func TestFindDuplicateMissing(t *testing.T) {
 				}
 				resultDupl, resultMissing := FindDuplicateMissing(tc.A)
 				if !reflect.DeepEqual([]int{resultDupl, resultMissing}, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", []int{resultDupl, resultMissing}, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", []int{resultDupl, resultMissing}, tc.ExpectedResult, tc)
 				}
 			})
 		}

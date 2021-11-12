@@ -57,7 +57,7 @@ func TestOnlineRandomSample(t *testing.T) {
 					t.Parallel()
 				}
 				if err := onlineRandomSampleWrapper(s, tc.Stream, tc.K); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

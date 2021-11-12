@@ -55,7 +55,7 @@ func TestGroupByAge(t *testing.T) {
 					t.Parallel()
 				}
 				if err := groupByAgeWrapper(s, tc.People.Values); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

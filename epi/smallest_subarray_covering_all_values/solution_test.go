@@ -57,10 +57,10 @@ func TestFindSmallestSequentiallyCoveringSubset(t *testing.T) {
 				}
 				result, err := findSmallestSequentiallyCoveringSubsettWrapper(s, tc.Paragraph, tc.Keywords)
 				if err != nil {
-					t.Fatal(err)
+					t.Fatalf("%v\ntest case:\n%+v\n", err, tc)
 				}
 				if result != tc.ExpectedResult {
-					t.Errorf("expected min length %v, got %v", tc.ExpectedResult, result)
+					t.Errorf("expected min length %v, got %v\ntest case:\n%+v\n", tc.ExpectedResult, result, tc)
 				}
 			})
 		}

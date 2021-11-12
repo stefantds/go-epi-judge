@@ -57,7 +57,7 @@ func TestUnionOfIntervals(t *testing.T) {
 				}
 				result := s(tc.Intervals.Value)
 				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult.Value, tc)
 				}
 			})
 		}

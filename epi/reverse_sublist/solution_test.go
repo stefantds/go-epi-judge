@@ -60,7 +60,7 @@ func TestReverseSublist(t *testing.T) {
 				}
 				result := s(list.DeepCopy(tc.L.Value), tc.Start, tc.Finish)
 				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult.Value, tc)
 				}
 			})
 		}

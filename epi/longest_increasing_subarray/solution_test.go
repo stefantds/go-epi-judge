@@ -53,7 +53,7 @@ func TestFindLongestIncreasingSubarray(t *testing.T) {
 					t.Parallel()
 				}
 				if err := findLongestIncreasingSubarrayWrapper(s, tc.A, tc.ExpectedLength); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

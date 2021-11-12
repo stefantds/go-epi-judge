@@ -56,7 +56,7 @@ func TestDecomposeIntoDictionaryWords(t *testing.T) {
 					t.Parallel()
 				}
 				if err := decomposeIntoDictionaryWordsWrapper(s, tc.Domain, tc.Dictionary, tc.Decomposable); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

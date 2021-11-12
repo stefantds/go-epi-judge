@@ -62,7 +62,7 @@ func TestPairIncludesAncestorAndDescendantOfM(t *testing.T) {
 				}
 				result := pairIncludesAncestorAndDescendantOfMWrapper(s, tc.Tree.Value, tc.PossibleAncOrDesc0, tc.PossibleAncOrDesc1, tc.Middle)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

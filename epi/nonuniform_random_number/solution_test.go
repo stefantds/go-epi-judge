@@ -56,7 +56,7 @@ func TestNonuniformRandomNumberGeneration(t *testing.T) {
 					t.Parallel()
 				}
 				if err := nonuniformRandomNumberGenerationWrapper(s, tc.Values, tc.Probabilities); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

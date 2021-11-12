@@ -55,7 +55,7 @@ func TestBuildBSTFromSortedList(t *testing.T) {
 					t.Parallel()
 				}
 				if err := buildBSTFromSortedListWrapper(s, tc.DoublyListL.Value); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

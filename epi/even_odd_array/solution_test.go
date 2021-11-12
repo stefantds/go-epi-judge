@@ -51,7 +51,7 @@ func TestEvenOdd(t *testing.T) {
 					t.Parallel()
 				}
 				if err := evenOddWrapper(s, tc.A); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

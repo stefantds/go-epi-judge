@@ -58,7 +58,7 @@ func TestSearchFrequentItems(t *testing.T) {
 				}
 				result := searchFrequentItemsWrapper(s, tc.K, tc.Stream)
 				if !equal(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

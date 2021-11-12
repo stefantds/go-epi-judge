@@ -61,7 +61,7 @@ func TestOverlappingLists(t *testing.T) {
 					t.Parallel()
 				}
 				if err := overlappingListsWrapper(s, tc.L0.Value, tc.L1.Value, tc.Common.Value, tc.Cycle0, tc.Cycle1); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

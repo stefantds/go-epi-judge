@@ -65,7 +65,7 @@ func TestValidPlacementExists(t *testing.T) {
 					tc.ExpectedResult01,
 					tc.ExpectedResult10,
 				); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

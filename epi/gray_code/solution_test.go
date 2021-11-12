@@ -51,7 +51,7 @@ func TestGrayCode(t *testing.T) {
 					t.Parallel()
 				}
 				if err := grayCodeWrapper(s, tc.NumBits); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

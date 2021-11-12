@@ -52,7 +52,7 @@ func TestFindMissingElement(t *testing.T) {
 				}
 				err := findMissingElementWrapper(s, tc.Stream)
 				if err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

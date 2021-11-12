@@ -57,7 +57,7 @@ func TestIsPatternContainedInGrid(t *testing.T) {
 				}
 				result := s(tc.Grid, tc.Pattern)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

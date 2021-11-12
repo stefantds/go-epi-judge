@@ -56,7 +56,7 @@ func TestFindSalaryCap(t *testing.T) {
 				}
 				result := s(tc.TargetPayroll, tc.CurrentSalaries)
 				if !utils.EqualFloat(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
 			})
 		}

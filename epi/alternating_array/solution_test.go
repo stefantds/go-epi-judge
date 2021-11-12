@@ -52,7 +52,7 @@ func TestRearrange(t *testing.T) {
 				}
 				Rearrange(tc.A)
 				if err := rearrangeWrapper(s, tc.A); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

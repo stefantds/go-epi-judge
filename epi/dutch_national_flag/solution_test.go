@@ -54,7 +54,7 @@ func TestDutchFlagPartition(t *testing.T) {
 					t.Parallel()
 				}
 				if err := dutchFlagPartitionWrapper(s, tc.A, tc.PivotIndex); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

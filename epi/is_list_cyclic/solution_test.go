@@ -55,7 +55,7 @@ func TestHasCycle(t *testing.T) {
 					t.Parallel()
 				}
 				if err := hasCycleWrapper(s, tc.Head.Value, tc.CycleIdx); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

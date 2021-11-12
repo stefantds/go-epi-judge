@@ -57,7 +57,7 @@ func TestStringIntegerInterconversion(t *testing.T) {
 					t.Parallel()
 				}
 				if err := stringIntegerInterconversionWrapper(s, tc.IntValue, tc.StringValue); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

@@ -55,7 +55,7 @@ func TestFillSurroundedRegions(t *testing.T) {
 				}
 				result := fillSurroundedRegionsWrapper(s, tc.Board)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", utils.MatrixFormatter(result), utils.MatrixFormatter(tc.ExpectedResult))
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", utils.MatrixFormatter(result), utils.MatrixFormatter(tc.ExpectedResult), tc)
 				}
 			})
 		}

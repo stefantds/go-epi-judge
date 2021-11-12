@@ -56,7 +56,7 @@ func TestFindSmallestSubarrayCoveringSet(t *testing.T) {
 					t.Parallel()
 				}
 				if err := findSmallestSubarrayCoveringSetWrapper(s, tc.Paragraph, tc.Keywords, tc.ExpectedLength); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

@@ -58,7 +58,7 @@ func TestMergeTwoBsts(t *testing.T) {
 				}
 				result := s(tree.DeepCopyBSTNode(tc.A.Value), tree.DeepCopyBSTNode(tc.B.Value))
 				if !reflect.DeepEqual(result, tc.ExpectedResult.Value) {
-					t.Errorf("\ngot:\n%v\nwant:\n%v", result, tc.ExpectedResult.Value)
+					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult.Value, tc)
 				}
 			})
 		}

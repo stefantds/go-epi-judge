@@ -62,7 +62,7 @@ func TestOverlappingNoCycleLists(t *testing.T) {
 					tc.SecondPrefix.Value,
 					tc.CommonPart.Value,
 				); err != nil {
-					t.Error(err)
+					t.Errorf("%v\ntest case:\n%+v\n", err, tc)
 				}
 			})
 		}

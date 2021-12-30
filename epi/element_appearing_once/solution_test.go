@@ -13,7 +13,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func([]int) int
+type solutionFunc = func([]int64) int64
 
 var solutions = []solutionFunc{
 	FindElementAppearsOnce,
@@ -28,8 +28,8 @@ func TestFindElementAppearsOnce(t *testing.T) {
 	defer file.Close()
 
 	type TestCase struct {
-		A              []int
-		ExpectedResult int
+		A              []int64
+		ExpectedResult int64
 		Details        string
 	}
 

@@ -144,19 +144,19 @@ go test ./... -count=1
 
 ## FAQ
 
-- Is this EPI Judge "official"?
+#### Is this EPI Judge "official"?
 
 No, it's just "fan art". It's a tool that was intended for personal usage but can be useful to anyone. I'm not associated with or backed by the authors of the original EPI Judge.
 
-- Are solution to problems included?
+#### Are solution to problems included?
 
 No, there are no solutions in this repository, as it is intended as a starting point for anyone who wants to solve the EPI problems in Go. But you can find my solutions at https://github.com/stefantds/go-epi-solutions (work in progress).
 
-- Do the tests offer the same corner-case coverage as the original EPI Judge?
+#### Do the tests offer the same corner-case coverage as the original EPI Judge?
 
 Yes, in the sense that they read the test case files and run the same tests. Also, most of the testing logic follows the test logic from the original EPI Judge. In some cases, small adaptations were made.
 
-- Is it easy to map problems and solutions between the EPI book and code in this repository?
+#### Is it easy to map problems and solutions between the EPI book and code in this repository?
 
 I had this aspect in mind when working on this repository, therefore:
   - all the problems have exactly the same name as in the original EPI Judge (but use snake case, as it's typical for Go)
@@ -164,7 +164,7 @@ I had this aspect in mind when working on this repository, therefore:
   - most of the function signatures are identical to the ones from the original EPI Judge (there are a few exceptions where it made sense to use some Go features, like multiple return values).
 This should make it easier to follow the problems and solutions in the book or in the original EPI Judge and solve them in Go with this tool.
 
-- What to do if a test is wrong?
+#### What to do if a test is wrong?
 
 As I haven't implemented all the solutions to all the problems yet, there might still be some hidden bugs. However, I've tested many of the functions and hope to have found most of the problems. If you find an issue in the test code, please open a ticket.
 If you can find the cause of the problem and know how to fix it, feel free to open a pull request. If you are not sure, we can first discuss the different options in the ticket.

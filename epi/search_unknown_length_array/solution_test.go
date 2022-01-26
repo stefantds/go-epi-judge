@@ -13,7 +13,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func([]int, int) int
+type solutionFunc = func(ArrayUnknownLength, int) int
 
 var solutions = []solutionFunc{
 	BinarySearchUnknownLength,
@@ -55,7 +55,7 @@ func TestBinarySearchUnknownLength(t *testing.T) {
 				if cfg.RunParallelTests {
 					t.Parallel()
 				}
-				result := s(tc.A, tc.K)
+				result := s(arrayUnknownLength(tc.A), tc.K)
 				if !reflect.DeepEqual(result, tc.ExpectedResult) {
 					t.Errorf("\ngot:\n%v\nwant:\n%v\ntest case:\n%+v\n", result, tc.ExpectedResult, tc)
 				}
@@ -65,4 +65,13 @@ func TestBinarySearchUnknownLength(t *testing.T) {
 	if err = parser.Err(); err != nil {
 		t.Fatalf("parsing error: %s", err)
 	}
+}
+
+type arrayUnknownLength []int
+
+func (a arrayUnknownLength) Get(index int) (value int, valid bool) {
+	if index < 0 || index >= len(a) {
+		return -1, false
+	}
+	return a[index], true
 }

@@ -1,6 +1,6 @@
 package search_unknown_length_array
 
-func BinarySearchUnknownLength(a []int, k int) int {
+func BinarySearchUnknownLength(a ArrayUnknownLength, k int) int {
 	// TODO - Add your code here
 	return 0
 }

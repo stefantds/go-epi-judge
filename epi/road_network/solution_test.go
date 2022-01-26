@@ -15,7 +15,7 @@ import (
 	utils "github.com/stefantds/go-epi-judge/test_utils"
 )
 
-type solutionFunc = func([]HighwaySection, []HighwaySection, int) *HighwaySection
+type solutionFunc = func([]HighwaySection, []HighwaySection, int) HighwaySection
 
 var solutions = []solutionFunc{
 	FindBestProposals,

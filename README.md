@@ -105,28 +105,45 @@ go test ./epi/nonuniform_random_number -timeout 30s
 
 In order to track the progress, a CLI tool is included in this repository. The original EPI Judge has a similar tool (but presented as a HTML page).
 
+```
+Usage: ./progress [options] [chapter_nb ...]
+
+Options:
+  -d string
+        path to epi folder. (default "./epi")
+  -v    show detailed test status.
+```
+
+### Examples
+
 See progress aggregated per chapter (for all chapters):
 
 ```sh
 go run ./progress
 ```
 
+![cli result](docs/progress_all.png)
+
 See progress aggregated per chapter (for selected chapters):
 
 ```sh
-go run ./progress 7 8
+go run ./progress 8 10
 ```
 
-See progress with details (for all chapters):
-
-```sh
-go run ./progress -v
-```
+![cli result](docs/progress_8_10.png)
 
 See progress with details (for selected chapters):
 
 ```sh
 go run ./progress -v 7 8
+```
+
+![cli result](docs/progress_8_10_v.png)
+
+See progress with details (for all chapters):
+
+```sh
+go run ./progress -v
 ```
 
 Note that running the commands from a different repository requires to additionally pass the path to the `epi` folder as a parameter.

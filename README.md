@@ -1,4 +1,4 @@
-# EPI Judge Golang
+# EPI Judge Golang / Elements of Programming Interview Golang Judge
 
 Test tools for the Go solutions of the problems from ["Elements of Programming Interview"](https://elementsofprogramminginterviews.com/)
 

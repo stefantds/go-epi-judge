@@ -135,7 +135,7 @@ go run ./progress 8 10
 See progress with details (for selected chapters):
 
 ```sh
-go run ./progress -v 7 8
+go run ./progress -v 8 10
 ```
 
 ![cli result](docs/progress_8_10_v.png)

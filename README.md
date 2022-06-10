@@ -167,7 +167,7 @@ No, it's just "fan art". It's a tool that was intended for personal usage but ca
 
 #### Are solution to problems included?
 
-No, there are no solutions in this repository, as it is intended as a starting point for anyone who wants to solve the EPI problems in Go. But you can find my solutions at https://github.com/stefantds/go-epi-solutions (work in progress).
+No, there are no solutions in this repository, as it is intended as a starting point for anyone who wants to solve the EPI problems in Go. But you can find my solutions at https://github.com/stefantds/go-epi-solutions.
 
 #### Do the tests offer the same corner-case coverage as the original EPI Judge?
 
@@ -183,12 +183,11 @@ This should make it easier to follow the problems and solutions in the book or i
 
 #### What to do if a test is wrong?
 
-As I haven't implemented all the solutions to all the problems yet, there might still be some hidden bugs. However, I've tested many of the functions and hope to have found most of the problems. If you find an issue in the test code, please open a ticket.
-If you can find the cause of the problem and know how to fix it, feel free to open a pull request. If you are not sure, we can first discuss the different options in the ticket.
+If you find an issue know how to fix it, feel free to open a pull request. If you are not sure, we can first discuss the different options in the ticket.
 
 ## Contributing
 
-Pull requests are welcome. Please open an issue first to discuss what you would like to change.
+Pull requests are welcome. If it's a feature request, please open an issue first to discuss what you would like to change.
 
 ## License
 
